@@ -134,7 +134,7 @@ export function mobileMenu() {
   return `
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" data-menu>
   <div class="menu__bg" data-menu-close></div>
-  <div class="menu__sheet">
+  <div class="menu__sheet" data-lenis-prevent>
     <div class="menu__top" data-menu-item>
       <a class="menu__logo" href="/"><img src="/assets/img/logo.png" alt="Blueinc Technologies" width="128" height="36"></a>
       <button class="menu__close" type="button" aria-label="Close menu" data-menu-close>${icon.close}</button>
@@ -232,7 +232,7 @@ export function projectForm({ id = 'quote', submit = 'Get Quote', variant = 'quo
 
 export function quoteDialog() {
   return `
-<dialog class="dialog" id="quote-dialog" aria-labelledby="quote-title">
+<dialog class="dialog" id="quote-dialog" data-lenis-prevent aria-labelledby="quote-title">
   <div class="dialog__inner">
     <div class="dialog__head">
       <div><h2 class="h4" id="quote-title">Get a FREE Quote</h2><p>Have a project in mind? Please fill the form and submit now.</p></div>
