@@ -1,4 +1,4 @@
-import { site, nav, footerCols, services, industries, projectTypes, cta } from '../data/site.mjs';
+import { site, nav, footerCols, services, industries, products, projectTypes, cta } from '../data/site.mjs';
 
 export const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -77,6 +77,9 @@ export function wordmark(text = 'BLUEINC TECH', { label = 'Blueinc Technologies'
 
 /* ---------- Navbar ---------- */
 const dropItems = (key) => {
+  if (key === 'products')
+    return products.map((p, i) => ({ label: p.name, href: p.url, i }))
+      .concat([{ label: 'View all products', href: '/portfolio/#products', foot: true }]);
   if (key === 'services')
     return services.map((s, i) => ({ label: s.short || s.name, href: `/our-services/${s.slug}/`, i }))
       .concat([{ label: 'View all services', href: '/our-services/', foot: true }]);
@@ -92,7 +95,7 @@ export function navbar(current) {
     const aria = active ? ' aria-current="page"' : '';
     if (!n.children) return `<li><a class="navbar__link" href="${n.href}"${aria}>${roll(n.label)}</a></li>`;
     const items = dropItems(n.children)
-      .map((d) => `<li${d.foot ? ' class="drop__foot"' : ''}><a href="${d.href}">${roll(d.label)}</a></li>`)
+      .map((d) => `<li${d.foot ? ' class="drop__foot"' : ''}><a href="${d.href}"${extAttrs(d.href)}>${roll(d.label)}</a></li>`)
       .join('');
     return `<li class="has-drop"><a class="navbar__link" href="${n.href}"${aria} aria-haspopup="true">${roll(n.label)}${icon.chevron}</a><ul class="drop">${items}</ul></li>`;
   }).join('');
@@ -125,7 +128,7 @@ export function navbar(current) {
 export function mobileMenu() {
   const items = nav.map((n) => {
     if (!n.children) return `<li data-menu-item><a href="${n.href}">${esc(n.label)}</a></li>`;
-    const sub = dropItems(n.children).map((d) => `<a href="${d.href}">${esc(d.label)}</a>`).join('');
+    const sub = dropItems(n.children).map((d) => `<a href="${d.href}"${extAttrs(d.href)}>${esc(d.label)}</a>`).join('');
     return `<li data-menu-item><button class="menu__acc" type="button" aria-expanded="false">${esc(n.label)}${icon.chevron}</button><div class="menu__sub"><div>${sub}</div></div></li>`;
   }).join('');
   return `

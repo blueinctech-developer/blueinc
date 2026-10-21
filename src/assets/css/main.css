@@ -381,7 +381,7 @@ html.no-anim .navbar__tagline span:first-child, html.reduced .navbar__tagline sp
 .menu-btn span + span { margin-top: 6px; }
 .menu-btn__lines { display: grid; }
 
-@media (max-width: 1279px) { /* raised from 1199px to fit the longer "Work & Products" nav label */
+@media (max-width: 1199px) {
   .navbar__person { display: none; }
   .navbar__links { gap: 1.125rem; }
 }

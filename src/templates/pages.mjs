@@ -223,8 +223,8 @@ export function portfolioPage() {
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Work & Products' }], title: portfolio.h1, lead: portfolio.body,
   actions: `${quoteBtn('Start a Project')}${btn({ label: 'Read reviews', href: '/success-stories/', variant: 'light' })}` })}
 <section class="section--sm container" aria-label="Projects" style="padding-top:1rem">
-  <div class="tabs" role="tablist" aria-label="Project categories" data-tabs>
-    ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
+  <div class="tabs" role="tablist" aria-label="Project categories" id="products" data-tabs>
+    ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i === 3 ? ' data-hash="products"' : ''}${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
   </div>
   ${panels.map((p, i) => `<div class="tab-panel" role="tabpanel" id="pp-${i}" aria-labelledby="pt-${i}"${i ? ' hidden' : ''}>${p}</div>`).join('')}
 </section>

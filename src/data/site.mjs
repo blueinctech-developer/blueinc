@@ -52,12 +52,11 @@ export const site = {
   navTaglines: ['Custom Software', 'Digital Products', 'Mobile Apps', 'Product Design'],
 };
 
+// Industries, Our Work and Reviews live in the footer (Connect column), not the navbar.
 export const nav = [
   { label: 'About', href: '/about-us/' },
+  { label: 'Products', href: '/portfolio/#products', children: 'products' },
   { label: 'Services', href: '/our-services/', children: 'services' },
-  { label: 'Industries', href: '/industries-served/', children: 'industries' },
-  { label: 'Work & Products', href: '/portfolio/' },
-  { label: 'Reviews', href: '/success-stories/' },
   { label: 'Pricing', href: '/pricing-plans/' },
   { label: 'Contact', href: '/contact/' },
 ];
@@ -76,11 +75,11 @@ export const footerCols = [
   {
     title: 'Connect',
     links: [
-      { label: 'Work & Products', href: '/portfolio/' },
-      { label: 'Our Solutions', href: '/our-services/' },
-      { label: 'Success Stories', href: '/success-stories/' },
-      { label: 'Pricing', href: '/pricing-plans/' },
+      { label: 'Our Work', href: '/portfolio/' },
+      { label: 'Our Products', href: '/portfolio/#products' },
+      { label: 'Reviews', href: '/success-stories/' },
       { label: 'Industries Served', href: '/industries-served/' },
+      { label: 'Pricing', href: '/pricing-plans/' },
     ],
   },
   {

@@ -141,6 +141,10 @@
         ScrollTrigger.refresh();
       }
     };
+    // Deep link: /portfolio/#products opens the "Our Products" tab (also when the hash changes in place).
+    const fromHash = () => { const t = tabs.find((x) => x.dataset.hash && '#' + x.dataset.hash === location.hash); if (t) select(t); };
+    fromHash();
+    window.addEventListener('hashchange', () => { fromHash(); const el = location.hash && document.querySelector(location.hash); if (el && lenis) lenis.scrollTo(el, { offset: -110 }); });
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t));
       t.addEventListener('keydown', (e) => {
