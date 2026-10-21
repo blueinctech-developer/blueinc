@@ -30,7 +30,7 @@ const pages = [
   { route: '/success-stories/', title: reviewsPage.title, description: reviewsPage.body, body: reviewsPageTpl() },
   { route: '/pricing-plans/', title: pricing.title, description: pricing.lead, body: pricingPage() },
   { route: '/contact/', title: contactPage.title, description: contactPage.lead, body: contactPageTpl() },
-  { route: '/free-detailed-audit/', title: 'Free Detailed Audit | Blueinc Technologies', description: audit.lead, body: auditPage() },
+  { route: '/free-detailed-audit/', title: 'Free Technology Consultation | Blueinc Technologies', description: audit.lead, body: auditPage() },
 ];
 
 // Legacy WordPress URLs that should keep working.

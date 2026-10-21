@@ -94,7 +94,7 @@ export function aboutSplit() {
     </div>
     <div class="feature-pair" data-stagger>
       <div class="feature">${icon.globe}<b>United States &amp; Nigeria</b><span>Offices in the US and Nigeria</span></div>
-      <div class="feature">${icon.spark}<b>Since ${site.founded}</b><span>Your digital growth partner</span></div>
+      <div class="feature">${icon.spark}<b>Since ${site.founded}</b><span>Building software and products</span></div>
     </div>
   </div>
   <div class="about-split__orbit">
@@ -104,7 +104,7 @@ export function aboutSplit() {
       <div class="orbit__ring orbit__ring--2">${inner}</div>
     </div>
     <div class="orbit__center" style="position:absolute">
-      <p class="h5">Your digital growth partner</p>
+      <p class="h5">Your technology partner</p>
       <small>Team Work · Integrity · Simplicity · Excellence</small>
     </div>
   </div>
@@ -121,8 +121,8 @@ function why() {
   <div class="why__head">
     ${eyebrow(home.why.eyebrow)}
     <h2 class="h2" id="why-title" data-reveal="lines">${esc(home.why.title)}</h2>
-    <p class="lead" data-reveal="fade">We specialize in custom web design, web application development, system integration, digital marketing, and web strategy consulting.</p>
-    <div data-reveal="fade">${btn({ label: 'Let’s discuss your project', href: site.calendly, size: 'lg' })}</div>
+    <p class="lead" data-reveal="fade">We build and run digital products of our own, so we bring an owner’s perspective to every client project: what to build, how to launch it, and how to keep it growing.</p>
+    <div data-reveal="fade">${btn({ label: 'Discuss Your Project', href: site.calendly, size: 'lg' })}</div>
   </div>
   <div class="bento">
     <article class="bento__card bento__card--photo" data-bento>
@@ -135,7 +135,7 @@ function why() {
       <p>${esc(tailored.body)}</p>
     </article>
     <article class="bento__card bento__card--devices" data-bento>
-      ${devices({ laptop: 'scrubharvard.com', phone: 'lexpraxisng.com', cls: 'devices--bento' })}
+      ${devices({ laptop: 'staffintra.com', phone: 'myjobtests.com', cls: 'devices--bento' })}
       <h3 class="h5">${esc(intuitive.title)}</h3>
       <p>${esc(intuitive.body)}</p>
     </article>
@@ -153,11 +153,11 @@ function why() {
       <p>${esc(tracking.body)}</p>
     </article>
     <article class="bento__card bento__card--social" data-bento>
-      ${devices({ phone: 'scrubharvard.com', cls: 'devices--social' })}
+      ${devices({ phone: 'teststreams.com', cls: 'devices--social' })}
       <div class="posts" aria-hidden="true" data-posts>
-        <div class="post"><span class="post__ico">${icon.chat}</span><span><b>Content strategy</b>Blog · SEO-optimized articles</span></div>
-        <div class="post"><span class="post__ico">${icon.heart}</span><span><b>Social media</b>Engaging posts · targeted ads</span></div>
-        <div class="post"><span class="post__ico">${icon.mail}</span><span><b>Email marketing</b>Sequences that convert leads</span></div>
+        <div class="post"><span class="post__ico">${icon.chat}</span><span><b>Product launch</b>Release plans · onboarding</span></div>
+        <div class="post"><span class="post__ico">${icon.heart}</span><span><b>Search & social</b>SEO · content · campaigns</span></div>
+        <div class="post"><span class="post__ico">${icon.mail}</span><span><b>Iteration</b>Feedback · analytics · updates</span></div>
       </div>
       <h3 class="h5">${esc(social.title)}</h3>
       <p>${esc(social.body)}</p>
@@ -180,13 +180,13 @@ export function homePage() {
     const img = hasShot(w.site) ? shot(w.site) : null;
     return `
     <div class="work" style="z-index:${i + 1}" data-work>
-      <div class="work__side"><small>Client</small><span>${esc(w.client)}</span></div>
-      <a class="work__card" href="/portfolio/" aria-label="${esc(w.client)} — see our work">
-        ${img ? `<img src="${img}" alt="${esc(w.client)} website designed and built by Blueinc Technologies" loading="lazy" width="1440" height="900">` : ''}
+      <div class="work__side"><small>${w.own ? 'Our product' : 'Client'}</small><span>${esc(w.client)}</span></div>
+      <a class="work__card" href="${w.href || '/portfolio/'}"${w.href ? ' target="_blank" rel="noopener"' : ''} aria-label="${esc(w.client)}: ${w.own ? 'visit product' : 'see our work'}">
+        ${img ? `<img src="${img}" alt="${esc(w.client)}, ${w.own ? 'a digital product built and operated by Blueinc Technologies' : 'designed and built by Blueinc Technologies'}" loading="lazy" width="1440" height="900">` : ''}
         <span class="work__shade"></span>
-        <span class="work__pill">${img ? `<img src="${img}" alt="" width="36" height="36">` : ''}${esc(w.client)}<i></i><em>See work</em></span>
+        <span class="work__pill">${img ? `<img src="${img}" alt="" width="36" height="36">` : ''}${esc(w.client)}<i></i><em>${w.own ? 'Visit product' : 'See work'}</em></span>
       </a>
-      <div class="work__side work__side--r"><small>Website</small><span>${esc(w.site)}</span></div>
+      <div class="work__side work__side--r"><small>${esc(w.kind || 'Website')}</small><span>${esc(w.site)}</span></div>
     </div>`;
   }).join('');
 
@@ -197,14 +197,14 @@ export function homePage() {
 
   return `
 <section class="hero" aria-label="Introduction">
-  <h1 class="sr-only">Blueinc Technologies — Web Development | Tech Services</h1>
+  <h1 class="sr-only">Blueinc Technologies: Technology Solutions and Digital Products</h1>
   <div class="hero__wordmark" data-hero-wordmark>${wordmark()}</div>
-  <nav class="hero__tabs" aria-label="Core services">
+  <nav class="hero__tabs" aria-label="What we do">
     ${home.heroServices.map((s) => `<a class="hero__tab" href="${s.href}" data-intro>${roll(s.label)}</a>`).join('')}
   </nav>
   <div class="reel" data-reel>
     <div class="reel__media">
-      <video muted loop playsinline preload="auto" poster="/assets/media/showreel-poster.jpg" data-reel-img data-reel-video aria-label="Blueinc Technologies showreel: client websites and our team">
+      <video muted loop playsinline preload="auto" poster="/assets/media/showreel-poster.jpg" data-reel-img data-reel-video aria-label="Blueinc Technologies showreel: our products, client work and our team">
         <source src="/assets/media/showreel.mp4" type="video/mp4">
       </video>
     </div>
@@ -225,8 +225,8 @@ export function homePage() {
       <h2 class="h1 weare__title" id="weare-title"><span class="lead-line" data-reveal="lines">${esc(home.headlineLead)}</span> <span class="rotator" data-rotator aria-label="${esc(home.headlineWords.join(', '))}">${rotWords}</span></h2>
       <p class="lead weare__lead" data-reveal="fade">${esc(home.intro)}</p>
       <div class="btn-row" style="margin-top:2rem" data-reveal="fade">
-        ${btn({ label: 'Get Your Free Audit', href: '/free-detailed-audit/' })}
-        ${btn({ label: 'Get Started Now', href: site.calendly, variant: 'light' })}
+        ${btn({ label: 'Book a Free Consultation', href: '/free-detailed-audit/' })}
+        ${btn({ label: 'Build With Blueinc', href: site.calendly, variant: 'light' })}
       </div>
     </div>
     <aside class="weare__aside" data-reveal="up">
@@ -251,10 +251,10 @@ export function homePage() {
 <section class="works" aria-labelledby="works-title">
   <div class="section-head" style="margin-bottom:5.5rem">
     ${eyebrow('Works')}
-    <h2 class="h2" id="works-title" data-reveal="lines">Selected works</h2>
+    <h2 class="h2" id="works-title" data-reveal="lines">Our products &amp; selected work</h2>
   </div>
   <div class="works__list">${works}</div>
-  <div class="works__more">${btn({ label: 'View All Works', href: '/portfolio/', variant: 'plain', size: 'lg' })}</div>
+  <div class="works__more">${btn({ label: 'Explore Our Work', href: '/portfolio/', variant: 'plain', size: 'lg' })}</div>
 </section>
 
 <div class="section">

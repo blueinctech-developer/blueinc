@@ -8,9 +8,9 @@ export const site = {
   regNo: '7362044',
   founded: 2016,
   url: 'https://blueinctech.com',
-  tagline: 'Digital solutions for startups and SMEs globally',
+  tagline: 'Technology solutions and digital products',
   description:
-    'Your digital growth partner. We specialize in web design, software and app development, digital marketing, and interface design.',
+    'Blueinc Technologies is a technology solutions and digital product company. We build software for businesses and develop and operate digital products of our own.',
   email: 'contact@blueinctech.com',
   calendly: 'https://calendly.com/projects-blueinctech/consult',
   clientPortal: 'https://blueinctech.com/hub',
@@ -48,15 +48,15 @@ export const site = {
     { label: 'Instagram', href: 'https://www.instagram.com/blueinc_tech/' },
     { label: 'Facebook', href: 'https://facebook.com/blueinctech' },
   ],
-  // Rotating words used by the navbar logo label (Blueinc's own service names).
-  navTaglines: ['Web Development', 'Digital Marketing', 'App Development', 'Interface Design'],
+  // Rotating words used by the navbar logo label (kept short to fit the 13rem label).
+  navTaglines: ['Custom Software', 'Digital Products', 'Mobile Apps', 'Product Design'],
 };
 
 export const nav = [
   { label: 'About', href: '/about-us/' },
   { label: 'Services', href: '/our-services/', children: 'services' },
   { label: 'Industries', href: '/industries-served/', children: 'industries' },
-  { label: 'Our Work', href: '/portfolio/' },
+  { label: 'Work & Products', href: '/portfolio/' },
   { label: 'Reviews', href: '/success-stories/' },
   { label: 'Pricing', href: '/pricing-plans/' },
   { label: 'Contact', href: '/contact/' },
@@ -66,17 +66,17 @@ export const footerCols = [
   {
     title: 'Services',
     links: [
-      { label: 'Web Development', href: '/our-services/web-development-services/' },
-      { label: 'App Development', href: '/our-services/app-development-services/' },
-      { label: 'Interface Design', href: '/our-services/graphics-interface-design-services/' },
-      { label: 'Digital Marketing', href: '/our-services/digital-marketing-services/' },
+      { label: 'Software Development', href: '/our-services/web-development-services/' },
+      { label: 'Mobile Apps', href: '/our-services/app-development-services/' },
+      { label: 'Enterprise Systems', href: '/our-services/product-management-services/' },
+      { label: 'Product Design', href: '/our-services/graphics-interface-design-services/' },
       { label: 'View all Services', href: '/our-services/' },
     ],
   },
   {
     title: 'Connect',
     links: [
-      { label: 'Portfolio', href: '/portfolio/' },
+      { label: 'Work & Products', href: '/portfolio/' },
       { label: 'Our Solutions', href: '/our-services/' },
       { label: 'Success Stories', href: '/success-stories/' },
       { label: 'Pricing', href: '/pricing-plans/' },
@@ -106,37 +106,37 @@ export const footerCols = [
 ];
 
 export const home = {
-  title: 'Blueinc Technologies: Web Development | Tech Services',
+  title: 'Blueinc Technologies | Technology Solutions & Digital Products',
   heroServices: [
-    { label: 'Web Development', href: '/our-services/web-development-services/' },
-    { label: 'App Development', href: '/our-services/app-development-services/' },
-    { label: 'Digital Marketing', href: '/our-services/digital-marketing-services/' },
-    { label: 'Interface Design', href: '/our-services/graphics-interface-design-services/' },
+    { label: 'Custom Software', href: '/our-services/web-development-services/' },
+    { label: 'Mobile Apps', href: '/our-services/app-development-services/' },
+    { label: 'Digital Products', href: '/portfolio/' },
+    { label: 'Enterprise Systems', href: '/our-services/product-management-services/' },
   ],
-  headlineLead: 'Websites and Marketing That Turn Visitors Into',
-  headlineWords: ['Leads', 'Sales', 'Clients'],
+  headlineLead: 'Technology Solutions. Digital Products. Real-World',
+  headlineWords: ['Impact', 'Results', 'Value'],
   intro:
-    'Blueinc Technologies helps businesses grow online with high-performance websites, SEO, and digital marketing strategies designed to generate consistent leads and revenue.',
+    'We design, build and scale software for businesses, and we develop and operate our own digital products that solve real problems across industries.',
   trustedBy: 'Trusted by businesses across Canada, UK, US and Nigeria',
   stats: [
     { value: 100, suffix: '+', label: 'Websites & Apps Built' },
     { value: 6, suffix: '+', label: 'Years Experience' },
     { value: 5, suffix: '+', label: 'Countries Served' },
-    { value: 99, suffix: '%', label: 'Proven SEO & Marketing Strategies' },
+    { value: 4, suffix: '+', label: 'Digital Products We Own & Operate' },
   ],
   whoWeAre: {
     eyebrow: 'Who we are',
-    title: 'Innovative Technology Solutions for Business Growth',
+    title: 'One Team for Client Solutions and Our Own Products',
     body:
-      'We leverage cutting-edge digital solutions such as web design and development, enterprise applications development, graphics and interface design, digital marketing and advertising to drive business growth.',
+      'We build custom software, web and mobile applications and business systems for our clients, and we run digital products of our own. Building for both keeps our engineering practical and our product thinking sharp.',
   },
   history: {
     eyebrow: 'Our history',
     title: 'Digital solutions for startups and SMEs globally',
     body:
-      'For years, Blueinc has been creating innovative web solutions for our diverse range of clients, – from Multinational companies, government agencies, and MSMEs. We specialize in custom web design, web application development, system integration, digital marketing, and web strategy consulting. Our talented team of designers, developers, and project managers has completed hundreds of projects over the past 8 years, and helped hundreds more businesses grow and gain visibility online.',
+      'For years, Blueinc has been building technology for a diverse range of clients, from multinational companies and government agencies to MSMEs. We specialize in custom software, web and mobile applications, system integration, digital marketing and technology consulting, and we develop and operate digital products of our own. Our talented team of designers, developers, and project managers has completed hundreds of projects over the past 8 years, and helped hundreds more businesses grow and gain visibility online.',
     points: [
-      'We’re an award-winning team of web developers, marketers, and designers',
+      'We’re an award-winning team of engineers, designers, and marketers',
       'We’ve worked with brands from over 9 countries',
       'In over 11 years, we’ve never lost a client. Clients keep coming',
       'Our clients have raised over $100m in Funding',
@@ -144,23 +144,23 @@ export const home = {
   },
   why: {
     eyebrow: 'Why Blueinc?',
-    title: 'We Don’t Just Build, We Drive Growth.',
+    title: 'Engineering Expertise With a Product Mindset.',
     items: [
       {
         title: 'Tailored Solutions',
-        body: 'We create customized websites that align with your business goals and target audience, ensuring a solid foundation for growth.',
+        body: 'We build software around how your business actually works, from internal systems to customer-facing platforms, with room to scale.',
       },
       {
         title: 'Intuitive Designs',
-        body: 'We focus on user-centric design, making sure your website is easy to navigate, visually appealing, and engaging for visitors.',
+        body: 'We design products people find easy to use, the same standard we hold our own platforms to every day.',
       },
       {
         title: 'Performance Tracking',
         body: 'We provide detailed analytics and reports, helping you understand user behavior, track key performance indicators, and make informed decisions.',
       },
       {
-        title: 'Content and Social Media',
-        body: 'Our team helps you develop and implement effective content marketing and social media strategies, driving engagement and conversions.',
+        title: 'Launch and Growth',
+        body: 'Launching is only the start. We help you reach users through content, search and social, then keep improving what you’ve built.',
       },
     ],
   },
@@ -187,75 +187,76 @@ export const values = [
 ];
 
 export const about = {
-  title: 'Blueinc Technologies: Innovative Web Solutions Company Profile',
+  title: 'About Blueinc Technologies | Technology Solutions & Digital Products',
   description:
-    'We provide innovative web solutions, digital tools and the expertise needed for your business to thrive in today’s competitive market. We are your digital growth partner.',
-  h1: 'Digital Solutions for Startups and SMEs Globally',
-  lead: 'We provide the tools and expertise needed to thrive in today’s competitive landscape.',
+    'Blueinc is a technology solutions and digital product company. We build software for businesses and develop, own and operate digital products of our own.',
+  h1: 'Software for Businesses. Products of Our Own.',
+  lead: 'A technology company that builds for clients and for itself, and gets better at both.',
   body:
-    'In an era dominated by new media consumption, Blueinc Technologies uses digital solutions such as web design and development, graphics and interface design, digital marketing and advertising to help Startups and SMEs worldwide achieve remarkable business growth.',
+    'Blueinc Technologies designs, builds and supports software for startups, businesses and organizations, and develops and operates its own digital products, including Staffintra, Travel Nurse Houses, MyJobTests and Teststreams.',
   serve: {
     title: 'Who We Serve?',
-    body: 'Our primary focus is on serving small to medium businesses and startups with great ideas, providing them with the tools and expertise they need to thrive in today’s competitive landscape.',
+    body: 'We work with startups, growing businesses, organizations and entrepreneurs that need dependable technology: from a first product to the systems a business runs on every day.',
   },
   believe: {
     eyebrow: 'What We Believe In',
-    title: 'We believe in providing digital solutions that drive business growth!',
+    title: 'We believe technology should solve real problems.',
     body:
-      'We achieve this by scaling impactful businesses. Our focus is on promoting our clients’ brands and effectively disseminating their message worldwide. We refuse to settle for the status quo, constantly striving to expand our own business with the same level of honesty and integrity we employ to enhance our clients’ enterprises.',
+      'That belief shapes the software we build for clients and the products we choose to own. We start from the problem, build what is practical and reliable, and keep improving it after launch, with the same honesty and integrity whether the product is ours or yours.',
     principles: ['Transparency', 'Accountability', 'Lifelong Learning', 'Ambition'],
   },
   team: {
     title: 'Meet the Blueinc Team',
-    body: 'We believe in having a talented team of self-starters that want to deliver the best results for our clients.',
+    body: 'Engineers, designers and product people who build for our clients and run our own products, and who take ownership of the results.',
   },
 };
 
 export const audit = {
   title: 'Get a Free consultation',
-  lead: 'Our audit is a deep dive into your tech setup and objectives. Here’s what you’ll get',
+  lead: 'Our consultation is a deep dive into your technology and objectives. Here’s what you’ll get',
   points: [
-    'A marketing audit to evaluate your company’s digital marketing efforts and their effectiveness.',
-    'Evaluate your target audience to see if they have changed or if you need to adjust your messaging to better reach them.',
-    'Analyze your website to ensure it is user-friendly, mobile-responsive, and optimized for search engines.',
-    'Review your content marketing efforts, including your blog posts, social media, and email marketing.',
+    'A review of your current software, website and tools, and how well they support the way your business runs.',
+    'Opportunities to automate manual processes and connect the systems your team already uses.',
+    'A practical recommendation on what to build, buy or improve next, with priorities you can act on.',
+    'A look at how you reach and convert customers online, including search, content and digital marketing.',
   ],
 };
 
 export const servicesPage = {
   title: 'Our Services | Blueinc Technologies',
-  h1: 'Powerful Digital Solutions for Your Business',
-  lead: 'Don’t survive in today’s digital landscape. Thrive with a comprehensive online strategy tailored to your unique goals',
-  beliefTitle: 'We believe in the power of digital solutions to transform businesses',
+  h1: 'Technology Solutions Built for Your Business',
+  lead: 'From custom software and mobile apps to business systems and automation, we turn complex challenges into practical, scalable technology.',
+  beliefTitle: 'We build technology the way we build our own products',
   beliefBody:
-    'We’re a full-service agency offering a comprehensive suite of digital services designed to propel your brand forward. Our team of passionate experts collaborates closely with you to understand your specific needs and challenges. We then craft a customized strategy that leverages the right combination of services to achieve your desired outcomes.',
-  listTitle: 'How we prep your business for success',
+    'Because we develop and operate digital products of our own, we know what it takes to ship software that people rely on. We start by understanding your business and its challenges, recommend the right technology, then design, build, launch and support it, from first release to long-term growth.',
+  listTitle: 'What we build for our clients',
   closing:
-    'Our extensive experience across various industries allows us to tailor our solutions to your specific challenges and goals. We don’t deliver services; we build partnerships for success.',
+    'We apply the same engineering to client work that we apply to the products we own and operate. We don’t just deliver projects; we build technology partnerships that last.',
 };
 
 export const services = [
   {
     slug: 'web-development-services',
-    name: 'Web Development',
+    name: 'Software & Web Development',
+    short: 'Software Development',
     summary:
-      'Imagine a website that actively works to achieve your goals, not passively exist online. We create high-performance, scalable websites that embody your brand identity, deliver a seamless user experience, and drive conversions.',
-    tags: ['Custom WordPress', 'Shopify', 'WooCommerce', 'Custom Websites', 'Maintenance'],
+      'Custom software, web applications, SaaS platforms and high-performance websites, engineered around how your business works. We build secure, scalable systems, integrate them with the tools you use, and keep them running well.',
+    tags: ['Custom Software', 'Web Applications', 'SaaS', 'APIs & Integrations', 'Websites'],
     image: 'clients/fillinstaffing.com.jpg',
     mockup: { laptop: 'scrubharvard.com', phone: 'lexpraxisng.com' },
-    h1: 'Responsive websites that reflects your brand experience and drive results.',
-    lead: 'We don’t build websites, we create digital experiences.',
-    introTitle: 'We strategically design your website, equipping your business for success',
+    h1: 'Custom software, web applications and websites that run your business.',
+    lead: 'Practical, reliable software engineered to scale with you.',
+    introTitle: 'We engineer software around your business, not the other way round',
     introBody:
-      'Our website development process is collaborative and transparent, ensuring your website reflects your vision and exceeds expectations. Here’s a look at our six-step approach:',
-    processTitle: 'How We Help You Craft A Perfect Website',
+      'Whether it’s a SaaS platform, an internal system, a customer portal or a website, our process is collaborative and transparent. It’s the same approach we use to build and run our own products. Here’s how it works:',
+    processTitle: 'How We Build Software That Lasts',
     steps: [
-      ['Discovery & Planning', 'We begin by getting to know your business, target audience, and website goals. We’ll discuss your brand identity, competitor landscape, and desired functionalities.'],
-      ['Information Architecture & Design', 'With a strong understanding of your vision, we’ll develop a sitemap that outlines your website’s structure and user journey. Our designers will craft a visually appealing and user-friendly interface that aligns with your brand.'],
-      ['Content Development & Strategy', 'Next, we’ll work with you to create compelling content that engages your audience and positions you as an authority in your field.'],
-      ['Development & Implementation', 'Our skilled developers will bring your website to life, ensuring it’s functional, secure, and optimized for performance across all devices.'],
-      ['Final Test, Review & Launch', 'We’ll conduct thorough testing to guarantee a seamless user experience and flawless functionality. Once everything is polished, we’ll launch your website with confidence.'],
-      ['Ongoing Support & Maintenance', 'We offer ongoing support to ensure your website stays up-to-date, secure, and performing at its best.'],
+      ['Discovery & Planning', 'We start with your business: the problem, the users, the processes involved and what success looks like. Together we define scope, priorities and the right technology.'],
+      ['Architecture & Design', 'We plan the system’s structure, data and integrations, and design an interface that is clear and easy to use, so the product is built on solid foundations.'],
+      ['Product Strategy', 'We shape the features, content and user journeys that matter most, so the first release delivers value and leaves room to grow.'],
+      ['Build & Integrate', 'Our engineers build secure, well-tested software and connect it to the tools and APIs you already rely on, optimized for performance on every device.'],
+      ['Test & Launch', 'We test thoroughly for quality, security and performance, review everything with you, and launch with confidence.'],
+      ['Support & Optimize', 'After launch we maintain, monitor and improve your software so it stays secure, up to date and ready for the next stage of growth.'],
     ],
     showcase: ['scrubharvard.com', 'fillinstaffing.com', 'gebbrapharma.com'],
     quote: {
@@ -264,19 +265,19 @@ export const services = [
       org: 'Pinnacle',
     },
     closing:
-      'Our proven track record speaks for itself. We’ve partnered with a wide range of businesses, from healthcare providers and pharmacies to e-commerce stores, educational institutions, non-profits, and professional organizations, to create impactful websites.',
+      'We’ve built software and websites for healthcare providers and pharmacies, e-commerce stores, educational institutions, non-profits and professional organizations, and we run our own platforms on the same engineering foundations.',
   },
   {
     slug: 'digital-marketing-services',
     name: 'Digital Marketing',
     summary:
-      'Target, attract, nurture and convert your target audience into loyal customers with data-driven digital marketing strategies. We use SEO, PPC campaigns, content marketing, social media marketing, and email marketing strategies to maximize your return on investment (ROI).',
+      'Great products still need to be found. We help businesses and digital products reach, convert and retain users with data-driven SEO, paid campaigns, content, social media and email marketing, measured against real results.',
     tags: ['SEO', 'PPC', 'Content Marketing', 'Social Media', 'Email Marketing', 'Analytics'],
     image: 'clients/scrubharvard.com.jpg',
     mockup: { laptop: 'spotlightnigeria-france.com', phone: 'scrubharvard.com' },
     h1: 'Data-driven digital marketing strategies that get results.',
-    lead: 'Why wait for customers to find you when you can take control of your online presence and watch your business thrive.',
-    introTitle: 'We Drive Your Business Growth with Data-driven Digital Marketing',
+    lead: 'Growth strategies for businesses and digital products, informed by what we learn growing our own.',
+    introTitle: 'We Drive Growth for Businesses and Digital Products',
     introBody:
       'In today’s digital age, a strong online presence is essential for any business. Our comprehensive digital marketing services are designed to help you reach your target audience, build brand awareness, and drive conversions.',
     processTitle: 'How we help your business achieve its marketing goals',
@@ -298,14 +299,15 @@ export const services = [
   },
   {
     slug: 'app-development-services',
-    name: 'App Development',
+    name: 'Mobile & App Development',
+    short: 'Mobile Apps',
     summary:
-      'Turn your ideas into creative and innovative applications. We develop native apps for Android, iOS and Web platforms, or explore cross-platform development options to reach a wider audience.',
+      'Native and cross-platform apps for iOS, Android and the web, from MVP to scale. We design, build and launch applications that users rely on, backed by the APIs and infrastructure to support them.',
     tags: ['Android', 'iOS', 'Web Apps', 'SaaS', 'API Integration', 'Custom Software'],
     image: 'clients/travelnursehouses.ca.jpg',
     mockup: { laptop: 'travelnursehouses.ca', phone: 'travelnursehouses.ca' },
-    h1: 'Innovative applications that drive engagement and results.',
-    lead: 'Don’t just dream it, app it! We transform your idea into a powerful app that users love.',
+    h1: 'Mobile and web applications built for real users and real scale.',
+    lead: 'From MVP to app-store launch and beyond, built by a team that runs its own products.',
     introTitle: 'We strategically design your app, equipping your business for success',
     introBody:
       'In today’s mobile-first world, a simple, functional and well-designed app can be a game-changer for your business. Our experienced app development team will collaborate with you to bring your idea to life, from concept to app store launch.',
@@ -324,22 +326,22 @@ export const services = [
       org: 'AXA Consulting',
     },
     closing:
-      'We’ve partnered with a wide range of businesses across various industries to develop innovative and user-centric mobile apps. From e-commerce giants to educational institutions and on-demand service providers, we’ve helped them leverage the power of mobile technology to achieve their business goals.',
+      'We’ve partnered with businesses across various industries to develop user-centric applications, from e-commerce and education to on-demand services. We apply the same experience to the platforms we own and operate, including Travel Nurse Houses and MyJobTests.',
   },
   {
     slug: 'graphics-interface-design-services',
-    name: 'Graphics & Interface Design',
-    short: 'Interface Design',
+    name: 'Product & UX Design',
+    short: 'Product Design',
     summary:
-      'Elevate your brand identity with a visual language that resonates with your audience. Our team of graphic designers and UI/UX experts will craft logos, icons, illustrations, branding materials, user interfaces, and user experiences that are both aesthetically pleasing and strategically designed to meet your business objectives.',
+      'Research-led UI/UX and digital product design for software, apps and platforms. We map user journeys, prototype and test, and design interfaces and brand systems that are clear, usable and ready to build.',
     tags: ['UI/UX', 'Prototyping', 'Wireframing', 'Branding', 'Usability Testing', 'Animation'],
     image: 'clients/gebbrapharma.com.jpg',
     mockup: { laptop: 'gebbrapharma.com', phone: 'gebbrapharma.com' },
-    h1: 'User experiences that are both beautiful and intuitive.',
-    lead: 'We create graphic and interface designs that tell your story in a manner it visually captivates your audience.',
-    introTitle: 'Elevate Your Brand with Exceptional Design',
+    h1: 'Digital product design that is both beautiful and intuitive.',
+    lead: 'UI/UX, product and brand design shaped by research and tested with real users.',
+    introTitle: 'Design That Makes Software Easy to Use',
     introBody:
-      'In today’s digital age, visual impact is everything. Our team of skilled graphic designers and UI/UX experts will create stunning visuals and intuitive interfaces that elevate your brand and drive user engagement.',
+      'Good software starts with a clear experience. Our UI/UX and product designers turn complex requirements into interfaces people understand, backed by brand and visual systems that hold together across every screen.',
     processTitle: 'Our battle tested 6-step design process',
     steps: [
       ['Discovery & Collaboration', 'First, we’ll get to know you and your brand. We’ll discuss your design goals, target audience, and brand identity.'],
@@ -359,13 +361,13 @@ export const services = [
   },
   {
     slug: 'customer-support-services',
-    name: 'Customer Support',
+    name: 'Support & Maintenance',
     summary:
-      'Build trust, loyalty, and foster positive brand experiences by delivering exceptional customer service. We develop comprehensive knowledge bases, train dedicated customer support teams to provide efficient and professional support across multiple channels, and implement systems to resolve customer issues effectively.',
+      'Keep your software and your customers well looked after. We maintain and optimize applications after launch, and set up knowledge bases, support teams and systems that resolve customer issues quickly across multiple channels.',
     tags: ['Knowledge Base', 'Agent Training', 'Multi-Channel', 'Live Chat', 'Email', 'Phone'],
     image: 'partner.jpg',
-    h1: 'Responsive, professional customer support that builds trust and loyalty.',
-    lead: 'Our customer support solutions ensures your customers are never left hanging and your business delivers a positive customer experience every time.',
+    h1: 'Ongoing support that keeps your software and customers in good hands.',
+    lead: 'Maintenance, optimization and customer support, so your product keeps performing long after launch.',
     introTitle: 'Elevating Your Customer Experience',
     introBody:
       'In today’s competitive landscape, exceptional customer support is essential for building trust and loyalty. Our dedicated customer support team is passionate about creating positive experiences for your customers',
@@ -388,15 +390,15 @@ export const services = [
   },
   {
     slug: 'product-management-services',
-    name: 'Enterprise Resource Solutions (ERP)',
-    short: 'ERP Solutions',
+    name: 'Enterprise Systems & Automation',
+    short: 'Enterprise Systems',
     summary:
-      'Streamline operations, optimize workflows, and gain valuable insights to make informed decisions with robust ERP systems. We help you choose the best-fit ERP software solution for your specific needs and industry, seamlessly implement it, handle data migration, customize the system to fit your workflows, and train your team to leverage its full potential',
-    tags: ['Needs Assessment', 'Customization', 'Data Migration', 'Training', 'Go-Live Support'],
+      'ERP, business management systems and process automation that connect your operations. We assess your workflows, select or build the right system, migrate your data, integrate your tools and train your team, so work runs on one reliable foundation.',
+    tags: ['ERP', 'Business Systems', 'Process Automation', 'Data Migration', 'Integrations'],
     image: 'team-duo.png',
-    h1: 'Unify your business processes and unlock new levels of efficiency with our ERP solutions',
-    lead: 'Ditch the data silos and fragmented systems. We implement robust ERPs that empower smarter decision-making and growth.',
-    introTitle: 'We Help You Achieve Operational Excellence with ERP',
+    h1: 'Unify your operations with enterprise systems and automation.',
+    lead: 'Replace data silos and manual work with connected systems that support smarter decisions and growth.',
+    introTitle: 'We Help You Run Operations on One Reliable System',
     introBody:
       'In today’s data-driven world, a robust Enterprise Resource Planning (ERP) system is the backbone of any successful organization. Our team of ERP specialists will help you integrate your core business functions, streamline operations, and gain valuable insights to drive informed decision-making.',
     processTitle: 'Our proven ERP implementation process',
@@ -410,7 +412,7 @@ export const services = [
     ],
     quote: null,
     closing:
-      'We’ve partnered with businesses of all sizes across various industries to implement successful ERP solutions. From manufacturing and distribution to healthcare and retail, our experience allows us to deliver customized solutions that address your unique challenges and unlock new levels of efficiency.',
+      'We’ve helped businesses across manufacturing, distribution, healthcare and retail run on connected systems. We also build and operate Staffintra, our own workplace operations platform, so we understand day-to-day operations software from the inside.',
   },
 ];
 
@@ -418,7 +420,7 @@ export const industries = {
   title: 'Industries Served | Blueinc Technologies',
   h1: 'Industries Served',
   body:
-    'With a global presence spanning across Nigeria, France, Switzerland, Australia, USA, UK, Canada, Saudi Arabia, and many more countries, we are a renowned web solutions provider dedicated to delivering top-notch services to a diverse range of industries. Our expertise has benefited various sectors, including healthcare, consulting agencies, ecommerce, education, NGOs and religious organizations, construction and retail, providing innovative web solutions that cater to the unique needs of each industry.',
+    'We build technology for organizations in Nigeria, the USA, Canada, the UK, France, Switzerland, Australia, Saudi Arabia and many more countries. Our client work spans healthcare, consulting, ecommerce, education, NGOs and religious organizations, construction and retail, and our own products serve sectors including healthcare, workforce management and careers.',
   list: [
     { name: 'Health Care', slug: 'health-care' },
     { name: 'Consulting Agency', slug: 'consulting-agency' },
@@ -432,31 +434,41 @@ export const industries = {
 };
 
 export const portfolio = {
-  title: 'Our Portfolio | Blueinc Technologies',
-  h1: 'Our Portfolio',
+  title: 'Our Work & Products | Blueinc Technologies',
+  h1: 'Our Work & Products',
   body:
-    'We are a renowned web solutions provider offering a range of services to a global clientele, spanning across Nigeria, France, Switzerland, Australia, USA, UK, Canada, Saudi Arabia and many more countries.',
-  categories: ['Websites', 'Web Applications', 'Mobile Applications', 'Enterprise Softwares'],
+    'Software, applications and websites we’ve built for clients across Nigeria, the USA, Canada, the UK, France and beyond, alongside the digital products we develop, own and operate.',
+  categories: ['Websites', 'Web Applications', 'Mobile Applications', 'Our Products'],
   websites: [
     'scrubharvard.com', 'fillinstaffing.com', 'gebbrapharma.com', '365dayshampers.com',
     'rccgfranceprovince.org', 'goodwillstaffing.us', 'stephensbooks.net', 'constructioncrewpro.ca',
-    'travelnursehouses.ca', 'everlivelyhhc.ca', 'bridgeandvalue.com', 'goodwillstaffing.ca',
+    'everlivelyhhc.ca', 'bridgeandvalue.com', 'goodwillstaffing.ca',
     'tvinstallpro.ca', 'testpremier.com', 'lexpraxisng.com', 'abiodunodunuga.com',
     'equestglobal.com', 'kochezmedical.com', 'rhagfnig.org.ng', 'riteshoe.com',
     'spotlightnigeria-france.com',
   ],
-  webApps: ['Truck Service Web App', 'Taxi Booking Web App', 'Event Management Web App'],
+  // The former "Enterprise Softwares" items now sit with web applications; that tab shows Blueinc's own products.
+  webApps: ['Truck Service Web App', 'Taxi Booking Web App', 'Event Management Web App', 'e-Commerce Store', 'Ai Bot for Business', 'Ai', 'IT Services'],
   mobileApps: ['Fitness App', 'Food Delivery App'],
-  enterprise: ['e-Commerce Store', 'Ai', 'IT Services', 'Ai Bot for Business'],
 };
 
-// Featured on the home page as stacked cards — the projects with a client testimonial.
+// Digital products Blueinc develops, owns and operates. Descriptions are taken from each product's own
+// live site (checked 2026-10-21); no user numbers or ratings are claimed here.
+export const products = [
+  { site: 'staffintra.com', url: 'https://staffintra.com/', name: 'Staffintra', kind: 'Workforce platform',
+    desc: 'People, attendance, approvals, payroll-ready timesheets and everyday work in one workspace.' },
+  { site: 'travelnursehouses.ca', url: 'https://travelnursehouses.ca/', name: 'Travel Nurse Houses', kind: 'Housing marketplace',
+    desc: 'Furnished, move-in ready homes near Canadian hospitals for travel nurses and healthcare professionals.' },
+  { site: 'myjobtests.com', url: 'https://myjobtests.com/', name: 'MyJobTests', kind: 'Career test prep',
+    desc: 'Aptitude test practice, interview preparation and resume review for job seekers.' },
+  { site: 'teststreams.com', url: 'https://teststreams.com/', name: 'Teststreams', kind: 'Exam prep platform',
+    desc: 'Verified past questions and study packs for job aptitude tests, school exams and scholarships.' },
+];
+
+// Home page stacked cards: our own products first, then client work.
 export const featuredWork = [
-  { site: 'scrubharvard.com', client: 'Scrub Harvard' },
-  { site: 'bridgeandvalue.com', client: 'Bridge And Value' },
-  { site: 'lexpraxisng.com', client: 'Lexpraxis Solicitors' },
-  { site: 'fillinstaffing.com', client: 'Fill IN Staffing' },
-  { site: 'spotlightnigeria-france.com', client: 'Spotlight Nigeria' },
+  ...products.map((p) => ({ site: p.site, client: p.name, kind: p.kind, href: p.url, own: true })),
+  { site: 'scrubharvard.com', client: 'Scrub Harvard', kind: 'Client website' },
 ];
 
 export const testimonials = [
@@ -502,34 +514,34 @@ export const reviewsPage = {
   title: 'Success Stories | Blueinc Technologies',
   h1: 'What our happy clients are saying',
   body:
-    'With thousands of success stories and counting, we’re proud to have earned a reputation as a trusted partner to businesses who trust us to deliver exceptional results.',
+    'Businesses and organizations rely on Blueinc to design, build and support the technology they run on. Here’s what some of them say about working with us.',
 };
 
 export const pricing = {
   title: 'Pricing Plans | Blueinc Technologies',
   h1: 'Our Pricing',
-  lead: 'We tailor our pricing to suit your business needs.',
+  lead: 'We scope and price every engagement around your goals.',
   plans: [
-    { name: 'Web Design', items: ['Custom WordPress Websites', 'Custom Shopify Websites', 'WooCommerce Website', 'Template WordPress Websites', 'Custom Websites'], perk: '1 - month FREE Maintenance', type: 'Web Design' },
-    { name: 'Software/App Development', items: ['Custom Software Development', 'Mobile Application Development', 'Web Application Development', 'SaaS Development', 'API Integration and Development'], perk: null, type: 'Software / APP Development' },
+    { name: 'Websites', items: ['Custom WordPress Websites', 'Custom Shopify Websites', 'WooCommerce Website', 'Template WordPress Websites', 'Custom Websites'], perk: '1 - month FREE Maintenance', type: 'Website' },
+    { name: 'Software & App Development', items: ['Custom Software Development', 'Mobile Application Development', 'Web Application Development', 'SaaS Development', 'API Integration and Development'], perk: null, type: 'Custom Software / Web App' },
     { name: 'Digital Marketing', items: ['Marketing Strategy', 'Social Media Marketing', 'Search Engine Optimization', 'Pay-Per-Click Advertising', 'Email Marketing', 'Analytics'], perk: null, type: 'Digital Marketing' },
-    { name: 'UI/UX Design', items: ['Visual Design / Animation', 'Prototyping and Wireframing', 'Website UI/UX Design', 'Mobile App UI/UX Design', 'Usability Testing'], perk: '1-Month Free Design Revisions', type: 'UI/UX Design' },
+    { name: 'Product & UX Design', items: ['Visual Design / Animation', 'Prototyping and Wireframing', 'Website UI/UX Design', 'Mobile App UI/UX Design', 'Usability Testing'], perk: '1-Month Free Design Revisions', type: 'UI/UX & Product Design' },
   ],
 };
 
 export const contactPage = {
   title: 'Contact Us | Blueinc Technologies',
-  h1: 'We’re here to help 24/7',
-  lead: 'Need help with any thing digital? Our award winning support team is happy to work with you.',
+  h1: 'Let’s talk about what you’re building',
+  lead: 'Planning a new product, modernizing a system or need support with existing software? Tell us about it and our team will get back to you.',
 };
 
 export const cta = {
   eyebrow: 'Have an idea?',
-  title: 'Let’s turn that spark into reality!',
-  sub: 'Schedule a call with us.',
+  title: 'Let’s build what’s next, together.',
+  sub: 'Tell us about your project or idea.',
 };
 
-export const projectTypes = ['Web Design', 'Software / APP Development', 'Digital Marketing', 'UI/UX Design'];
+export const projectTypes = ['Custom Software / Web App', 'Mobile App', 'Enterprise Systems & Automation', 'Website', 'UI/UX & Product Design', 'Digital Marketing', 'Technology Consulting'];
 
 export const clientLogos = [
   'L13', 'L7', 'L11', 'FILLIN-STAFF', 'FON', 'IMO', 'KEBBI', 'KOCHEZ', 'LEXAP', 'STEPHEN', 'Testp',

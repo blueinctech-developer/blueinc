@@ -5,6 +5,7 @@ import {
 import { esc, pad, icon, btn, quoteBtn, roll, eyebrow, crumbs, shot, projectForm, devices } from './components.mjs';
 import { servicesPanel, quotesGrid, counters, aboutSplit } from './home.mjs';
 import { hasShot, isLive, hasLong, longName } from './util.mjs';
+import { products } from '../data/site.mjs';
 
 /* ---------- Shared page hero ---------- */
 function pageHero({ trail, eyebrowText, title, lead, actions = '', wide = false, aside = '' }) {
@@ -42,8 +43,8 @@ function siteCard(domain, { badge = '' } = {}) {
 export function aboutPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title: about.h1, lead: about.lead, wide: true,
-  actions: `${btn({ label: 'See our solutions', href: '/our-services/' })}${quoteBtn('Get a Free Consultation', 'light')}` })}
-<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="Blueinc technologies - Your digital growth partner. Meet our team: skilled professionals specializing in digital marketing and web development" width="837" height="683" data-media-img></div>
+  actions: `${btn({ label: 'Explore Our Solutions', href: '/our-services/' })}${quoteBtn('Get a Free Consultation', 'light')}` })}
+<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="The Blueinc Technologies team: engineers, designers and product people" width="837" height="683" data-media-img></div>
 
 <section class="section container" aria-label="What we do">
   ${eyebrow('What we do')}
@@ -53,7 +54,7 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title
 <section class="section container" aria-labelledby="values-title" style="padding-top:0">
   <div class="section-head section-head--left">
     ${eyebrow('Our Values')}
-    <h2 class="h2" id="values-title" data-reveal="lines">The principles behind every project</h2>
+    <h2 class="h2" id="values-title" data-reveal="lines">The principles behind everything we build</h2>
   </div>
   <div class="cards-4" data-stagger>${values.map((v, i) => `
     <article class="card"><h3 class="h5">${esc(v.title)}</h3><p>${esc(v.body)}</p></article>`).join('')}</div>
@@ -90,7 +91,7 @@ ${aboutSplit()}
       ${eyebrow('Team')}
       <h2 class="h2" id="team-title" style="margin-top:1.25rem" data-reveal="lines">${esc(about.team.title)}</h2>
       <p class="body-l" style="margin-top:1.5rem" data-reveal="fade">${esc(about.team.body)}</p>
-      <div class="btn-row" style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Start a Project', href: '/contact/' })}</div>
+      <div class="btn-row" style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Work With Us', href: '/contact/' })}</div>
     </div>
     <div class="media-card" style="margin:0;aspect-ratio:4/3" data-reveal-media><img src="/assets/img/people.jpg" alt="Blueinc Technologies team members collaborating on a project" width="1868" height="1232" loading="lazy" data-media-img></div>
   </div>
@@ -110,8 +111,8 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Free Audit' }], tit
     <div><h3>Talk to a Digital Partner</h3><ul>${site.phones.map((p) => `<li><a href="${p.href}">${p.display}</a></li>`).join('')}<li><a href="mailto:${site.email}">${site.email}</a></li></ul></div>
   </div>
   <div class="form-card">
-    <h2 class="h4" style="margin-bottom:2rem">Request your free audit</h2>
-    ${projectForm({ id: 'audit', submit: 'Get Your Free Audit' })}
+    <h2 class="h4" style="margin-bottom:2rem">Request your free consultation</h2>
+    ${projectForm({ id: 'audit', submit: 'Book My Consultation' })}
   </div>
 </section>
 <div class="section--sm"></div>`;
@@ -215,11 +216,11 @@ export function portfolioPage() {
     `<div class="sites" data-stagger>${portfolio.websites.map((d) => siteCard(d)).join('')}</div>`,
     textTiles(portfolio.webApps),
     textTiles(portfolio.mobileApps),
-    textTiles(portfolio.enterprise),
+    `<div class="sites" data-stagger>${products.map((p) => siteCard(p.site, { badge: 'Our product' })).join('')}</div>`,
   ];
-  const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length, portfolio.enterprise.length];
+  const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length, products.length];
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Work' }], title: portfolio.h1, lead: portfolio.body,
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Work & Products' }], title: portfolio.h1, lead: portfolio.body,
   actions: `${quoteBtn('Start a Project')}${btn({ label: 'Read reviews', href: '/success-stories/', variant: 'light' })}` })}
 <section class="section--sm container" aria-label="Projects" style="padding-top:1rem">
   <div class="tabs" role="tablist" aria-label="Project categories" data-tabs>

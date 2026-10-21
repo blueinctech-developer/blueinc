@@ -18,5 +18,7 @@ export const LIVE_SITES = new Set([
   'scrubharvard.com', 'gebbrapharma.com', '365dayshampers.com', 'travelnursehouses.ca',
   'bridgeandvalue.com', 'goodwillstaffing.ca', 'lexpraxisng.com', 'abiodunodunuga.com',
   'spotlightnigeria-france.com',
+  // Blueinc's own products
+  'staffintra.com', 'myjobtests.com', 'teststreams.com',
 ]);
 export const isLive = (site) => LIVE_SITES.has(site);

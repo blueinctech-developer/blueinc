@@ -159,7 +159,7 @@ export function ctaPanel() {
     <h2 class="h1 cta__title" id="cta-title" data-reveal="lines">${esc(cta.title)}</h2>
     <p class="lead" style="color:var(--grey-200)" data-reveal="fade">${esc(cta.sub)}</p>
     <div class="btn-row btn-row--center" data-reveal="fade">
-      ${btn({ label: 'Request Meeting', href: site.calendly, size: 'lg' })}
+      ${btn({ label: 'Discuss Your Project', href: site.calendly, size: 'lg' })}
       ${quoteBtn('Get a Free Quote', 'light', 'lg')}
     </div>
   </div>
