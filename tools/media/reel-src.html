@@ -1,0 +1,129 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap">
+<style>
+  :root { --cyan:#12a3c8; --pink:#e6197e; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 732px; overflow: hidden; background: #000; }
+  body { font-family: 'Switzer', sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+  .stage { position: absolute; inset: 0; overflow: hidden; background: #050607; }
+  .scene { position: absolute; inset: 0; }
+  .grad { background: linear-gradient(90deg, var(--cyan), var(--pink)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* scene 1 — kinetic type */
+  .s1 { display: grid; place-items: center; text-align: center; }
+  .s1 .lines { font-size: 128px; font-weight: 500; letter-spacing: -.035em; line-height: .98; }
+  .line { overflow: hidden; padding-bottom: .06em; }
+  .line > span { display: inline-block; }
+  .s1 .mark { position: absolute; left: 50%; top: 64px; width: 44px; translate: -50% 0; }
+  /* scene 2 — perspective wall */
+  .s2 { perspective: 1600px; }
+  .wall { position: absolute; left: 50%; top: 50%; width: 2600px; translate: -50% -50%; transform: rotateX(24deg) rotateZ(-10deg); transform-style: preserve-3d; display: grid; gap: 28px; }
+  .row { display: flex; gap: 28px; }
+  .card { flex: none; width: 400px; height: 270px; border-radius: 14px; overflow: hidden; background: #111; box-shadow: 0 40px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.08); }
+  .card i { display: flex; gap: 6px; height: 22px; align-items: center; padding-left: 10px; background: #1c1d1f; }
+  .card i b { width: 7px; height: 7px; border-radius: 50%; background: #3a3b3d; }
+  .card img { width: 100%; display: block; }
+  .s2 .veil { position: absolute; inset: 0; background: radial-gradient(60% 70% at 50% 50%, rgba(5,6,7,.15), rgba(5,6,7,.85)); }
+  .badge { position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: flex; align-items: center; gap: 22px; padding: 22px 34px 22px 22px; border-radius: 20px; background: rgba(30,30,32,.55); backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.12); }
+  .badge img { width: 64px; }
+  .badge b { display: block; font-size: 64px; font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+  .badge span { font-family: Inter; font-size: 20px; color: #cfcfcf; }
+  /* scene 3 — devices */
+  .s3 { background: radial-gradient(80% 90% at 70% 60%, #0f2a33, #050607 60%); }
+  .s3 .copy { position: absolute; left: 110px; top: 50%; translate: 0 -50%; font-size: 92px; font-weight: 500; letter-spacing: -.035em; line-height: 1.02; }
+  .rot { display: grid; overflow: hidden; height: 1.08em; }
+  .rot span { grid-area: 1/1; }
+  .laptop { position: absolute; right: 150px; top: 120px; width: 760px; }
+  .laptop .scr { width: 760px; height: 476px; border-radius: 16px 16px 0 0; border: 12px solid #1b1c1e; border-bottom: 0; overflow: hidden; background: #fff; }
+  .laptop .base { width: 880px; height: 22px; margin-left: -60px; border-radius: 0 0 22px 22px; background: linear-gradient(#c9cbcf, #8d9095); }
+  .scr img { width: 100%; display: block; }
+  .phone { position: absolute; right: 90px; top: 250px; width: 220px; height: 450px; border-radius: 36px; border: 9px solid #111; background: #fff; overflow: hidden; box-shadow: 0 50px 90px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.12); }
+  .phone::before { content:''; position: absolute; left: 50%; top: 8px; width: 70px; height: 20px; translate: -50% 0; border-radius: 20px; background: #000; z-index: 2; }
+  /* scene 4 — team + wordmark */
+  .s4 img.ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+  .s4 .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.8)); }
+  .s4 .wm { position: absolute; left: 80px; right: 80px; top: 50%; translate: 0 -50%; color: #fff; }
+  .s4 .wm svg { width: 100%; height: auto; overflow: visible; }
+  .s4 .wm rect { fill: currentColor; }
+  .s4 .tag { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font-family: Inter; font-size: 22px; letter-spacing: .02em; text-transform: uppercase; color: #e8e8e8; }
+  .fade { position: absolute; inset: 0; background: #050607; opacity: 0; pointer-events: none; }
+</style></head>
+<body>
+<div class="stage">
+  <section class="scene s1">
+    <img class="mark" src="a/mark.png" alt="">
+    <div class="lines">
+      <div class="line"><span>Websites</span></div>
+      <div class="line"><span>and <span class="grad">Marketing</span></span></div>
+    </div>
+  </section>
+  <section class="scene s2"><div class="wall" id="wall"></div><div class="veil"></div>
+    <div class="badge"><img src="a/mark.png" alt=""><div><b>100+</b><span>Websites &amp; Apps Built</span></div></div>
+  </section>
+  <section class="scene s3">
+    <div class="copy">That Turn<br>Visitors Into<div class="rot"><span class="grad">Leads</span><span class="grad">Sales</span><span class="grad">Clients</span></div></div>
+    <div class="laptop"><div class="scr"><img id="lapimg" src="a/scrubharvard-d.jpg" alt=""></div><div class="base"></div></div>
+    <div class="phone"><img id="phimg" src="a/lexpraxisng-m.jpg" style="width:100%;display:block" alt=""></div>
+  </section>
+  <section class="scene s4">
+    <img class="ph" src="a/people.jpg" alt="">
+    <div class="shade"></div>
+    <div class="wm">%%WORDMARK%%</div>
+    <div class="tag">Digital solutions for startups and SMEs globally</div>
+  </section>
+  <div class="fade" id="fade"></div>
+</div>
+<script src="a/gsap.min.js"></script>
+<script>
+  const shots = ['scrubharvard.com','bridgeandvalue.com','lexpraxisng.com','gebbrapharma.com','spotlightnigeria-france.com','travelnursehouses.ca','fillinstaffing.com','testpremier.com','constructioncrewpro.ca','everlivelyhhc.ca','equestglobal.com','kochezmedical.com','goodwillstaffing.ca','abiodunodunuga.com','tvinstallpro.ca'];
+  const wall = document.getElementById('wall');
+  for (let r = 0; r < 3; r++) {
+    const row = document.createElement('div'); row.className = 'row';
+    for (let k = 0; k < 7; k++) { const s = shots[(r * 5 + k) % shots.length];
+      row.insertAdjacentHTML('beforeend', `<div class="card"><i><b></b><b></b><b></b></i><img src="a/c/${s}.jpg" alt=""></div>`); }
+    wall.appendChild(row);
+  }
+  const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+  const E = 'expo.out', D = 12;
+  const tl = gsap.timeline({ paused: true });
+  gsap.set(['.s2', '.s3', '.s4'], { autoAlpha: 0 });
+  // Scene 1 — kinetic type (0 → 2.6)
+  tl.from('.s1 .mark', { y: 30, autoAlpha: 0, duration: .8, ease: E }, .1)
+    .from('.s1 .line > span', { yPercent: 110, duration: 1.1, stagger: .12, ease: E }, .15)
+    .to('.s1 .lines', { scale: .92, duration: 2.4, ease: 'none' }, .2)
+    .to('.s1 .line > span', { yPercent: -110, duration: .55, stagger: .06, ease: 'power3.in' }, 2.15)
+    .to('.s1 .mark', { autoAlpha: 0, duration: .4 }, 2.3)
+  // Scene 2 — perspective wall of real client sites (2.55 → 7.3)
+    .set('.s2', { autoAlpha: 1 }, 2.55)
+    .fromTo('#wall', { scale: 1.35, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 1.3, ease: E }, 2.55)
+    .fromTo('.row:nth-child(1)', { x: 0 }, { x: -380, duration: 4.8, ease: 'none' }, 2.55)
+    .fromTo('.row:nth-child(2)', { x: -380 }, { x: 0, duration: 4.8, ease: 'none' }, 2.55)
+    .fromTo('.row:nth-child(3)', { x: 0 }, { x: -380, duration: 4.8, ease: 'none' }, 2.55)
+    .from('.badge', { y: 40, scale: .9, autoAlpha: 0, duration: 1, ease: E }, 3.4)
+    .to(['.s2'], { autoAlpha: 0, duration: .45, ease: 'power2.in' }, 7.0)
+  // Scene 3 — devices with live-scrolling client sites (7.2 → 9.9)
+    .fromTo('.s3', { autoAlpha: 0 }, { autoAlpha: 1, duration: .4, immediateRender: false }, 7.2)
+    .from('.s3 .copy', { x: -60, autoAlpha: 0, duration: 1, ease: E }, 7.25)
+    .from('.laptop', { y: 120, rotateX: 18, autoAlpha: 0, duration: 1.2, ease: E }, 7.3)
+    .from('.phone', { y: 200, autoAlpha: 0, duration: 1.2, ease: E }, 7.5)
+    .fromTo('#lapimg', { y: 0 }, { y: -900, duration: 2.6, ease: 'power1.inOut' }, 7.5)
+    .fromTo('#phimg', { y: 0 }, { y: -700, duration: 2.4, ease: 'power1.inOut' }, 7.6);
+  const words = $$('.rot span'); gsap.set(words, { yPercent: 110 });
+  tl.to(words[0], { yPercent: 0, duration: .55, ease: E }, 7.45)
+    .to(words[0], { yPercent: -110, duration: .4, ease: 'power3.in' }, 8.25)
+    .to(words[1], { yPercent: 0, duration: .55, ease: E }, 8.65)
+    .to(words[1], { yPercent: -110, duration: .4, ease: 'power3.in' }, 9.15)
+    .to(words[2], { yPercent: 0, duration: .55, ease: E }, 9.55)
+    .to('.s3', { autoAlpha: 0, duration: .4 }, 9.95)
+  // Scene 4 — team photo → wordmark (10.0 → 12), fades to the black that scene 1 starts on
+    .fromTo('.s4', { autoAlpha: 0 }, { autoAlpha: 1, duration: .35, immediateRender: false }, 10.0)
+    .fromTo('.s4 img.ph', { scale: 1.15 }, { scale: 1.02, duration: 2, ease: 'none' }, 10.0)
+    .from('.s4 .wm .wm-letter', { scaleY: 0, transformOrigin: (i) => (i % 2 ? '50% 0%' : '50% 100%'), duration: .9, stagger: { each: .04, from: 'random' }, ease: 'expo.inOut' }, 10.15)
+    .from('.s4 .tag', { y: 20, autoAlpha: 0, duration: .8, ease: E }, 10.7)
+    .to('#fade', { opacity: 1, duration: .45, ease: 'power2.in' }, D - .45);
+  tl.set({}, {}, D);
+  window.seek = (t) => { tl.seek(t, false); return true; };
+  window.ready = Promise.all([document.fonts.ready, ...[...document.images].map((i) => i.decode().catch(() => {}))]);
+</script>
+</body></html>

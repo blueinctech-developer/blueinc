@@ -1,0 +1,316 @@
+import {
+  site, home, about, audit, values, servicesPage, services, industries, portfolio,
+  testimonials, reviewsPage, pricing, contactPage,
+} from '../data/site.mjs';
+import { esc, pad, icon, btn, quoteBtn, roll, eyebrow, crumbs, shot, projectForm, devices } from './components.mjs';
+import { servicesPanel, quotesGrid, counters, aboutSplit } from './home.mjs';
+import { hasShot, isLive, hasLong, longName } from './util.mjs';
+
+/* ---------- Shared page hero ---------- */
+function pageHero({ trail, eyebrowText, title, lead, actions = '', wide = false, aside = '' }) {
+  return `
+<section class="page-hero container">
+  ${crumbs(trail)}
+  <div class="page-hero__grid">
+    <div>
+      <h1 class="h1${wide ? ' wide' : ''}" data-intro-lines>${esc(title)}</h1>
+      ${lead ? `<p class="lead" data-intro>${esc(lead)}</p>` : ''}
+      ${actions ? `<div class="btn-row" data-intro>${actions}</div>` : ''}
+    </div>
+    ${aside}
+  </div>
+</section>`;
+}
+
+const mediaCard = (src, alt, extra = '', w = 1868, h = 1232) => `
+<div class="media-card media-card--wide ${extra}" data-reveal-media>
+  <img src="${src}" alt="${esc(alt)}" width="${w}" height="${h}" data-media-img>
+</div>`;
+
+function siteCard(domain, { badge = '' } = {}) {
+  const img = hasShot(domain);
+  const live = isLive(domain);
+  const inner = `
+    <div class="site-card__img${hasLong(domain) ? ' site-card__img--scroll' : ''}">${img ? `<img src="${hasLong(domain) ? `/assets/media/sites/${longName(domain)}-d.jpg` : shot(domain)}" alt="${esc(domain)} website by Blueinc Technologies" loading="lazy" width="1440" height="900">` : `<span>${esc(domain)}</span>`}${badge ? `<span class="badge">${esc(badge)}</span>` : ''}</div>
+    <div class="site-card__meta"><span>www.${esc(domain)}</span>${live ? icon.arrowUpRight : ''}</div>`;
+  return live
+    ? `<a class="site-card${img ? '' : ' site-card--text'}" href="https://${domain}/" target="_blank" rel="noopener">${inner}</a>`
+    : `<div class="site-card${img ? '' : ' site-card--text'}">${inner}</div>`;
+}
+
+/* ---------- About ---------- */
+export function aboutPage() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title: about.h1, lead: about.lead, wide: true,
+  actions: `${btn({ label: 'See our solutions', href: '/our-services/' })}${quoteBtn('Get a Free Consultation', 'light')}` })}
+<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="Blueinc technologies - Your digital growth partner. Meet our team: skilled professionals specializing in digital marketing and web development" width="837" height="683" data-media-img></div>
+
+<section class="section container" aria-label="What we do">
+  ${eyebrow('What we do')}
+  <p class="statement" style="margin-top:1.5rem" data-reveal="words">${esc(about.body)}</p>
+</section>
+
+<section class="section container" aria-labelledby="values-title" style="padding-top:0">
+  <div class="section-head section-head--left">
+    ${eyebrow('Our Values')}
+    <h2 class="h2" id="values-title" data-reveal="lines">The principles behind every project</h2>
+  </div>
+  <div class="cards-4" data-stagger>${values.map((v, i) => `
+    <article class="card"><h3 class="h5">${esc(v.title)}</h3><p>${esc(v.body)}</p></article>`).join('')}</div>
+</section>
+
+${aboutSplit()}
+
+<section class="section container" aria-labelledby="serve-title">
+  <div class="split">
+    <div class="split__sticky">
+      ${eyebrow('Digital solutions provider')}
+      <h2 class="h2" id="serve-title" style="margin-top:1.25rem" data-reveal="lines">${esc(about.serve.title)}</h2>
+    </div>
+    <div>
+      <p class="body-l" data-reveal="fade">${esc(about.serve.body)}</p>
+      <div style="margin-top:2rem" data-reveal="fade">${quoteBtn('Get a Free Consultation')}</div>
+      <ul class="check-list" style="margin-top:3.5rem" data-stagger>${home.history.points.map((p) => `<li>${icon.check}<span>${esc(p)}</span></li>`).join('')}</ul>
+    </div>
+  </div>
+</section>
+
+<section class="panel panel--dark on-dark section--lg" aria-labelledby="believe-title">
+  <div class="container center">
+    ${eyebrow(about.believe.eyebrow)}
+    <h2 class="h2" id="believe-title" style="margin:1.25rem auto 0;max-width:18ch" data-reveal="lines">${esc(about.believe.title)}</h2>
+    <p class="lead" style="margin:2rem auto 0;max-width:40rem" data-reveal="fade">${esc(about.believe.body)}</p>
+    <div class="principles" data-stagger>${about.believe.principles.map((p) => `<span>${esc(p)}</span>`).join('')}</div>
+  </div>
+</section>
+
+<section class="section container" aria-labelledby="team-title">
+  <div class="split split--even" style="align-items:center">
+    <div>
+      ${eyebrow('Team')}
+      <h2 class="h2" id="team-title" style="margin-top:1.25rem" data-reveal="lines">${esc(about.team.title)}</h2>
+      <p class="body-l" style="margin-top:1.5rem" data-reveal="fade">${esc(about.team.body)}</p>
+      <div class="btn-row" style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Start a Project', href: '/contact/' })}</div>
+    </div>
+    <div class="media-card" style="margin:0;aspect-ratio:4/3" data-reveal-media><img src="/assets/img/people.jpg" alt="Blueinc Technologies team members collaborating on a project" width="1868" height="1232" loading="lazy" data-media-img></div>
+  </div>
+</section>
+`;
+}
+
+/* ---------- Free audit ---------- */
+export function auditPage() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Free Audit' }], title: audit.title, lead: audit.lead })}
+<section class="contact-grid" aria-label="Free audit request">
+  <div class="contact-info">
+    <div><h3>What you’ll get</h3>
+      <ul class="check-list" data-stagger>${audit.points.map((p) => `<li>${icon.check}<span style="font-size:1.0625rem;letter-spacing:0">${esc(p)}</span></li>`).join('')}</ul>
+    </div>
+    <div><h3>Talk to a Digital Partner</h3><ul>${site.phones.map((p) => `<li><a href="${p.href}">${p.display}</a></li>`).join('')}<li><a href="mailto:${site.email}">${site.email}</a></li></ul></div>
+  </div>
+  <div class="form-card">
+    <h2 class="h4" style="margin-bottom:2rem">Request your free audit</h2>
+    ${projectForm({ id: 'audit', submit: 'Get Your Free Audit' })}
+  </div>
+</section>
+<div class="section--sm"></div>`;
+}
+
+/* ---------- Services index ---------- */
+export function servicesIndexPage() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services' }], title: servicesPage.h1, lead: servicesPage.lead, wide: true,
+  actions: `${btn({ label: 'Start a Project', href: '/pricing-plans/' })}${quoteBtn('Get a Free Quote', 'light')}` })}
+${mediaCard('/assets/img/people.jpg', 'Blueinc Technologies team at work')}
+<section class="section container" aria-labelledby="belief-title">
+  <div class="split">
+    <div>${eyebrow('Our Solutions')}</div>
+    <div>
+      <h2 class="h3" id="belief-title" data-reveal="lines">${esc(servicesPage.beliefTitle)}</h2>
+      <p class="body-l" style="margin-top:1.75rem" data-reveal="fade">${esc(servicesPage.beliefBody)}</p>
+    </div>
+  </div>
+</section>
+<div class="section--sm" style="padding-top:0">
+  <div class="container"><h2 class="h2" style="margin-bottom:3rem" data-reveal="lines">${esc(servicesPage.listTitle)}</h2></div>
+  ${servicesPanel({ id: 'svcpage' })}
+</div>
+<section class="section container" aria-label="Our approach">
+  <p class="statement" data-reveal="words">${esc(servicesPage.closing)}</p>
+</section>
+<section class="section container" aria-labelledby="svc-reviews" style="padding-top:0">
+  <div class="section-head section-head--left"><h2 class="h3" id="svc-reviews" data-reveal="lines">What People Say About Us</h2></div>
+  ${quotesGrid(testimonials.slice(6, 9))}
+</section>`;
+}
+
+/* ---------- Service detail ---------- */
+export function serviceDetailPage(s) {
+  const others = services.filter((o) => o.slug !== s.slug);
+  const heroImg = s.image.startsWith('clients/') && hasShot(s.image.slice(8, -4)) ? `/assets/img/${s.image}` : null;
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services', href: '/our-services/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
+  actions: `${quoteBtn('Start a Project', '', '', '')}${btn({ label: 'View pricing', href: '/pricing-plans/', variant: 'light' })}` })}
+${s.mockup ? `<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ ...s.mockup, label: `${s.name} work by Blueinc Technologies shown on laptop and phone` })}</div>`
+    : heroImg ? mediaCard(heroImg, `${s.name} project by Blueinc Technologies`, '', 1440, 900)
+    : s.image === 'team-duo.png' ? `<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="Blueinc Technologies team" width="837" height="683" data-media-img></div>`
+    : mediaCard('/assets/img/people.jpg', 'Blueinc Technologies team at work')}
+
+<section class="section container" aria-labelledby="intro-title">
+  <div class="split">
+    <div>${eyebrow(s.name)}</div>
+    <div>
+      <h2 class="h3" id="intro-title" data-reveal="lines">${esc(s.introTitle)}</h2>
+      <p class="body-l" style="margin-top:1.75rem" data-reveal="fade">${esc(s.introBody)}</p>
+      <ul class="tags" style="margin-top:2rem" data-stagger>${s.tags.map((t) => `<li class="tag">${esc(t)}</li>`).join('')}</ul>
+    </div>
+  </div>
+</section>
+
+${s.showcase ? `
+<section class="section--sm container" aria-label="Recent websites">
+  <div class="sites" data-stagger>${s.showcase.map((d) => siteCard(d)).join('')}</div>
+</section>` : ''}
+
+<section class="section container" aria-labelledby="process-title">
+  <div class="split">
+    <div class="split__sticky">
+      ${eyebrow('Process')}
+      <h2 class="h2" id="process-title" style="margin-top:1.25rem" data-reveal="lines">${esc(s.processTitle)}</h2>
+      <div style="margin-top:2.5rem" data-reveal="fade">${quoteBtn('Get a Free Quote')}</div>
+    </div>
+    <ol class="steps" data-steps>${s.steps.map(([t, d], i) => `
+      <li class="step"><div><h3 class="h5">${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join('')}
+    </ol>
+  </div>
+</section>
+
+${s.quote ? `
+<section class="panel panel--dark on-dark section--lg" aria-label="Client testimonial">
+  <figure class="bigquote container">
+    <span style="display:inline-block;width:2.5rem;color:var(--pink);margin-bottom:2rem" data-reveal="fade">${icon.quote}</span>
+    <blockquote data-reveal="words">${esc(s.quote.text)}</blockquote>
+    <figcaption data-reveal="fade"><b>${esc(s.quote.name)}</b><span>${esc(s.quote.org)}</span></figcaption>
+  </figure>
+</section>` : ''}
+
+<section class="section container" aria-label="Experience">
+  <p class="statement" data-reveal="words">${esc(s.closing)}</p>
+</section>
+
+<section class="section--sm container" aria-labelledby="more-title" style="padding-top:0">
+  <div class="section-head section-head--left"><h2 class="h4" id="more-title">More services</h2></div>
+  <div class="rows">${others.map((o, i) => `
+    <a class="row-link" href="/our-services/${o.slug}/"><span class="h3">${esc(o.name)}</span>${icon.arrow}</a>`).join('')}
+  </div>
+</section>`;
+}
+
+/* ---------- Portfolio ---------- */
+export function portfolioPage() {
+  const textTiles = (list) => `<div class="sites" data-stagger>${list.map((t) => `
+    <div class="site-card site-card--text"><div class="site-card__img"><span>${esc(t)}</span></div><div class="site-card__meta"><span>${esc(t)}</span></div></div>`).join('')}</div>`;
+  const panels = [
+    `<div class="sites" data-stagger>${portfolio.websites.map((d) => siteCard(d)).join('')}</div>`,
+    textTiles(portfolio.webApps),
+    textTiles(portfolio.mobileApps),
+    textTiles(portfolio.enterprise),
+  ];
+  const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length, portfolio.enterprise.length];
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Work' }], title: portfolio.h1, lead: portfolio.body,
+  actions: `${quoteBtn('Start a Project')}${btn({ label: 'Read reviews', href: '/success-stories/', variant: 'light' })}` })}
+<section class="section--sm container" aria-label="Projects" style="padding-top:1rem">
+  <div class="tabs" role="tablist" aria-label="Project categories" data-tabs>
+    ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
+  </div>
+  ${panels.map((p, i) => `<div class="tab-panel" role="tabpanel" id="pp-${i}" aria-labelledby="pt-${i}"${i ? ' hidden' : ''}>${p}</div>`).join('')}
+</section>
+<section class="section container" aria-labelledby="pf-reviews">
+  <div class="section-head section-head--left"><h2 class="h3" id="pf-reviews" data-reveal="lines">What our clients say</h2></div>
+  ${quotesGrid(testimonials.slice(0, 3))}
+</section>`;
+}
+
+/* ---------- Industries ---------- */
+export function industriesPage() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Industries Served' }], title: industries.h1,
+  actions: `${btn({ label: 'Start a project', href: '/pricing-plans/' })}` })}
+<section class="section--sm container" aria-label="Global presence" style="padding-top:0">
+  <p class="statement" data-reveal="words">${esc(industries.body)}</p>
+</section>
+<section class="section container" aria-labelledby="ind-list">
+  <h2 class="sr-only" id="ind-list">Industries</h2>
+  <div class="rows">${industries.list.map((d, i) => `
+    <a class="row-link" id="${d.slug}" href="/contact/"><span class="h3">${esc(d.name)}</span>${icon.arrow}</a>`).join('')}
+  </div>
+</section>
+${counters()}`;
+}
+
+/* ---------- Reviews ---------- */
+export function reviewsPageTpl() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Reviews' }], title: reviewsPage.h1, lead: reviewsPage.body,
+  actions: `${btn({ label: 'Start a Project', href: '/pricing-plans/' })}` })}
+<section class="section--sm container" aria-label="Testimonials" style="padding-top:1rem">
+  <div class="reviews__widget" style="max-width:none">
+    <div class="reviews__top"><b>${home.reviewsCount} Client reviews</b><span class="stars-row" aria-hidden="true">${icon.star.repeat(5)}</span></div>
+    ${quotesGrid(testimonials)}
+  </div>
+</section>
+${counters()}`;
+}
+
+/* ---------- Pricing ---------- */
+export function pricingPage() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Pricing' }], title: pricing.h1, lead: pricing.lead })}
+<section class="section--sm container" aria-label="Plans" style="padding-top:1rem">
+  <div class="plans" data-stagger>${pricing.plans.map((p, i) => `
+    <article class="plan${i === 1 ? ' plan--dark on-dark' : ''}">
+      
+      <h2 class="h5">${esc(p.name)}</h2>
+      <ul>${p.items.map((it) => `<li>${esc(it)}</li>`).join('')}</ul>
+      ${p.perk ? `<span class="plan__perk">${icon.spark.replace('<svg', '<svg style="width:.875rem"')}${esc(p.perk)}</span>` : ''}
+      <div class="btn-wrap">${quoteBtn('Get quote', i === 1 ? '' : 'plain', 'lg', p.type)}</div>
+    </article>`).join('')}
+  </div>
+</section>
+<section class="section container" aria-label="Custom pricing">
+  <p class="statement" data-reveal="words">${esc(pricing.lead)} <span class="dim">${esc(servicesPage.closing)}</span></p>
+</section>`;
+}
+
+/* ---------- Contact ---------- */
+export function contactPageTpl() {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Contact Us' }], title: contactPage.h1, lead: contactPage.lead })}
+<section class="contact-grid" aria-label="Contact details and form">
+  <div class="contact-info" data-stagger>
+    <div><h3>Phone number</h3><ul>${site.phones.map((p) => `<li><a class="u-link" href="${p.href}">${p.label}: ${p.display}</a></li>`).join('')}</ul></div>
+    <div><h3>Email address</h3><a class="u-link" href="mailto:${site.email}">${site.email}</a></div>
+    ${site.offices.map((o) => `<div><h3>${esc(o.label)}${o.main ? ' — Head office' : ''}</h3>${o.address ? `<p>${esc(o.address)}</p>` : ''}<p><a class="u-link" href="${o.phone.href}">${o.phone.display}</a></p>${o.map ? `<a class="map-link" href="${o.map}" target="_blank" rel="noopener">${roll('View on map')}</a>` : ''}</div>`).join('')}
+    <div><h3>Schedule a call</h3>${btn({ label: 'Request Meeting', href: site.calendly })}</div>
+  </div>
+  <div class="form-card">
+    <h2 class="h4" style="margin-bottom:2rem">Get in touch</h2>
+    ${projectForm({ id: 'contact', submit: 'Get in touch', variant: 'contact' })}
+  </div>
+</section>
+<div class="section--sm"></div>`;
+}
+
+/* ---------- 404 ---------- */
+export function notFoundPage() {
+  return `
+<section class="notfound container">
+  <div class="stack" style="--stack:1.5rem">
+    <h1 class="h1">Page not found</h1>
+    <p class="lead" style="margin-inline:auto">The page you’re looking for may have moved. Try one of these instead.</p>
+    <div class="btn-row btn-row--center">${btn({ label: 'Back to home', href: '/' })}${btn({ label: 'Contact us', href: '/contact/', variant: 'light' })}</div>
+  </div>
+</section>`;
+}

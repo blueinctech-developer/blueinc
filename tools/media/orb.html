@@ -1,0 +1,96 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;overflow:hidden;background:var(--bg,#050607)}canvas{display:block}</style>
+<script type="importmap">{ "imports": { "three": "./three/three.module.js" } }</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from './three/RoomEnvironment.js';
+
+const q = new URLSearchParams(location.search);
+const W = +q.get('w') || 900, H = +q.get('h') || 900;
+const BG = q.get('bg') || '#050607';
+const LOOP = +q.get('loop') || 8;
+const zoom = +q.get('zoom') || 1;
+const yOff = +q.get('y') || 0;
+document.documentElement.style.setProperty('--bg', BG);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(BG);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.55;
+
+const camera = new THREE.PerspectiveCamera(32, W / H, 0.1, 100);
+camera.position.set(0, 0, 9 / zoom);
+
+// ---- Ribbon knot: a flat, twisting band swept along a (2,3) torus-knot path ----
+const curve = new (class extends THREE.Curve {
+  getPoint(t, target = new THREE.Vector3()) {
+    const u = t * Math.PI * 2, p = 2, qq = 3, R = 1.55, r = 0.62;
+    const cu = Math.cos(qq * u / p * p / 2), k = R + r * Math.cos(qq * u);
+    return target.set(k * Math.cos(p * u), k * Math.sin(p * u), r * Math.sin(qq * u) * 1.4);
+  }
+})();
+const SEG = 900, WID = 0.42;
+const frames = curve.computeFrenetFrames(SEG, true);
+const pos = [], col = [], idx = [];
+const cA = new THREE.Color('#12a3c8'), cB = new THREE.Color('#6b7bff'), cC = new THREE.Color('#e6197e');
+for (let i = 0; i <= SEG; i++) {
+  const t = i / SEG, P = curve.getPoint(t);
+  const tw = t * Math.PI * 4;                       // 2 full twists → reads as a ribbon
+  const N = frames.normals[i % SEG], B = frames.binormals[i % SEG];
+  const dir = N.clone().multiplyScalar(Math.cos(tw)).add(B.clone().multiplyScalar(Math.sin(tw)));
+  for (const s of [-1, 1]) {
+    const v = P.clone().addScaledVector(dir, s * WID / 2);
+    pos.push(v.x, v.y, v.z);
+    const g = (Math.sin(t * Math.PI * 2) + 1) / 2;   // periodic gradient (seamless around the loop)
+    const c = g < .5 ? cA.clone().lerp(cB, g * 2) : cB.clone().lerp(cC, (g - .5) * 2);
+    col.push(c.r, c.g, c.b);
+  }
+  if (i < SEG) { const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+}
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+geo.setIndex(idx);
+geo.computeVertexNormals();
+const mat = new THREE.MeshPhysicalMaterial({
+  vertexColors: true, side: THREE.DoubleSide, metalness: 0.35, roughness: 0.2,
+  clearcoat: 1, clearcoatRoughness: 0.06, iridescence: 0.35, iridescenceIOR: 1.4, sheen: 0.4, sheenColor: new THREE.Color('#ffffff'),
+});
+const knot = new THREE.Mesh(geo, mat);
+const group = new THREE.Group(); group.add(knot); group.position.y = yOff; scene.add(group);
+
+// Rim lights in brand colours
+const l1 = new THREE.PointLight('#12a3c8', 60, 30); l1.position.set(-5, 3, 3); scene.add(l1);
+const l2 = new THREE.PointLight('#e6197e', 60, 30); l2.position.set(5, -2, 2); scene.add(l2);
+const l3 = new THREE.DirectionalLight('#ffffff', 1.4); l3.position.set(2, 5, 6); scene.add(l3);
+
+// Starfield (static points, subtle) — matches the site's dark cards
+const sg = new THREE.BufferGeometry(); const sp = [];
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+for (let i = 0; i < 500; i++) sp.push((rnd() - .5) * 40, (rnd() - .5) * 26, -8 - rnd() * 10);
+sg.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
+scene.add(new THREE.Points(sg, new THREE.PointsMaterial({ color: '#ffffff', size: 0.05, transparent: true, opacity: q.get('stars') === '0' ? 0 : 0.7 })));
+
+window.seek = (time) => {
+  const a = (time / LOOP) * Math.PI * 2;            // exactly one revolution per loop → seamless
+  knot.rotation.set(0.5 + Math.sin(a) * 0.18, a, 0.25 + Math.cos(a) * 0.12);
+  group.position.y = yOff + Math.sin(a * 2) * 0.08;
+  l1.position.x = -5 + Math.sin(a) * 1.5; l2.position.y = -2 + Math.cos(a) * 1.5;
+  renderer.render(scene, camera);
+  return true;
+};
+window.seek(0);
+window.ready = Promise.resolve(true);
+</script>
+</body></html>
