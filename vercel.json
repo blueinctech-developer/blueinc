@@ -1,0 +1,29 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/digital-solutions", "destination": "/our-services/", "permanent": true },
+    { "source": "/our-solutions", "destination": "/our-services/", "permanent": true },
+    { "source": "/hire-us", "destination": "/contact/", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact/", "permanent": true },
+    { "source": "/about", "destination": "/about-us/", "permanent": true },
+    { "source": "/meet-the-team", "destination": "/about-us/", "permanent": true },
+    { "source": "/free-audit", "destination": "/free-detailed-audit/", "permanent": true },
+    { "source": "/free-audit-2", "destination": "/free-detailed-audit/", "permanent": true },
+    { "source": "/industries", "destination": "/industries-served/", "permanent": true },
+    { "source": "/case-studies", "destination": "/portfolio/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }]
+    },
+    {
+      "source": "/assets/media/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }]
+    }
+  ]
+}
