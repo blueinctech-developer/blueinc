@@ -373,62 +373,109 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: doc.h1 }], title: do
 
 /* ---------- Blog ---------- */
 const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const fmtShort = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+const slugify = (t) => t.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-function postCard(p, readMin) {
+// Blog card: cover with category tag, date + read time, title, excerpt.
+function blogCard(p, readMin, { headingLevel = 2 } = {}) {
+  const h = `h${headingLevel}`;
   return `
-    <a class="post-card" href="/blog/${p.slug}/">
-      <div class="post-card__img"><img src="${p.image}" alt="" loading="lazy" width="1440" height="900"></div>
-      <div class="post-card__body">
-        <span class="post-card__meta">${esc(p.category)} · ${readMin} min read</span>
-        <h2 class="h5">${esc(p.title)}</h2>
-        <p>${esc(p.excerpt)}</p>
-        <span class="arrow-link">${roll('Read article')}${icon.arrow}</span>
-      </div>
-    </a>`;
+    <article class="bcard" data-date="${p.date}">
+      <a class="bcard__link" href="/blog/${p.slug}/" aria-label="${esc(p.title)}">
+        <div class="bcard__media">
+          <img src="${p.image}" alt="" loading="lazy" width="1440" height="900">
+          <span class="bcard__tag">${esc(p.category)}</span>
+        </div>
+        <div class="bcard__body">
+          <p class="bcard__meta"><time datetime="${p.date}">${fmtShort(p.date)}</time><span aria-hidden="true"></span>${readMin} min read</p>
+          <${h} class="bcard__title">${esc(p.title)}</${h}>
+          <p class="bcard__excerpt">${esc(p.excerpt)}</p>
+          <span class="bcard__more">${roll('Read article')}${icon.arrowUpRight}</span>
+        </div>
+      </a>
+    </article>`;
 }
 
 export function blogIndexPage(blog, posts, readMinutes) {
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Blog' }], title: blog.h1, lead: blog.lead, wide: true })}
+<section class="bhead container">
+  <div class="bhead__copy">
+    <h1 class="h1 bhead__title" data-intro-lines>${esc(blog.h1)}</h1>
+    <p class="lead" data-intro>${esc(blog.lead)}</p>
+  </div>
+  <div class="bhead__tools" data-intro>
+    <span class="bhead__count">${posts.length} articles</span>
+    <div class="seg" role="group" aria-label="Sort articles by publish date" data-blog-sort>
+      <button type="button" class="seg__btn" aria-pressed="true" data-sort="newest">Newest first</button>
+      <button type="button" class="seg__btn" aria-pressed="false" data-sort="oldest">Oldest first</button>
+    </div>
+  </div>
+</section>
 <section class="section--sm container" aria-label="Articles" style="padding-top:0">
-  <div class="post-grid post-grid--2" data-stagger>${posts.map((p) => postCard(p, readMinutes(p))).join('')}</div>
+  <div class="bgrid" data-blog-grid data-stagger>${posts.map((p) => blogCard(p, readMinutes(p))).join('')}</div>
 </section>
 <div class="section--sm"></div>`;
 }
 
 export function blogPostPage(post, posts, readMinutes) {
   const others = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const headings = post.body.filter((b) => b.h).map((b) => ({ text: b.h, id: slugify(b.h) }));
   const block = (b) =>
     b.p ? `<p>${esc(b.p)}</p>`
-      : b.h ? `<h2 class="h5">${esc(b.h)}</h2>`
+      : b.h ? `<h2 id="${slugify(b.h)}">${esc(b.h)}</h2>`
         : b.ul ? `<ul>${b.ul.map((li) => `<li>${esc(li)}</li>`).join('')}</ul>` : '';
+  const url = encodeURIComponent(`${site.url}/blog/${post.slug}/`);
+  const text = encodeURIComponent(post.title);
+  const share = (cls = '') => `
+      <div class="share ${cls}">
+        <span class="share__label">Share</span>
+        <button type="button" class="share__btn" data-copy-link aria-label="Copy link to this article">${icon.copy}<span class="copy-btn__tip" role="status">Copied</span></button>
+        <a class="share__btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${url}" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3v-11zm6.5 0h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4v-11z"/></svg></a>
+        <a class="share__btn" href="https://twitter.com/intent/tweet?url=${url}&amp;text=${text}" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78L17.75 3zm-1.08 16.18h1.7L7.4 4.73H5.58l11.09 14.45z"/></svg></a>
+        <a class="share__btn" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.25-1.46 1.5-1.46h1.55V4.45A20.8 20.8 0 0 0 14.3 4.3c-2.25 0-3.8 1.37-3.8 3.9v2.3H8v3h2.5V21h3z"/></svg></a>
+      </div>`;
   return `
-<article>
-${pageHero({ trail: [{ label: 'Blog', href: '/blog/' }, { label: post.title }], title: post.title, wide: true,
-  aside: '' })}
-<div class="container post-meta">
-  <span>${esc(post.category)}</span><span aria-hidden="true">·</span>
-  <time datetime="${post.date}">${fmtDate(post.date)}</time><span aria-hidden="true">·</span>
-  <span>${readMinutes(post)} min read</span><span aria-hidden="true">·</span>
-  <span>By Blueinc Technologies</span>
-</div>
-<div class="media-card media-card--wide" data-reveal-media>
-  <img src="${post.image}" alt="${esc(post.imageAlt)}" width="1440" height="900" data-media-img>
-</div>
-<section class="section container" aria-label="Article">
-  <div class="prose">
-    <p class="prose__lead">${esc(post.excerpt)}</p>
-    ${post.body.map(block).join('\n    ')}
-    <div class="btn-row" style="margin-top:2.5rem">${quoteBtn('Discuss Your Project')}${btn({ label: 'Back to blog', href: '/blog/', variant: 'light' })}</div>
+<div class="readbar" aria-hidden="true"><span data-readbar></span></div>
+<article class="bpost">
+  <header class="bpost__head container">
+    <a class="bpost__back" href="/blog/">${icon.arrow.replace('<svg', '<svg style="transform:scaleX(-1)"')}${roll('All articles')}</a>
+    <span class="bcard__tag bpost__tag" data-intro>${esc(post.category)}</span>
+    <h1 class="bpost__title" data-intro-lines>${esc(post.title)}</h1>
+    <div class="bpost__byline" data-intro>
+      <img src="/assets/img/mark.png" alt="" width="40" height="40">
+      <span><b>Blueinc Technologies</b><span><time datetime="${post.date}">${fmtDate(post.date)}</time> · ${readMinutes(post)} min read</span></span>
+    </div>
+  </header>
+  <div class="bpost__cover container" data-reveal-media>
+    <img src="${post.image}" alt="${esc(post.imageAlt)}" width="1440" height="900" data-media-img>
   </div>
-</section>
+  <div class="bpost__layout container">
+    <aside class="bpost__toc" aria-label="Contents">
+      <p class="bpost__toc-title">Contents</p>
+      <ol>${headings.map((h) => `<li><a href="#${h.id}" data-toc-link>${esc(h.text)}</a></li>`).join('')}</ol>
+    </aside>
+    <div class="bpost__body" data-article>
+      <p class="bpost__lead">${esc(post.excerpt)}</p>
+      ${post.body.map(block).join('\n      ')}
+      <div class="bpost__author">
+        <img src="/assets/img/mark.png" alt="" width="56" height="56">
+        <div>
+          <b>Written by Blueinc Technologies</b>
+          <p>We build software for businesses and develop and operate digital products of our own.</p>
+          <div class="btn-row">${quoteBtn('Discuss Your Project', '', 'sm')}${btn({ label: 'More articles', href: '/blog/', variant: 'light', size: 'sm' })}</div>
+        </div>
+      </div>
+      ${share('share--inline')}
+    </div>
+    <aside class="bpost__aside" aria-label="Share this article">${share()}</aside>
+  </div>
 </article>
-<section class="section--sm container" aria-labelledby="more-posts" style="padding-top:0">
-  <div class="section-head section-head--left"><h2 class="h4" id="more-posts">More articles</h2></div>
-  <div class="post-grid" data-stagger>${others.map((p) => postCard(p, readMinutes(p))).join('')}</div>
-</section>
-<div class="section--sm"></div>`;
+<section class="section container" aria-labelledby="more-posts">
+  <div class="bmore__head"><h2 class="h3" id="more-posts" data-reveal="lines">Keep reading</h2><a class="arrow-link" href="/blog/">${roll('All articles')}${icon.arrow}</a></div>
+  <div class="bgrid" data-stagger>${others.map((p) => blogCard(p, readMinutes(p), { headingLevel: 3 })).join('')}</div>
+</section>`;
 }
+
 
 /* ---------- Products (Blueinc-owned digital products) ---------- */
 // Same layout as the portfolio: page hero + stacked, pinned project cards.

@@ -314,6 +314,58 @@
   }
   $$('[data-stars]').forEach(starfield);
 
+  // ---- Blog index: sort articles by publish date (newest / oldest); remembered in ?sort= ---------
+  const blogGrid = $('[data-blog-grid]');
+  const blogSort = $('[data-blog-sort]');
+  if (blogGrid && blogSort) {
+    const buttons = $$('[data-sort]', blogSort);
+    const apply = (order, animate) => {
+      const cards = $$('.bcard', blogGrid).sort((a, b) => (order === 'oldest' ? 1 : -1) * a.dataset.date.localeCompare(b.dataset.date));
+      cards.forEach((c) => blogGrid.appendChild(c));
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.sort === order)));
+      if (animate && canAnimate) {
+        gsap.fromTo(cards, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.06, ease: 'expo.out', clearProps: 'transform' });
+        ScrollTrigger.refresh();
+      }
+    };
+    const initial = new URLSearchParams(location.search).get('sort') === 'oldest' ? 'oldest' : 'newest';
+    if (initial !== 'newest') apply(initial, false);
+    buttons.forEach((b) => b.addEventListener('click', () => {
+      const order = b.dataset.sort;
+      if (b.getAttribute('aria-pressed') === 'true') return;
+      apply(order, true);
+      const url = new URL(location.href);
+      if (order === 'oldest') url.searchParams.set('sort', 'oldest'); else url.searchParams.delete('sort');
+      history.replaceState(null, '', url);
+    }));
+  }
+
+  // ---- Blog article: reading progress, active contents link, copy link ----------------------------
+  const article = $('[data-article]');
+  if (article) {
+    const bar = $('[data-readbar]');
+    const tocLinks = $$('[data-toc-link]');
+    const heads = tocLinks.map((a) => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    let ticking = false;
+    const onScroll = () => {
+      ticking = false;
+      const r = article.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = Math.min(1, Math.max(0, (vh * 0.35 - r.top) / Math.max(1, r.height - vh * 0.4)));
+      if (bar) bar.style.transform = `scaleX(${p.toFixed(4)})`;
+      let active = -1;
+      heads.forEach((h, i) => { if (h.getBoundingClientRect().top < vh * 0.35) active = i; });
+      tocLinks.forEach((a, i) => a.classList.toggle('is-active', i === active));
+    };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    onScroll();
+  }
+  $$('[data-copy-link]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.origin + location.pathname); } catch { /* ignore */ }
+    b.classList.add('is-copied');
+    setTimeout(() => b.classList.remove('is-copied'), 1600);
+  }));
+
   // ---- Odometer markup (static fallback keeps the plain number) -------------------------------
   function buildOdometer(el) {
     const value = String(el.dataset.odometer);
@@ -367,7 +419,7 @@
       }
     }
 
-    const crumbs = $$('.page-hero [data-intro]');
+    const crumbs = $$('.page-hero [data-intro], .bhead [data-intro], .bpost__head [data-intro]');
     const h1 = $('[data-intro-lines]');
     if (h1) {
       SplitText.create(h1, {
