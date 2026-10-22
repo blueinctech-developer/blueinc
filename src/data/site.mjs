@@ -15,25 +15,29 @@ export const site = {
   calendly: 'https://calendly.com/projects-blueinctech/consult',
   clientPortal: 'https://blueinctech.com/hub',
   phones: [
-    { label: 'US', display: '+1 613 518 5278', href: 'tel:+16135185278' },
+    { label: 'US', display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
     { label: 'NG', display: '+234 811 033 3323', href: 'tel:+2348110333323' },
   ],
   // Order matters: the first office is the main (headquarters) office everywhere on the site.
   offices: [
     {
-      label: 'United States',
-      city: '',            // TODO: fill in with the exact US address when available
+      label: 'United States, Dover',
+      city: 'Dover',
+      region: 'DE',
+      postalCode: '19904',
+      street: '1111B S Governors Ave',
       country: 'United States',
       countryCode: 'US',
       main: true,
-      tz: 'America/New_York', // TODO: adjust if the US office is in another time zone
-      address: null,        // TODO: e.g. '123 Example St, Suite 100, City, ST 00000'
-      map: null,            // TODO: Google Maps link for the US address
-      phone: { display: '+1 613 518 5278', href: 'tel:+16135185278' },
+      tz: 'America/New_York',
+      address: '1111B S Governors Ave, Dover, DE 19904',
+      map: 'https://www.google.com/maps/search/?api=1&query=1111B+S+Governors+Ave%2C+Dover%2C+DE+19904',
+      phone: { display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
     },
     {
       label: 'Nigeria, Abuja',
       city: 'Abuja',
+      street: 'Suite A301, Global Plaza, Obafemi Awolowo way, Jabi',
       country: 'Nigeria',
       countryCode: 'NG',
       tz: 'Africa/Lagos',

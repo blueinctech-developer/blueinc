@@ -14,7 +14,10 @@
     { "source": "/free-audit", "destination": "/free-detailed-audit/", "permanent": true },
     { "source": "/free-audit-2", "destination": "/free-detailed-audit/", "permanent": true },
     { "source": "/industries", "destination": "/industries-served/", "permanent": true },
-    { "source": "/case-studies", "destination": "/portfolio/", "permanent": true }
+    { "source": "/case-studies", "destination": "/portfolio/", "permanent": true },
+    { "source": "/privacy-policy-2", "destination": "/privacy-policy/", "permanent": true },
+    { "source": "/terms-conditions", "destination": "/terms-of-service/", "permanent": true },
+    { "source": "/terms-and-conditions", "destination": "/terms-of-service/", "permanent": true }
   ],
   "headers": [
     {

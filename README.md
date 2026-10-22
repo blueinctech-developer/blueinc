@@ -30,7 +30,11 @@ Set `formEndpoint` in `src/config.js` to a URL that accepts POSTed form data, su
 
 ## Offices
 
-The offices are listed in `site.offices` in `src/data/site.mjs`; the first entry is treated as the head office. The US entry has `TODO` markers. Fill in `address`, `city` and `map` (and adjust `tz` if needed), then rebuild. The address then shows on the Contact page, in the footer clock card and in the search-engine (JSON-LD) data.
+The offices are listed in `site.offices` in `src/data/site.mjs`; the first entry (Dover, Delaware) is treated as the head office. Office details feed the Contact page, the footer clocks, the Contact Us sections of the legal pages and the search-engine (JSON-LD) data.
+
+## Legal pages
+
+The Terms of Service (`/terms-of-service/`) and Privacy Policy (`/privacy-policy/`) are hosted on this site; their text is in `src/data/legal.mjs`.
 
 ## Media (`src/assets/media/`)
 

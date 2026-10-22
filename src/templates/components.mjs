@@ -203,8 +203,8 @@ ${withCta ? ctaPanel() : ''}
   <div class="footer__bottom">
     <span>© ${site.founded}–<span data-year>${new Date().getFullYear()}</span> ${esc(site.legalName)} | ${site.regNo}</span>
     <nav aria-label="Legal">
-      <a href="https://blueinctech.com/terms-of-service/">Terms of Service</a>
-      <a href="https://blueinctech.com/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service/">Terms of Service</a>
+      <a href="/privacy-policy/">Privacy Policy</a>
       ${site.social.map((s) => `<a href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`).join('')}
     </nav>
   </div>
@@ -224,7 +224,7 @@ export function projectForm({ id = 'quote', submit = 'Get Quote', variant = 'quo
   <div class="field"><label for="${id}-phone">Phone Number${isContact ? ' *' : ''}</label><input id="${id}-phone" name="phone" type="tel" autocomplete="tel"${isContact ? ' required' : ''}></div>
   ${isContact ? '' : `<div class="field field--full"><label for="${id}-type">Project Type *</label><select id="${id}-type" name="project" required><option value="">Please select a project</option>${options}</select></div>`}
   <div class="field field--full"><label for="${id}-msg">${isContact ? 'What can we help you with? *' : 'Project Details / Description *'}</label><textarea id="${id}-msg" name="message" required></textarea></div>
-  ${isContact ? `<label class="check"><input type="checkbox" name="terms" required> <span>By submitting this form you agree to the terms of the <a href="https://blueinctech.com/privacy-policy">Privacy Policy</a>.</span></label>` : ''}
+  ${isContact ? `<label class="check"><input type="checkbox" name="terms" required> <span>By submitting this form you agree to the terms of the <a href="/privacy-policy/">Privacy Policy</a>.</span></label>` : ''}
   <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="form__foot">${btn({ label: submit, attrs: 'data-submit' }).replace('type="button"', 'type="submit"')}<p class="form__status" role="status" aria-live="polite"></p></div>
 </form>`;

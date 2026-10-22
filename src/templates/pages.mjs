@@ -315,3 +315,38 @@ export function notFoundPage() {
   </div>
 </section>`;
 }
+
+/* ---------- Legal pages (Terms of Service, Privacy Policy) ---------- */
+export function legalPage(doc, { email }) {
+  const linkEmail = (t) => esc(t).replace('{email}', `<a class="u-link" href="mailto:${email}">${email}</a>`);
+  const contact = () => `
+      <address class="legal__contact">
+        <b>${esc(site.name)}</b>
+        ${site.offices.map((o) => `<span>${esc(o.label)}${o.address ? `: ${esc(o.address)}` : ''}</span>`).join('')}
+        <span>Phone: ${site.phones.map((p) => `<a class="u-link" href="${p.href}">${p.display}</a>`).join(' · ')}</span>
+        <span>Email: <a class="u-link" href="mailto:${email}">${email}</a></span>
+      </address>`;
+  const block = (b) =>
+    b.p ? `<p>${linkEmail(b.p)}</p>`
+      : b.h ? `<h3>${esc(b.h)}</h3>`
+        : b.ul ? `<ul>${b.ul.map((li) => `<li>${esc(li)}</li>`).join('')}</ul>`
+          : b.dl ? `<dl>${b.dl.map(([t, d]) => `<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join('')}</dl>`
+            : b.contact ? contact() : '';
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: doc.h1 }], title: doc.h1 })}
+<section class="section--sm container" aria-label="${esc(doc.h1)}" style="padding-top:0">
+  <div class="split">
+    <nav class="split__sticky legal__toc" aria-label="On this page">
+      <ol>${doc.sections.map(([t], i) => `<li><a class="u-link" href="#s${i + 1}">${esc(t)}</a></li>`).join('')}</ol>
+    </nav>
+    <article class="legal">
+      ${doc.sections.map(([t, blocks], i) => `
+      <section id="s${i + 1}">
+        <h2 class="h5">${esc(t)}</h2>
+        ${blocks.map(block).join('\n        ')}
+      </section>`).join('')}
+    </article>
+  </div>
+</section>
+<div class="section--sm"></div>`;
+}

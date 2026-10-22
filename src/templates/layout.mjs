@@ -12,7 +12,7 @@ const orgJsonLd = () => JSON.stringify({
   foundingDate: String(site.founded),
   description: site.description,
   sameAs: site.social.map((s) => s.href),
-  address: site.offices.filter((o) => o.address).map((o) => ({ '@type': 'PostalAddress', streetAddress: o.address, ...(o.city ? { addressLocality: o.city } : {}), addressCountry: o.countryCode })),
+  address: site.offices.filter((o) => o.address).map((o) => ({ '@type': 'PostalAddress', streetAddress: o.street || o.address, ...(o.city ? { addressLocality: o.city } : {}), ...(o.region ? { addressRegion: o.region } : {}), ...(o.postalCode ? { postalCode: o.postalCode } : {}), addressCountry: o.countryCode })),
   contactPoint: site.phones.map((p) => ({ '@type': 'ContactPoint', telephone: p.display.replace(/\s/g, ''), contactType: 'customer service', areaServed: p.label })),
 });
 
