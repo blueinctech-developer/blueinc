@@ -12,7 +12,7 @@ export const site = {
     'Blueinc Technologies is a technology solutions and digital product company. We build software for businesses and develop and operate digital products of our own.',
   email: 'contact@blueinctech.com',
   calendly: 'https://calendly.com/projects-blueinctech/consult',
-  clientPortal: 'https://blueinctech.com/hub',
+  clientPortal: 'https://nexus.blueinctech.com/',
   phones: [
     { label: 'US', display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
   ],
@@ -77,19 +77,15 @@ export const footerCols = [
     links: [
       { label: 'About Blueinc', href: '/about-us/' },
       { label: 'Contact Us', href: '/contact/' },
-      { label: 'Our Blog', href: 'https://blueinctech.com/blog/' },
-      { label: 'Press & Media', href: 'https://blueinctech.com/media' },
-      { label: 'Company CSR', href: 'https://blueinctech.com/csr' },
+      // Blog, Press & Media and Company CSR are hidden until those pages exist on this site.
     ],
   },
   {
     title: 'Portal',
     links: [
-      { label: 'Clients Portal', href: 'https://blueinctech.com/connect' },
-      { label: 'Staff Portal', href: 'https://blueinctech.com/connect/admin' },
-      { label: 'Hiring', href: 'https://blueinctech.com/hiring' },
-      { label: 'SAAS', href: 'https://blueinctech.com/saas' },
-      { label: 'Developers', href: 'https://blueinctech.com/developers' },
+      { label: 'Clients Portal', href: 'https://nexus.blueinctech.com/' },
+      { label: 'Staff Portal', href: 'https://workspace.blueinctech.com/' },
+      // Hiring, SAAS and Developers are hidden until those pages exist.
     ],
   },
 ];
