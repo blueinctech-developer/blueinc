@@ -896,7 +896,7 @@ html.js .rotator > span + span { visibility: hidden; }
 .counters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
 .counter { display: grid; justify-items: center; gap: 1.25rem; text-align: center; }
 .counter__num { display: flex; align-items: flex-start; font-size: clamp(4rem, 9vw, 9.5rem); font-weight: 500; line-height: 1; letter-spacing: -.04em; }
-.odo { display: inline-block; height: 1em; overflow: clip; }
+.odo { display: inline-block; height: 1em; overflow: clip; vertical-align: top; } /* top, not baseline: the 20-line digit strip would otherwise align its last line and stretch the row */
 /* One element per column: 20 digits as text lines, each exactly 1em tall */
 .odo__col { display: block; white-space: pre; line-height: 1; }
 .counter__suffix { font-size: .38em; margin-top: .25em; margin-left: .04em; }
