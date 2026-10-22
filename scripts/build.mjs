@@ -1,6 +1,6 @@
 // Zero-dependency static site build: renders every route to dist/<route>/index.html
 // (clean URLs matching the original WordPress permalinks) and copies assets.
-import { mkdirSync, writeFileSync, rmSync, cpSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, rmSync, cpSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -61,10 +61,37 @@ const redirects = {
   '/terms-and-conditions/': '/terms-of-service/',
 };
 
+// ---- Performance post-processing ------------------------------------------------------------
+// 1) Inline the stylesheet (minified) so it isn't a render-blocking request.
+// 2) Serve WebP wherever a .webp sits next to a .jpg/.png (skips <meta>/<link>, so social
+//    previews and favicons keep their universally supported formats).
+// 3) Card pills show 36px thumbnails, not full 1440px screenshots.
+const minifyCss = (css) => css
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{}:;,>])\s*/g, '$1')
+  .replace(/;}/g, '}')
+  .trim();
+const inlineCss = `<style>${minifyCss(readFileSync(path.join(root, 'src/assets/css/main.css'), 'utf8'))}</style>`;
+const webpFor = new Map();
+const toWebp = (url) => {
+  if (!webpFor.has(url)) {
+    const candidate = url.replace(/\.(jpe?g|png)$/i, '.webp');
+    webpFor.set(url, candidate !== url && existsSync(path.join(root, 'src', candidate)) ? candidate : url);
+  }
+  return webpFor.get(url);
+};
+const optimize = (html) => html
+  .replace('<!--INLINE_CSS-->', inlineCss)
+  .replace(/(class="work__pill"><img src=")\/assets\/img\/clients\/([^"]+)\.(?:jpg|webp)"/g, (m, pre, name) =>
+    existsSync(path.join(root, 'src/assets/img/clients/thumbs', `${name}.webp`)) ? `${pre}/assets/img/clients/thumbs/${name}.webp"` : m)
+  .replace(/<(?!meta\b|link\b)[a-z][^>]*>/gi, (tag) =>
+    tag.replace(/(\/assets\/[^"')\s]+?\.(?:jpe?g|png))(?=["')\s])/gi, (u) => toWebp(u)));
+
 const out = (route, html) => {
   const file = route.endsWith('.html') ? path.join(dist, route) : path.join(dist, route, 'index.html');
   mkdirSync(path.dirname(file), { recursive: true });
-  writeFileSync(file, html);
+  writeFileSync(file, optimize(html));
 };
 
 rmSync(dist, { recursive: true, force: true });

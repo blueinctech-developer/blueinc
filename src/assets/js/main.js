@@ -11,7 +11,9 @@
   const html = document.documentElement;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const { gsap, ScrollTrigger, SplitText } = window;
-  const canAnimate = !!(gsap && ScrollTrigger && SplitText) && !reduced;
+  // If the fail-safe already revealed everything statically (scripts arrived late), don't re-hide
+  // content to animate it — that would flash visible → hidden → animated.
+  const canAnimate = !!(gsap && ScrollTrigger && SplitText) && !reduced && !html.classList.contains('no-anim');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   clearTimeout(window.__animTimeout);
@@ -253,7 +255,10 @@
       v.play().catch(() => {});
     } else if (!e.isIntersecting) v.pause();
   }), { rootMargin: '150px 0px' });
-  $$('[data-autovideo], [data-reel-video]').forEach((v) => videoIO.observe(v));
+  // Videos start loading only after the page has finished loading, so they never compete with
+  // fonts, CSS or the showreel poster (the LCP image).
+  const startVideos = () => $$('[data-autovideo], [data-reel-video]').forEach((v) => videoIO.observe(v));
+  if (document.readyState === 'complete') startVideos(); else window.addEventListener('load', startVideos, { once: true });
 
   // Showreel play/pause control (WCAG 2.2.2: moving content must be pausable)
   const reelVideo = $('[data-reel-video]');
@@ -394,43 +399,10 @@
   // ---- Page-load choreography ------------------------------------------------------------------
   function intro() {
     const tl = gsap.timeline({ defaults: { ease: EASE } });
-    // Elements are hidden by CSS until this point, so nothing flashes before the intro starts.
-    tl.fromTo('.navbar__bar', { yPercent: -140, visibility: 'visible' }, { yPercent: 0, duration: 1.2 }, 0);
+    // The navbar and home hero (wordmark, tabs, showreel) animate in CSS from the first paint
+    // (see "Page-load intro in CSS"); this timeline only handles inner-page headers.
 
-    const letters = $$('[data-hero-wordmark] .wm-letter');
-    if (letters.length) {
-      show(letters);
-      tl.from(letters, {
-        scaleY: 0,
-        transformOrigin: (i) => (i % 3 === 1 ? '50% 0%' : i % 3 === 2 ? '50% 50%' : '50% 100%'),
-        duration: 1.3,
-        ease: 'expo.inOut',
-        stagger: { each: 0.06, from: 'random' },
-      }, 0.1);
-      const tabs = $$('.hero__tab');
-      show(tabs);
-      tl.from(tabs, { y: 24, autoAlpha: 0, duration: 1, stagger: 0.08 }, 0.75);
-      const reel = $('[data-reel]');
-      if (reel) {
-        gsap.set(reel, { clipPath: 'inset(48% 22% 0% 22% round 28px)', visibility: 'visible' });
-        tl.to(reel, { clipPath: 'inset(0% 0% 0% 0% round 28px)', duration: 1.6, ease: 'expo.inOut', clearProps: 'clipPath' }, 0.45);
-        tl.fromTo('[data-reel-img]', { scale: 1.25, transformOrigin: '50% 0%' }, { scale: 1, duration: 2, ease: 'expo.out' }, 0.45);
-        tl.from('.reel__meta > *', { y: 20, autoAlpha: 0, duration: 1, stagger: 0.1 }, 1.4);
-      }
-    }
-
-    const crumbs = $$('.page-hero [data-intro], .bhead [data-intro], .bpost__head [data-intro]');
-    const h1 = $('[data-intro-lines]');
-    if (h1) {
-      SplitText.create(h1, {
-        type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: true,
-        onSplit(self) {
-          show(h1);
-          return gsap.from(self.lines, { yPercent: 115, duration: 1.3, stagger: 0.09, ease: EASE, delay: 0.25 });
-        },
-      });
-    }
-    if (crumbs.length) { show(crumbs); tl.from(crumbs, { y: 24, autoAlpha: 0, duration: 1.1, stagger: 0.1 }, 0.55); }
+    // Inner-page headers ([data-intro-lines] titles, [data-intro] lead/actions) also animate in CSS.
   }
 
   // ---- Navbar tagline cycle (char roll, staggered) ---------------------------------------------
@@ -500,8 +472,17 @@
   }
 
   // ---- Generic scroll reveals ----------------------------------------------------------------------
+  // Split text only when it approaches the viewport: splitting every heading at load is the
+  // single biggest chunk of start-up work (layout + DOM creation).
+  const nearIO = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    nearIO.unobserve(e.target);
+    const fn = e.target.__onNear; delete e.target.__onNear; if (fn) fn();
+  }), { rootMargin: '0px 0px 35% 0px' });
+  const whenNear = (el, fn) => { el.__onNear = fn; nearIO.observe(el); };
+
   function reveals() {
-    $$('[data-reveal="lines"]').forEach((el) => {
+    $$('[data-reveal="lines"]').forEach((el) => whenNear(el, () => {
       SplitText.create(el, {
         type: 'lines', mask: 'lines', linesClass: 'split-line', autoSplit: true,
         onSplit(self) {
@@ -509,16 +490,16 @@
           return gsap.from(self.lines, { yPercent: 115, duration: 1.2, stagger: 0.08, ease: EASE, scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
         },
       });
-    });
+    }));
 
-    $$('[data-reveal="words"]').forEach((el) => {
+    $$('[data-reveal="words"]').forEach((el) => whenNear(el, () => {
       SplitText.create(el, {
         type: 'words', wordsClass: 'split-word', autoSplit: true,
         onSplit(self) {
           return gsap.fromTo(self.words, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 55%', scrub: true } });
         },
       });
-    });
+    }));
 
     $$('[data-reveal="fade"]').forEach((el) => {
       if (el.closest('.page-hero')) return;

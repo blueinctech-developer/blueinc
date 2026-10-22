@@ -204,7 +204,7 @@ export function homePage() {
   </nav>
   <div class="reel" data-reel>
     <div class="reel__media">
-      <video muted loop playsinline preload="auto" poster="/assets/media/showreel-poster.jpg" data-reel-img data-reel-video aria-label="Blueinc Technologies showreel: our products, client work and our team">
+      <video muted loop playsinline preload="none" poster="/assets/media/showreel-poster.jpg" data-reel-img data-reel-video aria-label="Blueinc Technologies showreel: our products, client work and our team">
         <source src="/assets/media/showreel.mp4" type="video/mp4">
       </video>
     </div>

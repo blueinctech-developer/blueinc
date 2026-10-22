@@ -41,18 +41,16 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32">
 <link rel="icon" href="/assets/img/favicon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/img/favicon-192.png">
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&amp;display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Roboto+Mono:wght@400;500&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="/assets/fonts/switzer-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+${route === '/' ? '<link rel="preload" href="/assets/media/showreel-poster.webp" as="image" type="image/webp" fetchpriority="high">' : ''}
+<!--INLINE_CSS-->
 <script>
   (function (d) {
     var h = d.documentElement; h.classList.add('js');
     if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) h.classList.add('reduced');
     // Fail-safe: never leave content hidden if the animation runtime doesn't boot.
-    window.__animTimeout = setTimeout(function () { h.classList.add('no-anim'); }, 4000);
+    window.__animTimeout = setTimeout(function () { h.classList.add('no-anim'); }, 6000);
   })(document);
 </script>
 ${jsonLd ? `<script type="application/ld+json">${orgJsonLd()}</script>` : ''}
@@ -67,12 +65,16 @@ ${body}
 </main>
 ${footer({ withCta })}
 ${quoteDialog()}
-<script src="/assets/vendor/gsap.min.js" defer></script>
-<script src="/assets/vendor/ScrollTrigger.min.js" defer></script>
-<script src="/assets/vendor/SplitText.min.js" defer></script>
-<script src="/assets/vendor/lenis.min.js" defer></script>
-<script src="/assets/js/config.js" defer></script>
-<script src="/assets/js/main.js" defer></script>
+<script>
+  // Animation + interaction scripts load after the page has painted (they were deferred scripts that
+  // ran before the hero could paint). async=false keeps execution order while downloading in parallel.
+  (function () {
+    var files = ["/assets/vendor/gsap.min.js", "/assets/vendor/ScrollTrigger.min.js", "/assets/vendor/SplitText.min.js", "/assets/vendor/lenis.min.js", "/assets/js/config.js", "/assets/js/main.js"];
+    function load() { files.forEach(function (src) { var s = document.createElement("script"); s.src = src; s.async = false; document.body.appendChild(s); }); }
+    function go() { (window.requestIdleCallback || function (f) { setTimeout(f, 1); })(load, { timeout: 800 }); }
+    if (document.readyState === "complete") go(); else addEventListener("load", go, { once: true });
+  })();
+</script>
 </body>
 </html>`;
 }
