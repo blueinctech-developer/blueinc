@@ -43,12 +43,11 @@ export const site = {
   navTaglines: ['Custom Software', 'Digital Products', 'Mobile Apps', 'Product Design'],
 };
 
-// Industries, Our Work and Reviews live in the footer (Connect column), not the navbar.
+// Industries, Our Work, Reviews and Pricing live in the footer (Connect column), not the navbar.
 export const nav = [
   { label: 'About', href: '/about-us/' },
   { label: 'Products', href: '/portfolio/#products', children: 'products' },
   { label: 'Services', href: '/our-services/', children: 'services' },
-  { label: 'Pricing', href: '/pricing-plans/' },
   { label: 'Contact', href: '/contact/' },
 ];
 
