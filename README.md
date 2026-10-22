@@ -30,7 +30,7 @@ Set `formEndpoint` in `src/config.js` to a URL that accepts POSTed form data, su
 
 ## Offices
 
-The offices are listed in `site.offices` in `src/data/site.mjs`; the first entry (Dover, Delaware) is treated as the head office. Office details feed the Contact page, the footer clocks, the Contact Us sections of the legal pages and the search-engine (JSON-LD) data.
+The offices are listed in `site.offices` in `src/data/site.mjs`; Blueinc publishes a single, US-based address (Dover, Delaware). Office details feed the Contact page, the footer clocks, the Contact Us sections of the legal pages and the search-engine (JSON-LD) data.
 
 ## Legal pages
 

@@ -93,7 +93,7 @@ export function aboutSplit() {
       <div style="margin-top:2rem" data-reveal="fade"><a class="arrow-link" href="/our-services/">${roll('View all solutions')}${icon.arrow}</a></div>
     </div>
     <div class="feature-pair" data-stagger>
-      <div class="feature">${icon.globe}<b>United States &amp; Nigeria</b><span>Offices in the US and Nigeria</span></div>
+      <div class="feature">${icon.globe}<b>Dover, Delaware</b><span>Headquartered in the United States</span></div>
       <div class="feature">${icon.spark}<b>Since ${site.founded}</b><span>Building software and products</span></div>
     </div>
   </div>

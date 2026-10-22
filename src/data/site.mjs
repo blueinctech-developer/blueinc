@@ -18,7 +18,7 @@ export const site = {
     { label: 'US', display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
     { label: 'NG', display: '+234 811 033 3323', href: 'tel:+2348110333323' },
   ],
-  // Order matters: the first office is the main (headquarters) office everywhere on the site.
+  // Blueinc is US-based: the Dover, Delaware office is the only published address.
   offices: [
     {
       label: 'United States, Dover',
@@ -33,17 +33,6 @@ export const site = {
       address: '1111B S Governors Ave, Dover, DE 19904',
       map: 'https://www.google.com/maps/search/?api=1&query=1111B+S+Governors+Ave%2C+Dover%2C+DE+19904',
       phone: { display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
-    },
-    {
-      label: 'Nigeria, Abuja',
-      city: 'Abuja',
-      street: 'Suite A301, Global Plaza, Obafemi Awolowo way, Jabi',
-      country: 'Nigeria',
-      countryCode: 'NG',
-      tz: 'Africa/Lagos',
-      address: 'Suite A301, Global Plaza, Obafemi Awolowo way, Jabi, Abuja. Nigeria',
-      map: 'https://maps.app.goo.gl/6yxKHbFYUEP8gay47',
-      phone: { display: '+234 811 033 3323', href: 'tel:+2348110333323' },
     },
   ],
   social: [
