@@ -46,7 +46,7 @@ export const site = {
 // Industries, Our Work, Reviews and Pricing live in the footer (Connect column), not the navbar.
 export const nav = [
   { label: 'About', href: '/about-us/' },
-  { label: 'Products', href: '/portfolio/#products', children: 'products' },
+  { label: 'Products', href: '/products/', children: 'products' },
   { label: 'Services', href: '/our-services/', children: 'services' },
   { label: 'Contact', href: '/contact/' },
 ];
@@ -66,7 +66,7 @@ export const footerCols = [
     title: 'Connect',
     links: [
       { label: 'Our Work', href: '/portfolio/' },
-      { label: 'Our Products', href: '/portfolio/#products' },
+      { label: 'Our Products', href: '/products/' },
       { label: 'Reviews', href: '/success-stories/' },
       { label: 'Industries Served', href: '/industries-served/' },
       { label: 'Pricing', href: '/pricing-plans/' },
@@ -96,7 +96,7 @@ export const home = {
   heroServices: [
     { label: 'Custom Software', href: '/our-services/web-development-services/' },
     { label: 'Mobile Apps', href: '/our-services/app-development-services/' },
-    { label: 'Digital Products', href: '/portfolio/' },
+    { label: 'Digital Products', href: '/products/' },
     { label: 'Enterprise Systems', href: '/our-services/product-management-services/' },
   ],
   headlineLead: 'Technology Solutions. Digital Products. Real-World',
@@ -420,11 +420,11 @@ export const industries = {
 };
 
 export const portfolio = {
-  title: 'Our Work & Products | Blueinc Technologies',
-  h1: 'Our Work & Products',
+  title: 'Our Work | Blueinc Technologies',
+  h1: 'Our Work',
   body:
-    'Software, applications and websites we’ve built for clients across Nigeria, the USA, Canada, the UK, France and beyond, alongside the digital products we develop, own and operate.',
-  categories: ['Websites', 'Web Applications', 'Mobile Applications', 'Our Products'],
+    'Software, applications and websites we’ve built for clients across Nigeria, the USA, Canada, the UK, France and beyond.',
+  categories: ['Websites', 'Web Applications', 'Mobile Applications'],
   websites: [
     'scrubharvard.com', 'fillinstaffing.com', 'gebbrapharma.com', '365dayshampers.com',
     'rccgfranceprovince.org', 'goodwillstaffing.us', 'stephensbooks.net', 'constructioncrewpro.ca',
@@ -433,7 +433,7 @@ export const portfolio = {
     'equestglobal.com', 'kochezmedical.com', 'rhagfnig.org.ng', 'riteshoe.com',
     'spotlightnigeria-france.com',
   ],
-  // The former "Enterprise Softwares" items now sit with web applications; that tab shows Blueinc's own products.
+  // The former "Enterprise Softwares" items sit with web applications. Blueinc's own products have their own page (/products/).
   webApps: ['Truck Service Web App', 'Taxi Booking Web App', 'Event Management Web App', 'e-Commerce Store', 'Ai Bot for Business', 'Ai', 'IT Services'],
   mobileApps: ['Fitness App', 'Food Delivery App'],
 };
@@ -534,3 +534,12 @@ export const clientLogos = [
   'TV-INSTALL', 'ncs', 'riteshoe', 'equest', 'ccp', 'bridge-and-value', 'SHEAPSMART', 'GE', 'SPOT',
   'RCCG', 'EVERLIVELY',
 ];
+
+// /products/ page (Blueinc-owned products; the cards come from `products` above).
+export const productsPageData = {
+  title: 'Our Products | Blueinc Technologies',
+  description: 'Digital products developed, owned and operated by Blueinc Technologies: Staffintra, Travel Nurse Houses, MyJobTests and Teststreams.',
+  h1: 'Our Products',
+  lead: 'Digital products we develop, own and operate, built on the same engineering we bring to every client project.',
+  statement: 'Beyond client projects, we build and operate our own digital products, applying our technology expertise to solve real problems and create lasting value.',
+};

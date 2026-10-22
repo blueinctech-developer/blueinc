@@ -4,7 +4,7 @@ import { mkdirSync, writeFileSync, rmSync, cpSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage } from '../src/data/site.mjs';
+import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage, productsPageData } from '../src/data/site.mjs';
 import { terms, privacy, legalEmail } from '../src/data/legal.mjs';
 import { blog, posts as rawPosts, readMinutes, byDate } from '../src/data/blog.mjs';
 const posts = byDate(rawPosts);
@@ -12,7 +12,7 @@ import { layout } from '../src/templates/layout.mjs';
 import { homePage } from '../src/templates/home.mjs';
 import {
   aboutPage, auditPage, servicesIndexPage, serviceDetailPage, portfolioPage, industriesPage,
-  reviewsPageTpl, pricingPage, contactPageTpl, notFoundPage, legalPage, blogIndexPage, blogPostPage,
+  reviewsPageTpl, pricingPage, contactPageTpl, notFoundPage, legalPage, blogIndexPage, blogPostPage, productsPage,
 } from '../src/templates/pages.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -28,6 +28,7 @@ const pages = [
     description: s.summary.length > 160 ? `${s.summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : s.summary,
     body: serviceDetailPage(s),
   })),
+  { route: '/products/', title: productsPageData.title, description: productsPageData.description, body: productsPage(productsPageData), ogImage: '/assets/img/clients/staffintra.com.jpg', priority: '0.9' },
   { route: '/portfolio/', title: portfolio.title, description: portfolio.body, body: portfolioPage() },
   { route: '/industries-served/', title: industries.title, description: industries.body.slice(0, 155) + '…', body: industriesPage() },
   { route: '/success-stories/', title: reviewsPage.title, description: reviewsPage.body, body: reviewsPageTpl() },

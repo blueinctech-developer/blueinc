@@ -79,7 +79,7 @@ export function wordmark(text = 'BLUEINC TECH', { label = 'Blueinc Technologies'
 const dropItems = (key) => {
   if (key === 'products')
     return products.map((p, i) => ({ label: p.name, href: p.url, i }))
-      .concat([{ label: 'View all products', href: '/portfolio/#products', foot: true }]);
+      .concat([{ label: 'View all products', href: '/products/', foot: true }]);
   if (key === 'services')
     return services.map((s, i) => ({ label: s.short || s.name, href: `/our-services/${s.slug}/`, i }))
       .concat([{ label: 'View all services', href: '/our-services/', foot: true }]);

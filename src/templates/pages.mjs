@@ -236,15 +236,15 @@ export function portfolioPage() {
     projectStack(portfolio.websites.map((d) => ({ site: d, name: d, leftLabel: 'Client', rightLabel: 'Type', kind: 'Website' }))),
     projectStack(portfolio.webApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Web application' }))),
     projectStack(portfolio.mobileApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Mobile application' }))),
-    projectStack(products.map((p) => ({ site: p.site, href: p.url, name: p.name, leftLabel: 'Our product', rightLabel: p.site, kind: p.kind }))),
   ];
-  const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length, products.length];
+  const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length];
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Work & Products' }], title: portfolio.h1, lead: portfolio.body,
+<script>if (location.hash === '#products') location.replace('/products/');</script>
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Work' }], title: portfolio.h1, lead: portfolio.body,
   actions: `${quoteBtn('Start a Project')}${btn({ label: 'Read reviews', href: '/success-stories/', variant: 'light' })}` })}
 <section class="section--sm container" aria-label="Projects" style="padding-top:1rem">
-  <div class="tabs" role="tablist" aria-label="Project categories" id="products" data-tabs>
-    ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i === 3 ? ' data-hash="products"' : ''}${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
+  <div class="tabs" role="tablist" aria-label="Project categories" data-tabs>
+    ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
   </div>
   ${panels.map((p, i) => `<div class="tab-panel" role="tabpanel" id="pp-${i}" aria-labelledby="pt-${i}"${i ? ' hidden' : ''}>${p}</div>`).join('')}
 </section>
@@ -428,4 +428,18 @@ ${pageHero({ trail: [{ label: 'Blog', href: '/blog/' }, { label: post.title }], 
   <div class="post-grid" data-stagger>${others.map((p) => postCard(p, readMinutes(p))).join('')}</div>
 </section>
 <div class="section--sm"></div>`;
+}
+
+/* ---------- Products (Blueinc-owned digital products) ---------- */
+// Same layout as the portfolio: page hero + stacked, pinned project cards.
+export function productsPage(page) {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Products' }], title: page.h1, lead: page.lead,
+  actions: `${quoteBtn('Discuss Your Project')}${btn({ label: 'Explore Our Work', href: '/portfolio/', variant: 'light' })}` })}
+<section class="section--sm container" aria-label="Products" style="padding-top:1rem">
+  ${projectStack(products.map((p) => ({ site: p.site, href: p.url, name: p.name, leftLabel: 'Our product', rightLabel: p.site, kind: p.kind })))}
+</section>
+<section class="section container" aria-label="About our products">
+  <p class="statement" data-reveal="words">${esc(page.statement)}</p>
+</section>`;
 }
