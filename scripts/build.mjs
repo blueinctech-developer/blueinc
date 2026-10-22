@@ -1,6 +1,7 @@
 // Zero-dependency static site build: renders every route to dist/<route>/index.html
 // (clean URLs matching the original WordPress permalinks) and copies assets.
 import { mkdirSync, writeFileSync, readFileSync, rmSync, cpSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -81,12 +82,28 @@ const toWebp = (url) => {
   }
   return webpFor.get(url);
 };
+// 4) Cache-busting: every /assets/ URL gets ?v=<content hash>. Assets are cached by browsers for
+//    days, so without this a deploy could pair new HTML with an old cached main.js (seen in the
+//    wild: the old JS intro froze the wordmark letters mid-animation). Changed file → new URL.
+const fileHash = new Map();
+const withVersion = (url) => {
+  if (!fileHash.has(url)) {
+    const file = path.join(root, 'src', url);
+    const alt = url === '/assets/js/config.js' ? path.join(root, 'src/config.js') : null;
+    const src = existsSync(file) ? file : alt && existsSync(alt) ? alt : null;
+    fileHash.set(url, src ? createHash('sha1').update(readFileSync(src)).digest('hex').slice(0, 8) : null);
+  }
+  const h = fileHash.get(url);
+  return h ? `${url}?v=${h}` : url;
+};
 const optimize = (html) => html
   .replace('<!--INLINE_CSS-->', inlineCss)
   .replace(/(class="work__pill"><img src=")\/assets\/img\/clients\/([^"]+)\.(?:jpg|webp)"/g, (m, pre, name) =>
     existsSync(path.join(root, 'src/assets/img/clients/thumbs', `${name}.webp`)) ? `${pre}/assets/img/clients/thumbs/${name}.webp"` : m)
   .replace(/<(?!meta\b|link\b)[a-z][^>]*>/gi, (tag) =>
-    tag.replace(/(\/assets\/[^"')\s]+?\.(?:jpe?g|png))(?=["')\s])/gi, (u) => toWebp(u)));
+    tag.replace(/(\/assets\/[^"')\s]+?\.(?:jpe?g|png))(?=["')\s])/gi, (u) => toWebp(u)))
+  // relative /assets/ URLs only (absolute og:image/JSON-LD URLs are left untouched)
+  .replace(/(["'(\s,])(\/assets\/[^"')\s,?#]+\.[a-z0-9]+)(?=["')\s,])/gi, (m, pre, url) => pre + withVersion(url));
 
 const out = (route, html) => {
   const file = route.endsWith('.html') ? path.join(dist, route) : path.join(dist, route, 'index.html');
