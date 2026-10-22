@@ -59,12 +59,12 @@ ${schema ? `<script type="application/ld+json">${JSON.stringify(schema)}</script
 <body class="${bodyClass}">
 <a class="skip-link" href="#main">Skip to content</a>
 ${navbar(route)}
-${mobileMenu()}
+<template id="tpl-menu">${mobileMenu()}</template>
 <main id="main" tabindex="-1">
 ${body}
 </main>
 ${footer({ withCta })}
-${quoteDialog()}
+<template id="tpl-quote">${quoteDialog()}</template>
 <script>
   // Animation + interaction scripts load after the page has painted (they were deferred scripts that
   // ran before the hero could paint). async=false keeps execution order while downloading in parallel.

@@ -82,34 +82,26 @@
     li.addEventListener('focusout', (e) => { if (!li.contains(e.relatedTarget)) reset(); });
   });
 
+  // ---- On-demand UI ---------------------------------------------------------------
+  // The mobile menu and the quote dialog ship inside inert <template>s (not styled or laid out
+  // on page load) and are created the first time they're opened.
+  const fromTemplate = (id) => {
+    const tpl = document.getElementById(id);
+    if (!tpl) return null;
+    const node = tpl.content.firstElementChild.cloneNode(true);
+    document.body.appendChild(node);
+    tpl.remove();
+    return node;
+  };
+
   // ---- Mobile menu ---------------------------------------------------------------
-  const menu = $('[data-menu]');
+  let menu = $('[data-menu]');
   const menuBtn = $('[data-menu-open]');
   let menuTl = null;
-  function buildMenuTl() {
-    const sheet = $('.menu__sheet', menu);
-    const items = $$('[data-menu-item]', menu);
-    return gsap.timeline({ paused: true })
-      .to($('.menu__bg', menu), { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0)
-      .fromTo(sheet, { clipPath: 'inset(0% 0% 100% 0% round 12px)' }, { clipPath: 'inset(0% 0% 0% 0% round 12px)', duration: 0.8, ease: 'expo.inOut' }, 0)
-      .fromTo(items, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, ease: EASE }, 0.35);
-  }
-  function openMenu() {
-    menu.classList.add('is-open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    lockScroll(true);
-    if (canAnimate) { menuTl = menuTl || buildMenuTl(); menuTl.timeScale(1).play(); }
-    setTimeout(() => $('.menu__close', menu).focus(), 50);
-  }
-  function closeMenu() {
-    menuBtn.setAttribute('aria-expanded', 'false');
-    lockScroll(false);
-    const done = () => { menu.classList.remove('is-open'); menuBtn.focus(); };
-    if (canAnimate && menuTl) { menuTl.timeScale(1.6).reverse(); menuTl.eventCallback('onReverseComplete', done); }
-    else done();
-  }
-  if (menu && menuBtn) {
-    menuBtn.addEventListener('click', openMenu);
+  function ensureMenu() {
+    if (menu) return menu;
+    menu = fromTemplate('tpl-menu');
+    if (!menu) return null;
     $$('[data-menu-close]', menu).forEach((b) => b.addEventListener('click', closeMenu));
     menu.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeMenu();
@@ -121,7 +113,36 @@
     });
     $$('.menu__acc', menu).forEach((b) => b.addEventListener('click', () => b.setAttribute('aria-expanded', String(b.getAttribute('aria-expanded') !== 'true'))));
     $$('.menu__links a', menu).forEach((a) => a.addEventListener('click', () => { if (!a.getAttribute('href').startsWith('#')) lockScroll(false); }));
-    window.matchMedia('(min-width: 992px)').addEventListener('change', (m) => { if (m.matches && menu.classList.contains('is-open')) closeMenu(); });
+    return menu;
+  }
+  function buildMenuTl() {
+    const sheet = $('.menu__sheet', menu);
+    const items = $$('[data-menu-item]', menu);
+    return gsap.timeline({ paused: true })
+      .to($('.menu__bg', menu), { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0)
+      .fromTo(sheet, { clipPath: 'inset(0% 0% 100% 0% round 12px)' }, { clipPath: 'inset(0% 0% 0% 0% round 12px)', duration: 0.8, ease: 'expo.inOut' }, 0)
+      .fromTo(items, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, stagger: 0.05, ease: EASE }, 0.35);
+  }
+  function openMenu() {
+    if (!ensureMenu()) return;
+    void menu.offsetWidth; // freshly created: flush styles so the open transition runs
+    menu.classList.add('is-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    lockScroll(true);
+    if (canAnimate) { menuTl = menuTl || buildMenuTl(); menuTl.timeScale(1).play(); }
+    // The items (including the close button) fade in from 0.35s; a hidden element can't take focus.
+    setTimeout(() => $('.menu__close', menu).focus({ preventScroll: true }), canAnimate ? 450 : 50);
+  }
+  function closeMenu() {
+    menuBtn.setAttribute('aria-expanded', 'false');
+    lockScroll(false);
+    const done = () => { menu.classList.remove('is-open'); menuBtn.focus(); };
+    if (canAnimate && menuTl) { menuTl.timeScale(1.6).reverse(); menuTl.eventCallback('onReverseComplete', done); }
+    else done();
+  }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', openMenu);
+    window.matchMedia('(min-width: 992px)').addEventListener('change', (m) => { if (m.matches && menu && menu.classList.contains('is-open')) closeMenu(); });
   }
 
   // ---- Tabs (services panel + portfolio) --------------------------------------------
@@ -157,10 +178,20 @@
   });
 
   // ---- Quote dialog -----------------------------------------------------------------
-  const dialog = $('#quote-dialog');
+  let dialog = $('#quote-dialog');
+  function ensureDialog() {
+    if (dialog) return dialog;
+    dialog = fromTemplate('tpl-quote');
+    if (!dialog) return null;
+    dialog.addEventListener('close', () => lockScroll(false));
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    $$('[data-close-dialog]', dialog).forEach((b) => b.addEventListener('click', () => dialog.close()));
+    $$('form[data-form]', dialog).forEach(bindForm);
+    return dialog;
+  }
   document.addEventListener('click', (e) => {
     const opener = e.target.closest('[data-open-quote]');
-    if (!opener || !dialog) return;
+    if (!opener || !ensureDialog()) return;
     e.preventDefault();
     const type = opener.getAttribute('data-project');
     const sel = $('select[name="project"]', dialog);
@@ -169,15 +200,10 @@
     if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
     lockScroll(true);
   });
-  if (dialog) {
-    dialog.addEventListener('close', () => lockScroll(false));
-    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
-    $$('[data-close-dialog]', dialog).forEach((b) => b.addEventListener('click', () => dialog.close()));
-  }
 
   // ---- Forms ---------------------------------------------------------------------------
   const cfg = window.BLUEINC_CONFIG || {};
-  $$('form[data-form]').forEach((form) => {
+  function bindForm(form) {
     const status = $('.form__status', form);
     const setStatus = (msg, kind) => { status.textContent = msg; status.className = `form__status${kind ? ` is-${kind}` : ''}`; };
     form.addEventListener('submit', async (e) => {
@@ -209,7 +235,8 @@
         submit.disabled = false;
       }
     });
-  });
+  }
+  $$('form[data-form]').forEach(bindForm);
 
   // ---- Copy email -------------------------------------------------------------------------
   $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
@@ -375,7 +402,9 @@
   function buildOdometer(el) {
     const value = String(el.dataset.odometer);
     const holder = $('[data-odo-digits]', el);
-    holder.innerHTML = value.split('').map((d) => `<span class="odo"><span class="odo__col" data-digit="${d}">${Array.from({ length: 20 }, (_, i) => `<span>${i % 10}</span>`).join('')}</span></span>`).join('');
+    // One element per digit column: 0-9 twice as text lines (was 20 <span>s per digit).
+    const strip = Array.from({ length: 20 }, (_, i) => i % 10).join('\n');
+    holder.innerHTML = value.split('').map((d) => `<span class="odo"><span class="odo__col" data-digit="${d}">${strip}</span></span>`).join('');
     return $$('.odo__col', holder);
   }
 
@@ -545,11 +574,20 @@
     const mq = $('[data-marquee]');
     if (mq) {
       const track = $('.marquee__track', mq);
-      Array.from(track.children).forEach((c) => { const k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); $$('img', k).forEach((i) => (i.alt = '')); track.appendChild(k); });
-      const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 60, repeat: -1 });
-      mq.addEventListener('mouseenter', () => gsap.to(loop, { timeScale: 0.15, duration: 0.8 }));
-      mq.addEventListener('mouseleave', () => gsap.to(loop, { timeScale: 1, duration: 0.8 }));
-      ScrollTrigger.create({ trigger: mq, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? loop.play() : loop.pause()) });
+      // The seamless loop needs a second copy of the logos. Build it off-DOM in one fragment and
+      // append once, when the browser is idle (was 22 separate appends during start-up).
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
+      idle(() => {
+        const frag = document.createDocumentFragment();
+        Array.from(track.children).forEach((c) => frag.appendChild(c.cloneNode(true)));
+        frag.querySelectorAll('.logo-card').forEach((k) => k.setAttribute('aria-hidden', 'true'));
+        frag.querySelectorAll('img').forEach((i) => { i.alt = ''; });
+        track.appendChild(frag);
+        const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 60, repeat: -1 });
+        mq.addEventListener('mouseenter', () => gsap.to(loop, { timeScale: 0.15, duration: 0.8 }));
+        mq.addEventListener('mouseleave', () => gsap.to(loop, { timeScale: 1, duration: 0.8 }));
+        ScrollTrigger.create({ trigger: mq, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? loop.play() : loop.pause()) });
+      }, { timeout: 1500 });
       gsap.from($$('.logo-card', track).slice(0, 8), { y: 40, autoAlpha: 0, duration: 1.2, stagger: 0.06, ease: EASE, scrollTrigger: { trigger: mq, start: 'top 90%', once: true } });
     }
 
@@ -643,12 +681,15 @@
   // ---- Scenes present on every page ------------------------------------------------------------------
   function sharedScenes() {
     // Odometer counters
+    // Digit strips are built only when a counter nears the viewport; until then the plain number shows.
     $$('[data-odometer]').forEach((el) => {
-      const cols = buildOdometer(el);
-      gsap.set(cols, { y: 0 });
-      ScrollTrigger.create({
-        trigger: el, start: 'top 85%', once: true,
-        onEnter: () => cols.forEach((c, i) => gsap.to(c, { y: `${-(10 + Number(c.dataset.digit))}em`, duration: 2 + i * 0.35, ease: 'expo.out', delay: 0.1 * i })),
+      whenNear(el, () => {
+        const cols = buildOdometer(el);
+        gsap.set(cols, { y: 0 });
+        ScrollTrigger.create({
+          trigger: el, start: 'top 85%', once: true,
+          onEnter: () => cols.forEach((c, i) => gsap.to(c, { y: `${-(10 + Number(c.dataset.digit))}em`, duration: 2 + i * 0.35, ease: 'expo.out', delay: 0.1 * i })),
+        });
       });
       gsap.from($('.counter__suffix', el), { scale: 0, duration: 1, ease: 'back.out(2)', delay: 1.2, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
     });
