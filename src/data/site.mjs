@@ -4,8 +4,7 @@
 
 export const site = {
   name: 'Blueinc Technologies',
-  legalName: 'Blueinc Technologies LLC',
-  regNo: '7362044',
+  legalName: 'Blueinc Technologies, Inc.',
   founded: 2016,
   url: 'https://blueinctech.com',
   tagline: 'Technology solutions and digital products',
@@ -16,7 +15,6 @@ export const site = {
   clientPortal: 'https://blueinctech.com/hub',
   phones: [
     { label: 'US', display: '+1 (302) 520-2517', href: 'tel:+13025202517' },
-    { label: 'NG', display: '+234 811 033 3323', href: 'tel:+2348110333323' },
   ],
   // Blueinc is US-based: the Dover, Delaware office is the only published address.
   offices: [

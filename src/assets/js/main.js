@@ -527,14 +527,45 @@
       const pill = $('.work__pill', w);
       const sides = $$('.work__side', w);
       gsap.from(pill, { y: -16, autoAlpha: 0, duration: 1, ease: EASE, scrollTrigger: { trigger: w, start: 'top 75%', once: true } });
-      gsap.from(sides, { y: 20, autoAlpha: 0, duration: 1, ease: EASE, stagger: 0.1, scrollTrigger: { trigger: w, start: 'top 70%', once: true } });
       const next = works[i + 1];
       if (next) {
         // Explicit start value: tweening filter from "none" starts at brightness(0) (black flash).
         gsap.fromTo(card, { scale: 1, filter: 'brightness(1)' }, { scale: 0.92, filter: 'brightness(0.55)', ease: 'none', scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 128px', scrub: true } });
-        gsap.to(sides, { autoAlpha: 0, ease: 'none', scrollTrigger: { trigger: next, start: 'top 70%', end: 'top 35%', scrub: true } });
       }
     });
+
+    // Side labels: every card's labels sit in the same pinned spot, so they must hand over one at a
+    // time. Visibility is computed every frame from the cards' live on-screen positions (not from
+    // trigger offsets measured once), so it can't drift out of sync after a resize, a reload
+    // mid-page or late-loading content.
+    //   out (card i): fades as the next card approaches — done while it is still 40% of a viewport away
+    //   in  (card i): appears only once card i is within 32% of a viewport of its pinned position
+    // The gap between 40% and 32% guarantees two cards' labels are never visible together.
+    if (works.length) {
+      const sideSets = works.map((w) => $$('.work__side', w));
+      const clamp01 = (v) => Math.min(1, Math.max(0, v));
+      const smooth = (t) => t * t * (3 - 2 * t);
+      const update = () => {
+        const vh = window.innerHeight;
+        const pinTop = parseFloat(getComputedStyle(works[0]).top) || 128;
+        const tops = works.map((w) => w.getBoundingClientRect().top - pinTop); // 0 when pinned
+        works.forEach((w, i) => {
+          const inP = i === 0
+            ? clamp01((vh * 0.92 - tops[0]) / (vh * 0.25)) // first card: reveal as the section enters
+            : clamp01((vh * 0.32 - tops[i]) / (vh * 0.22));
+          const outP = i < works.length - 1 ? clamp01((vh * 0.62 - tops[i + 1]) / (vh * 0.22)) : 0;
+          const a = smooth(inP) * (1 - smooth(outP));
+          const y = 14 * (1 - smooth(inP)) - 14 * smooth(outP);
+          sideSets[i].forEach((s) => { s.style.opacity = a.toFixed(3); s.style.visibility = a < 0.01 ? 'hidden' : 'visible'; s.style.transform = `translateY(${y.toFixed(1)}px)`; });
+        });
+      };
+      ScrollTrigger.create({
+        trigger: '.works__list', start: 'top bottom', end: 'bottom top',
+        onToggle: (s) => (s.isActive ? gsap.ticker.add(update) : gsap.ticker.remove(update)),
+        onRefresh: update,
+      });
+      update();
+    }
 
     // Services rows: content rises in as each row arrives.
     $$('.svc-row').forEach((row) => {

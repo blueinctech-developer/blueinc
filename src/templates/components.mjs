@@ -201,7 +201,7 @@ ${withCta ? ctaPanel() : ''}
   <div class="clocks" style="--n:${site.offices.length}">${clocks}</div>
   <div class="footer__wordmark" data-footer-wordmark>${wordmark('BLUEINC TECH', { label: 'Blueinc Tech' })}</div>
   <div class="footer__bottom">
-    <span>© ${site.founded}–<span data-year>${new Date().getFullYear()}</span> ${esc(site.legalName)} | ${site.regNo}</span>
+    <span>© ${site.founded}–<span data-year>${new Date().getFullYear()}</span> ${esc(site.legalName)}</span>
     <nav aria-label="Legal">
       <a href="/terms-of-service/">Terms of Service</a>
       <a href="/privacy-policy/">Privacy Policy</a>
