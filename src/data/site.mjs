@@ -77,7 +77,8 @@ export const footerCols = [
     links: [
       { label: 'About Blueinc', href: '/about-us/' },
       { label: 'Contact Us', href: '/contact/' },
-      // Blog, Press & Media and Company CSR are hidden until those pages exist on this site.
+      { label: 'Our Blog', href: '/blog/' },
+      // Press & Media and Company CSR are hidden until those pages exist on this site.
     ],
   },
   {

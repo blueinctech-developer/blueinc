@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 
 import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage } from '../src/data/site.mjs';
 import { terms, privacy, legalEmail } from '../src/data/legal.mjs';
+import { blog, posts, readMinutes } from '../src/data/blog.mjs';
 import { layout } from '../src/templates/layout.mjs';
 import { homePage } from '../src/templates/home.mjs';
 import {
   aboutPage, auditPage, servicesIndexPage, serviceDetailPage, portfolioPage, industriesPage,
-  reviewsPageTpl, pricingPage, contactPageTpl, notFoundPage, legalPage,
+  reviewsPageTpl, pricingPage, contactPageTpl, notFoundPage, legalPage, blogIndexPage, blogPostPage,
 } from '../src/templates/pages.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,6 +32,12 @@ const pages = [
   { route: '/success-stories/', title: reviewsPage.title, description: reviewsPage.body, body: reviewsPageTpl() },
   { route: '/pricing-plans/', title: pricing.title, description: pricing.lead, body: pricingPage() },
   { route: '/contact/', title: contactPage.title, description: contactPage.lead, body: contactPageTpl() },
+  { route: '/blog/', title: blog.title, description: blog.description, body: blogIndexPage(blog, posts, readMinutes), priority: '0.7' },
+  ...posts.map((p) => ({
+    route: `/blog/${p.slug}/`, title: `${p.title} | Blueinc Technologies`, description: p.excerpt, ogImage: p.image, ogType: 'article', priority: '0.6',
+    body: blogPostPage(p, posts, readMinutes),
+    schema: { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, datePublished: p.date, image: site.url + p.image, mainEntityOfPage: `${site.url}/blog/${p.slug}/`, author: { '@type': 'Organization', name: site.name, url: site.url }, publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: site.url + '/assets/img/logo.png' } } },
+  })),
   ...[terms, privacy].map((d) => ({ route: d.route, title: d.title, description: d.description, body: legalPage(d, { email: legalEmail }), priority: '0.3' })),
   { route: '/free-detailed-audit/', title: 'Free Technology Consultation | Blueinc Technologies', description: audit.lead, body: auditPage() },
 ];

@@ -16,7 +16,7 @@ const orgJsonLd = () => JSON.stringify({
   contactPoint: site.phones.map((p) => ({ '@type': 'ContactPoint', telephone: p.display.replace(/\s/g, ''), contactType: 'customer service', areaServed: p.label })),
 });
 
-export function layout({ route, title, description, body, withCta = true, bodyClass = '', ogImage = '/assets/img/people.jpg', noindex = false, jsonLd = false }) {
+export function layout({ route, title, description, body, withCta = true, bodyClass = '', ogImage = '/assets/img/people.jpg', noindex = false, jsonLd = false, schema = null, ogType = 'website' }) {
   const canonical = site.url + route;
   return `<!doctype html>
 <html lang="en-US">
@@ -27,7 +27,7 @@ export function layout({ route, title, description, body, withCta = true, bodyCl
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${canonical}">
 ${noindex ? '<meta name="robots" content="noindex">' : ''}
-<meta property="og:type" content="website">
+<meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
@@ -56,6 +56,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
   })(document);
 </script>
 ${jsonLd ? `<script type="application/ld+json">${orgJsonLd()}</script>` : ''}
+${schema ? `<script type="application/ld+json">${JSON.stringify(schema)}</script>` : ''}
 </head>
 <body class="${bodyClass}">
 <a class="skip-link" href="#main">Skip to content</a>

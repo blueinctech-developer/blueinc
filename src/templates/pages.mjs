@@ -350,3 +350,62 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: doc.h1 }], title: do
 </section>
 <div class="section--sm"></div>`;
 }
+
+/* ---------- Blog ---------- */
+const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+function postCard(p, readMin) {
+  return `
+    <a class="post-card" href="/blog/${p.slug}/">
+      <div class="post-card__img"><img src="${p.image}" alt="" loading="lazy" width="1440" height="900"></div>
+      <div class="post-card__body">
+        <span class="post-card__meta">${esc(p.category)} · ${readMin} min read</span>
+        <h2 class="h5">${esc(p.title)}</h2>
+        <p>${esc(p.excerpt)}</p>
+        <span class="arrow-link">${roll('Read article')}${icon.arrow}</span>
+      </div>
+    </a>`;
+}
+
+export function blogIndexPage(blog, posts, readMinutes) {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Blog' }], title: blog.h1, lead: blog.lead, wide: true })}
+<section class="section--sm container" aria-label="Articles" style="padding-top:0">
+  <div class="post-grid post-grid--2" data-stagger>${posts.map((p) => postCard(p, readMinutes(p))).join('')}</div>
+</section>
+<div class="section--sm"></div>`;
+}
+
+export function blogPostPage(post, posts, readMinutes) {
+  const others = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const block = (b) =>
+    b.p ? `<p>${esc(b.p)}</p>`
+      : b.h ? `<h2 class="h5">${esc(b.h)}</h2>`
+        : b.ul ? `<ul>${b.ul.map((li) => `<li>${esc(li)}</li>`).join('')}</ul>` : '';
+  return `
+<article>
+${pageHero({ trail: [{ label: 'Blog', href: '/blog/' }, { label: post.title }], title: post.title, wide: true,
+  aside: '' })}
+<div class="container post-meta">
+  <span>${esc(post.category)}</span><span aria-hidden="true">·</span>
+  <time datetime="${post.date}">${fmtDate(post.date)}</time><span aria-hidden="true">·</span>
+  <span>${readMinutes(post)} min read</span><span aria-hidden="true">·</span>
+  <span>By Blueinc Technologies</span>
+</div>
+<div class="media-card media-card--wide" data-reveal-media>
+  <img src="${post.image}" alt="${esc(post.imageAlt)}" width="1440" height="900" data-media-img>
+</div>
+<section class="section container" aria-label="Article">
+  <div class="prose">
+    <p class="prose__lead">${esc(post.excerpt)}</p>
+    ${post.body.map(block).join('\n    ')}
+    <div class="btn-row" style="margin-top:2.5rem">${quoteBtn('Discuss Your Project')}${btn({ label: 'Back to blog', href: '/blog/', variant: 'light' })}</div>
+  </div>
+</section>
+</article>
+<section class="section--sm container" aria-labelledby="more-posts" style="padding-top:0">
+  <div class="section-head section-head--left"><h2 class="h4" id="more-posts">More articles</h2></div>
+  <div class="post-grid" data-stagger>${others.map((p) => postCard(p, readMinutes(p))).join('')}</div>
+</section>
+<div class="section--sm"></div>`;
+}
