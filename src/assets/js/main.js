@@ -521,7 +521,9 @@
     }
 
     // Stacking work cards: the card underneath recedes as the next one slides over it.
-    const works = $$('[data-work]');
+    // Each .works__list is an independent stack (home has one; the portfolio has one per tab).
+    $$('.works__list').forEach((list) => {
+    const works = $$('[data-work]', list);
     works.forEach((w, i) => {
       const card = $('.work__card', w);
       const pill = $('.work__pill', w);
@@ -560,12 +562,13 @@
         });
       };
       ScrollTrigger.create({
-        trigger: '.works__list', start: 'top bottom', end: 'bottom top',
+        trigger: list, start: 'top bottom', end: 'bottom top',
         onToggle: (s) => (s.isActive ? gsap.ticker.add(update) : gsap.ticker.remove(update)),
         onRefresh: update,
       });
       update();
     }
+    });
 
     // Services rows: content rises in as each row arrives.
     $$('.svc-row').forEach((row) => {

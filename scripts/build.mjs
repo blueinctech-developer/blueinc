@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage } from '../src/data/site.mjs';
 import { terms, privacy, legalEmail } from '../src/data/legal.mjs';
-import { blog, posts, readMinutes } from '../src/data/blog.mjs';
+import { blog, posts as rawPosts, readMinutes, byDate } from '../src/data/blog.mjs';
+const posts = byDate(rawPosts);
 import { layout } from '../src/templates/layout.mjs';
 import { homePage } from '../src/templates/home.mjs';
 import {

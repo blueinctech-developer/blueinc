@@ -9,13 +9,14 @@ export const blog = {
   lead: 'Practical guidance from a team that builds software for clients and runs products of its own.',
 };
 
+// Newest first is applied at render time (see byDate), so posts can be listed in any order here.
 export const posts = [
   {
     slug: 'build-vs-buy-custom-software',
     title: 'Build or Buy? How to Decide When Your Business Needs Custom Software',
     excerpt: 'Off-the-shelf tools are fast to adopt, but they can also hold you back. Here’s a practical way to decide when custom software is worth it.',
     category: 'Custom Software',
-    date: '2026-10-22',
+    date: '2026-02-17',
     image: '/assets/img/people.jpg',
     imageAlt: 'The Blueinc Technologies team planning a software project',
     body: [
@@ -60,7 +61,7 @@ export const posts = [
     title: 'Why We Build Our Own Products, and What It Teaches Us About Client Work',
     excerpt: 'Running digital products of our own changes how we approach every client project. Here’s what an owner’s perspective adds to software development.',
     category: 'Digital Products',
-    date: '2026-10-22',
+    date: '2026-09-22',
     image: '/assets/img/clients/staffintra.com.jpg',
     imageAlt: 'Staffintra, a workplace operations platform built and operated by Blueinc Technologies',
     body: [
@@ -88,7 +89,7 @@ export const posts = [
     title: 'Business Process Automation: Where to Start (and What to Leave Alone)',
     excerpt: 'Automation can free your team from repetitive work, but automating the wrong process just makes mistakes faster. A practical starting guide.',
     category: 'Automation',
-    date: '2026-10-22',
+    date: '2026-05-12',
     image: '/assets/img/team-duo.png',
     imageAlt: 'Blueinc Technologies team members',
     body: [
@@ -119,7 +120,7 @@ export const posts = [
     title: 'Planning Your First Product Release: How to Scope an MVP That Works',
     excerpt: 'A minimum viable product should test your most important assumption, not every idea you have. Here’s how to scope a first release with confidence.',
     category: 'Product Development',
-    date: '2026-10-22',
+    date: '2026-07-28',
     image: '/assets/img/clients/myjobtests.com.jpg',
     imageAlt: 'MyJobTests, a career assessment preparation platform built and operated by Blueinc Technologies',
     body: [
@@ -152,3 +153,6 @@ export const readMinutes = (post) => {
   const words = post.body.map((b) => b.p || b.h || (b.ul || []).join(' ')).join(' ').split(/\s+/).length;
   return Math.max(1, Math.round(words / 230));
 };
+
+// Newest first.
+export const byDate = (list) => [...list].sort((a, b) => b.date.localeCompare(a.date));

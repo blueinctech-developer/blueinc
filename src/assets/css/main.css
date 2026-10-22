@@ -1381,3 +1381,11 @@ html.js:not(.no-anim):not(.reduced) [data-reveal-media] { visibility: hidden; }
 @media (max-width: 640px) { .post-grid--2 { grid-template-columns: 1fr; } }
 /* Article titles are long: a step below the page-title size so they sit on 2-3 lines */
 article > .page-hero .h1 { font-size: clamp(2.25rem, 4.6vw, 4.25rem); line-height: 1.05; max-width: 32ch; }
+
+/* Portfolio stacked cards without a screenshot: project name set large on a dark card */
+.work__card--text { display: grid; place-items: center; background: radial-gradient(70% 90% at 50% 110%, rgba(18, 163, 200, .28), transparent 60%), radial-gradient(60% 70% at 85% -10%, rgba(230, 25, 126, .22), transparent 60%), var(--ink); }
+.work__title { max-width: 16ch; padding: 1.5rem; text-align: center; color: var(--white); font-size: clamp(1.5rem, 5.5vw, 4.5rem); overflow-wrap: anywhere; font-weight: 500; line-height: 1.05; letter-spacing: -.03em; }
+/* Pill is centred with left:50%, which caps its shrink-to-fit width at half the card; size it to its content instead (fixes "Visit site" spilling past the pill on phones). */
+.work__pill { width: max-content; max-width: calc(100% - 1.5rem); }
+.work__pill-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: inherit; }
+.work__pill em, .work__pill i, .work__pill img { flex: none; }

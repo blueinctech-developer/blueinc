@@ -209,14 +209,34 @@ ${s.quote ? `
 }
 
 /* ---------- Portfolio ---------- */
+// Projects are shown as stacked, pinned cards (the same component as the home "products & selected
+// work" section), modelled on cosmos.studio/projects: a "Name | See work" pill on each card and
+// small labels at the left and right edges.
+function projectStack(items) {
+  return `<div class="works__list">${items.map((it, i) => {
+    const img = it.site && hasShot(it.site) ? shot(it.site) : null;
+    const href = it.href || (it.site && isLive(it.site) ? `https://${it.site}/` : null);
+    const tag = href ? 'a' : 'div';
+    const attrs = href ? ` href="${href}" target="_blank" rel="noopener" aria-label="${esc(it.name)}: visit site"` : '';
+    return `
+    <div class="work" style="z-index:${i + 1}" data-work>
+      <div class="work__side"><small>${esc(it.leftLabel)}</small><span>${esc(it.name)}</span></div>
+      <${tag} class="work__card${img ? '' : ' work__card--text'}"${attrs}>
+        ${img ? `<img src="${img}" alt="${esc(it.name)} by Blueinc Technologies" loading="lazy" width="1440" height="900">` : `<span class="work__title" aria-hidden="true">${esc(it.name)}</span>`}
+        <span class="work__shade"></span>
+        <span class="work__pill">${img ? `<img src="${img}" alt="" width="36" height="36">` : ''}<b class="work__pill-name">${esc(it.name)}</b>${href ? '<i></i><em>Visit site</em>' : ''}</span>
+      </${tag}>
+      <div class="work__side work__side--r"><small>${esc(it.rightLabel)}</small><span>${esc(it.kind)}</span></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
 export function portfolioPage() {
-  const textTiles = (list) => `<div class="sites" data-stagger>${list.map((t) => `
-    <div class="site-card site-card--text"><div class="site-card__img"><span>${esc(t)}</span></div><div class="site-card__meta"><span>${esc(t)}</span></div></div>`).join('')}</div>`;
   const panels = [
-    `<div class="sites" data-stagger>${portfolio.websites.map((d) => siteCard(d)).join('')}</div>`,
-    textTiles(portfolio.webApps),
-    textTiles(portfolio.mobileApps),
-    `<div class="sites" data-stagger>${products.map((p) => siteCard(p.site, { badge: 'Our product' })).join('')}</div>`,
+    projectStack(portfolio.websites.map((d) => ({ site: d, name: d, leftLabel: 'Client', rightLabel: 'Type', kind: 'Website' }))),
+    projectStack(portfolio.webApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Web application' }))),
+    projectStack(portfolio.mobileApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Mobile application' }))),
+    projectStack(products.map((p) => ({ site: p.site, href: p.url, name: p.name, leftLabel: 'Our product', rightLabel: p.site, kind: p.kind }))),
   ];
   const counts = [portfolio.websites.length, portfolio.webApps.length, portfolio.mobileApps.length, products.length];
   return `
