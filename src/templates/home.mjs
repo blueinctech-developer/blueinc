@@ -40,7 +40,7 @@ export function servicesPanel({ id = 'home', compact = false } = {}) {
 function thumbFor(s) {
   if (s.image.startsWith('clients/')) {
     const siteName = s.image.slice(8, -4);
-    return hasShot(siteName) ? `/assets/img/${s.image}` : '/assets/img/people.jpg';
+    return hasShot(siteName) ? `/assets/img/${s.image}` : '/assets/img/clients/staffintra.com.jpg';
   }
   return `/assets/img/${s.image}`;
 }
@@ -75,14 +75,14 @@ export function counters() {
 export function aboutSplit() {
   const avatars = [
     { bg: '/assets/img/partner.jpg', pos: '50% 20%', size: 'cover' },
-    { bg: '/assets/img/people.jpg', pos: '38% 50%', size: '640%' },
-    { bg: '/assets/img/people.jpg', pos: '62% 43%', size: '640%' },
-    { bg: '/assets/img/people.jpg', pos: '74% 46%', size: '560%' },
-    { bg: '/assets/img/team-duo.png', pos: '23% 25%', size: '420%' },
-    { bg: '/assets/img/team-duo.png', pos: '76% 22%', size: '420%' },
+    { bg: '/assets/img/products/staffintra.svg', pos: '50% 50%', size: '62%', logo: true },
+    { bg: '/assets/img/products/travelnursehouses.png', pos: '50% 50%', size: '86%', logo: true },
+    { bg: '/assets/img/mark.png', pos: '50% 50%', size: '62%', logo: true },
+    { bg: '/assets/img/products/myjobtests.png', pos: '50% 50%', size: '86%', logo: true },
+    { bg: '/assets/img/products/teststreams.png', pos: '50% 50%', size: '70%', logo: true },
   ];
   const outer = values.map((v, i) => `<div class="orbit__item" style="--a:${i * 90 + 20}deg;--r:calc(min(30rem, 86vw) / 2 - .5rem)"><span class="orbit__chip">${esc(v.title)}</span></div>`).join('');
-  const inner = avatars.map((a, i) => `<div class="orbit__item" style="--a:${i * 60}deg;--r:calc(min(30rem, 86vw) * .3)"><span class="orbit__avatar" style="background-image:url(${a.bg});background-position:${a.pos};background-size:${a.size}"></span></div>`).join('');
+  const inner = avatars.map((a, i) => `<div class="orbit__item" style="--a:${i * 60}deg;--r:calc(min(30rem, 86vw) * .3)"><span class="orbit__avatar${a.logo ? ' orbit__avatar--logo' : ''}" style="background-image:url(${a.bg});background-position:${a.pos};background-size:${a.size}"></span></div>`).join('');
   return `
 <section class="about-split" aria-labelledby="who-title">
   <div class="about-split__copy">
@@ -126,7 +126,7 @@ function why() {
   </div>
   <div class="bento">
     <article class="bento__card bento__card--photo" data-bento>
-      <img src="/assets/img/people.jpg" alt="Blueinc Technologies team members collaborating on a project" loading="lazy" width="1868" height="1232" data-parallax="-8">
+      <img src="/assets/img/clients/travelnursehouses.ca.jpg" alt="Travel Nurse Houses, a digital product built and run by Blueinc Technologies" loading="lazy" width="1440" height="900" data-parallax="-8">
       <div class="glass history-panel">
         <div class="history-panel__head"><span>Our history</span><span>${icon.arrowUpRight.replace('<svg', '<svg style="width:1rem"')}</span></div>
         <ul data-stagger>${home.history.points.map((p, i) => `<li><span>${esc(p)}</span></li>`).join('')}</ul>

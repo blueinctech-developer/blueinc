@@ -44,7 +44,7 @@ export function aboutPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title: about.h1, lead: about.lead, wide: true,
   actions: `${btn({ label: 'Explore Our Solutions', href: '/our-services/' })}${quoteBtn('Get a Free Consultation', 'light')}` })}
-<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="The Blueinc Technologies team: engineers, designers and product people" width="837" height="683" data-media-img></div>
+<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ laptop: 'staffintra.com', phone: 'staffintra.com', label: 'Staffintra, a Blueinc Technologies product, on laptop and phone' })}</div>
 
 <section class="section container" aria-label="What we do">
   ${eyebrow('What we do')}
@@ -93,7 +93,7 @@ ${aboutSplit()}
       <p class="body-l" style="margin-top:1.5rem" data-reveal="fade">${esc(about.team.body)}</p>
       <div class="btn-row" style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Work With Us', href: '/contact/' })}</div>
     </div>
-    <div class="media-card" style="margin:0;aspect-ratio:4/3" data-reveal-media><img src="/assets/img/people.jpg" alt="Blueinc Technologies team members collaborating on a project" width="1868" height="1232" loading="lazy" data-media-img></div>
+    <div class="media-card media-card--stage media-card--stage-fit" style="margin:0;aspect-ratio:4/3" data-reveal-media>${devices({ laptop: 'teststreams.com', phone: 'myjobtests.com', label: 'Teststreams and MyJobTests, Blueinc Technologies products, on laptop and phone' })}</div>
   </div>
 </section>
 `;
@@ -123,7 +123,7 @@ export function servicesIndexPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services' }], title: servicesPage.h1, lead: servicesPage.lead, wide: true,
   actions: `${btn({ label: 'Start a Project', href: '/pricing-plans/' })}${quoteBtn('Get a Free Quote', 'light')}` })}
-${mediaCard('/assets/img/people.jpg', 'Blueinc Technologies team at work')}
+<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ laptop: 'myjobtests.com', phone: 'travelnursehouses.ca', label: 'MyJobTests and Travel Nurse Houses, Blueinc Technologies products, on laptop and phone' })}</div>
 <section class="section container" aria-labelledby="belief-title">
   <div class="split">
     <div>${eyebrow('Our Solutions')}</div>
@@ -155,8 +155,7 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services', href
   actions: `${quoteBtn('Start a Project', '', '', '')}${btn({ label: 'View pricing', href: '/pricing-plans/', variant: 'light' })}` })}
 ${s.mockup ? `<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ ...s.mockup, label: `${s.name} work by Blueinc Technologies shown on laptop and phone` })}</div>`
     : heroImg ? mediaCard(heroImg, `${s.name} project by Blueinc Technologies`, '', 1440, 900)
-    : s.image === 'team-duo.png' ? `<div class="media-card media-card--wide media-card--soft" data-reveal-media><img src="/assets/img/team-duo.png" alt="Blueinc Technologies team" width="837" height="683" data-media-img></div>`
-    : mediaCard('/assets/img/people.jpg', 'Blueinc Technologies team at work')}
+    : mediaCard('/assets/img/clients/staffintra.com.jpg', 'Staffintra, a Blueinc Technologies product', '', 1440, 900)}
 
 <section class="section container" aria-labelledby="intro-title">
   <div class="split">

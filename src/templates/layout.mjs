@@ -16,7 +16,7 @@ const orgJsonLd = () => JSON.stringify({
   contactPoint: site.phones.map((p) => ({ '@type': 'ContactPoint', telephone: p.display.replace(/\s/g, ''), contactType: 'customer service', areaServed: p.label })),
 });
 
-export function layout({ route, title, description, body, withCta = true, bodyClass = '', ogImage = '/assets/img/people.jpg', noindex = false, jsonLd = false, schema = null, ogType = 'website' }) {
+export function layout({ route, title, description, body, withCta = true, bodyClass = '', ogImage = '/assets/img/og.jpg', noindex = false, jsonLd = false, schema = null, ogType = 'website' }) {
   const canonical = site.url + route;
   return `<!doctype html>
 <html lang="en-US">

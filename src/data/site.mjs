@@ -352,6 +352,7 @@ export const services = [
       'Keep your software and your customers well looked after. We maintain and optimize applications after launch, and set up knowledge bases, support teams and systems that resolve customer issues quickly across multiple channels.',
     tags: ['Knowledge Base', 'Agent Training', 'Multi-Channel', 'Live Chat', 'Email', 'Phone'],
     image: 'partner.jpg',
+    mockup: { laptop: 'myjobtests.com', phone: 'teststreams.com' },
     h1: 'Ongoing support that keeps your software and customers in good hands.',
     lead: 'Maintenance, optimization and customer support, so your product keeps performing long after launch.',
     introTitle: 'Elevating Your Customer Experience',
@@ -381,7 +382,8 @@ export const services = [
     summary:
       'ERP, business management systems and process automation that connect your operations. We assess your workflows, select or build the right system, migrate your data, integrate your tools and train your team, so work runs on one reliable foundation.',
     tags: ['ERP', 'Business Systems', 'Process Automation', 'Data Migration', 'Integrations'],
-    image: 'team-duo.png',
+    image: 'clients/staffintra.com.jpg',
+    mockup: { laptop: 'staffintra.com', phone: 'staffintra.com' },
     h1: 'Unify your operations with enterprise systems and automation.',
     lead: 'Replace data silos and manual work with connected systems that support smarter decisions and growth.',
     introTitle: 'We Help You Run Operations on One Reliable System',

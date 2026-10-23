@@ -737,6 +737,8 @@ html.js .rotator > span + span { visibility: hidden; }
 .orbit__chip, .orbit__avatar { display: block; }
 .orbit__avatar { width: 3.5rem; height: 3.5rem; border-radius: 50%; background-size: cover; background-position: center; filter: grayscale(1); box-shadow: 0 0 0 1px rgba(255, 255, 255, .2); transition: filter .5s; }
 .orbit__avatar:hover { filter: none; }
+/* Product icons in the orbit: shown whole on white instead of cropped like a photo */
+.orbit__avatar--logo { background-color: #fff; background-repeat: no-repeat; }
 .orbit__chip { padding: .375rem .75rem; border-radius: 999px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16); font-family: var(--font-ui); font-size: .75rem; white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .orbit__center { position: relative; text-align: center; z-index: 2; }
 .orbit__center .h5 { font-size: 1.75rem; max-width: 12rem; margin-inline: auto; line-height: 1.05; }
@@ -1209,7 +1211,7 @@ html.no-anim .marquee__track, html.reduced .marquee__track { width: auto; overfl
 /* Media cards paint immediately in their clipped starting shape (good for LCP); JS scrubs them open. */
 html.js:not(.no-anim):not(.reduced) [data-reveal-media] { clip-path: inset(10% 5% 0% 5% round 28px); }
 
-/* Reel: anchored to the top so the "Drive Business Growth" sign and faces stay in frame;
+/* Reel: anchored to the top;
    taller than the card so the scroll parallax never exposes an edge. */
 .reel__media img { height: 112%; object-position: 50% 0%; transform-origin: 50% 0%; }
 
@@ -1330,6 +1332,8 @@ html.js:not(.no-anim):not(.reduced) [data-reveal-media] { clip-path: inset(10% 5
 /* Service-page hero stage with mockups */
 .media-card--stage { display: grid; place-items: end center; padding: 3.5rem 2rem 0; background: radial-gradient(90% 110% at 50% 100%, #d9eef5 0%, #f1e3ec 45%, #ececec 75%); }
 .media-card--stage .devices { width: min(56rem, 74%); }
+.media-card--stage-fit { place-items: center; padding: 2rem; }
+.media-card--stage-fit .devices { width: 92%; }
 .media-card--stage .device-laptop { filter: drop-shadow(0 40px 50px rgba(15, 16, 17, .25)); }
 @media (max-width: 767px) { .media-card--stage { padding: 2rem 1rem 0; } .media-card--stage .devices { width: 92%; } }
 

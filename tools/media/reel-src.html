@@ -40,9 +40,10 @@
   .scr img { width: 100%; display: block; }
   .phone { position: absolute; right: 90px; top: 250px; width: 220px; height: 450px; border-radius: 36px; border: 9px solid #111; background: #fff; overflow: hidden; box-shadow: 0 50px 90px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.12); }
   .phone::before { content:''; position: absolute; left: 50%; top: 8px; width: 70px; height: 20px; translate: -50% 0; border-radius: 20px; background: #000; z-index: 2; }
-  /* scene 4 — team + wordmark */
-  .s4 img.ph { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .s4 .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.8)); }
+  /* scene 4 — product mosaic + wordmark */
+  .s4 .mosaic { position: absolute; left: 50%; top: 50%; width: 1900px; translate: -50% -50%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; filter: blur(2px) saturate(.9); }
+  .s4 .mosaic img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 0%; border-radius: 14px; display: block; }
+  .s4 .shade { position: absolute; inset: 0; background: radial-gradient(50% 60% at 18% 20%, rgba(18,163,200,.28), transparent 70%), radial-gradient(50% 60% at 85% 85%, rgba(230,25,126,.24), transparent 70%), linear-gradient(180deg, rgba(5,6,7,.78), rgba(5,6,7,.88)); }
   .s4 .wm { position: absolute; left: 80px; right: 80px; top: 50%; translate: 0 -50%; color: #fff; }
   .s4 .wm svg { width: 100%; height: auto; overflow: visible; }
   .s4 .wm rect { fill: currentColor; }
@@ -67,7 +68,7 @@
     <div class="phone"><img id="phimg" src="a/myjobtests-m.jpg" style="width:100%;display:block" alt=""></div>
   </section>
   <section class="scene s4">
-    <img class="ph" src="a/people.jpg" alt="">
+    <div class="mosaic"><img src="a/c/staffintra.com.jpg" alt=""><img src="a/c/travelnursehouses.ca.jpg" alt=""><img src="a/c/myjobtests.com.jpg" alt=""><img src="a/c/teststreams.com.jpg" alt=""><img src="a/c/teststreams.com.jpg" alt=""><img src="a/c/staffintra.com.jpg" alt=""><img src="a/c/travelnursehouses.ca.jpg" alt=""><img src="a/c/myjobtests.com.jpg" alt=""><img src="a/c/myjobtests.com.jpg" alt=""><img src="a/c/teststreams.com.jpg" alt=""><img src="a/c/staffintra.com.jpg" alt=""><img src="a/c/travelnursehouses.ca.jpg" alt=""></div>
     <div class="shade"></div>
     <div class="wm">%%WORDMARK%%</div>
     <div class="tag">Technology solutions and digital products</div>
@@ -116,9 +117,9 @@
     .to(words[1], { yPercent: -110, duration: .4, ease: 'power3.in' }, 9.15)
     .to(words[2], { yPercent: 0, duration: .55, ease: E }, 9.55)
     .to('.s3', { autoAlpha: 0, duration: .4 }, 9.95)
-  // Scene 4 — team photo → wordmark (10.0 → 12), fades to the black that scene 1 starts on
+  // Scene 4 — product mosaic → wordmark (10.0 → 12), fades to the black that scene 1 starts on
     .fromTo('.s4', { autoAlpha: 0 }, { autoAlpha: 1, duration: .35, immediateRender: false }, 10.0)
-    .fromTo('.s4 img.ph', { scale: 1.15 }, { scale: 1.02, duration: 2, ease: 'none' }, 10.0)
+    .fromTo('.s4 .mosaic', { scale: 1.15 }, { scale: 1.02, duration: 2, ease: 'none' }, 10.0)
     .from('.s4 .wm .wm-letter', { scaleY: 0, transformOrigin: (i) => (i % 2 ? '50% 0%' : '50% 100%'), duration: .9, stagger: { each: .04, from: 'random' }, ease: 'expo.inOut' }, 10.15)
     .from('.s4 .tag', { y: 20, autoAlpha: 0, duration: .8, ease: E }, 10.7)
     .to('#fade', { opacity: 1, duration: .45, ease: 'power2.in' }, D - .45);

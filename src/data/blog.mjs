@@ -17,8 +17,8 @@ export const posts = [
     excerpt: 'Off-the-shelf tools are fast to adopt, but they can also hold you back. Here’s a practical way to decide when custom software is worth it.',
     category: 'Custom Software',
     date: '2026-02-17',
-    image: '/assets/img/people.jpg',
-    imageAlt: 'The Blueinc Technologies team planning a software project',
+    image: '/assets/img/clients/travelnursehouses.ca.jpg',
+    imageAlt: 'Travel Nurse Houses, a custom platform built and run by Blueinc Technologies',
     body: [
       { p: 'Almost every growing business reaches the same crossroads. The spreadsheets and off-the-shelf tools that got you started begin to strain: data lives in too many places, teams invent workarounds, and simple questions take hours to answer. The obvious next step is better software. The harder question is whether to buy it or build it.' },
       { p: 'There is no universal answer, but there is a reliable way to think it through.' },
@@ -90,8 +90,8 @@ export const posts = [
     excerpt: 'Automation can free your team from repetitive work, but automating the wrong process just makes mistakes faster. A practical starting guide.',
     category: 'Automation',
     date: '2026-05-12',
-    image: '/assets/img/team-duo.png',
-    imageAlt: 'Blueinc Technologies team members',
+    image: '/assets/img/clients/teststreams.com.jpg',
+    imageAlt: 'Teststreams, a digital product by Blueinc Technologies',
     body: [
       { p: 'Most organizations have work that repeats every day: copying data between systems, chasing approvals, compiling the same report every week, sending the same reminders. Automation promises to take that work off people’s plates. Done well, it does. Done hastily, it hard-codes a broken process and makes it harder to change.' },
       { h: 'Map the process before you automate it' },
