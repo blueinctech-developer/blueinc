@@ -105,7 +105,7 @@ export const home = {
     'We design, build and scale software for businesses, and we develop and operate our own digital products that solve real problems across industries.',
   trustedBy: 'Trusted by businesses across Canada, UK, US and Nigeria',
   stats: [
-    { value: 100, suffix: '+', label: 'Websites & Apps Built' },
+    { value: 100, suffix: '+', label: 'Software & Apps Built' },
     { value: 6, suffix: '+', label: 'Years Experience' },
     { value: 5, suffix: '+', label: 'Countries Served' },
     { value: 4, suffix: '+', label: 'Digital Products We Own & Operate' },

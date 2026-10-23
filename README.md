@@ -41,7 +41,7 @@ The Terms of Service (`/terms-of-service/`) and Privacy Policy (`/privacy-policy
 | File | What it is | Where it's used |
 | --- | --- | --- |
 | `showreel.mp4` | 12 s showreel built from real client sites and the team photo (1600×732, H.264, 1.7 MB) | Home hero card, with a pause button |
-| `ribbon.mp4` | 8 s seamless 3D brand-ribbon loop | Home bento "100+ Websites & Apps Built" |
+| `ribbon.mp4` | 8 s seamless 3D brand-ribbon loop | Home bento "100+ Software & Apps Built" |
 | `ribbon-wide.mp4` | 10 s wide 3D loop | Call-to-action panel on every page |
 | `sites/*-d.jpg`, `*-m.jpg` | Full-length desktop and mobile captures of live client sites | Laptop and phone mockups; portfolio hover-scroll |
 
