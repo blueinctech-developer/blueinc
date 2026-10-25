@@ -2,9 +2,10 @@ import {
   site, home, about, audit, values, servicesPage, services, industries, portfolio,
   testimonials, reviewsPage, pricing, contactPage,
 } from '../data/site.mjs';
-import { esc, pad, icon, btn, quoteBtn, roll, eyebrow, crumbs, shot, projectForm, devices } from './components.mjs';
-import { servicesPanel, quotesGrid, counters, aboutSplit } from './home.mjs';
-import { hasShot, isLive, hasLong, longName } from './util.mjs';
+import { esc, pad, icon, btn, quoteBtn, roll, eyebrow, crumbs, projectForm, devices } from './components.mjs';
+import { servicesPanel, quotesGrid, counters, aboutSplit, workCard } from './home.mjs';
+import { isLive } from './util.mjs';
+import { illo, SCENE_FOR } from './illos.mjs';
 import { products } from '../data/site.mjs';
 
 /* ---------- Shared page hero ---------- */
@@ -23,32 +24,47 @@ function pageHero({ trail, eyebrowText, title, lead, actions = '', wide = false,
 </section>`;
 }
 
-const mediaCard = (src, alt, extra = '', w = 1868, h = 1232) => `
-<div class="media-card media-card--wide ${extra}" data-reveal-media>
-  <img src="${src}" alt="${esc(alt)}" width="${w}" height="${h}" data-media-img>
-</div>`;
+// Wide stage card holding an illustration on laptop + phone.
+const stageCard = (mockup, label, extra = '') => `
+<div class="media-card media-card--wide media-card--stage ${extra}" data-reveal-media>${devices({ ...mockup, label })}</div>`;
 
 function siteCard(domain, { badge = '' } = {}) {
-  const img = hasShot(domain);
+  const scene = SCENE_FOR[domain];
   const live = isLive(domain);
   const inner = `
-    <div class="site-card__img${hasLong(domain) ? ' site-card__img--scroll' : ''}">${img ? `<img src="${hasLong(domain) ? `/assets/media/sites/${longName(domain)}-d.jpg` : shot(domain)}" alt="${esc(domain)} website by Blueinc Technologies" loading="lazy" width="1440" height="900">` : `<span>${esc(domain)}</span>`}${badge ? `<span class="badge">${esc(badge)}</span>` : ''}</div>
+    <div class="site-card__img">${scene ? illo(scene) : `<span>${esc(domain)}</span>`}${badge ? `<span class="badge">${esc(badge)}</span>` : ''}</div>
     <div class="site-card__meta"><span>www.${esc(domain)}</span>${live ? icon.arrowUpRight : ''}</div>`;
   return live
-    ? `<a class="site-card${img ? '' : ' site-card--text'}" href="https://${domain}/" target="_blank" rel="noopener">${inner}</a>`
-    : `<div class="site-card${img ? '' : ' site-card--text'}">${inner}</div>`;
+    ? `<a class="site-card${scene ? '' : ' site-card--text'}" href="https://${domain}/" target="_blank" rel="noopener">${inner}</a>`
+    : `<div class="site-card${scene ? '' : ' site-card--text'}">${inner}</div>`;
 }
+
+// Product grid (about page): illustration, name, one-line description, link out.
+const productGrid = () => `
+  <div class="prod-grid" data-stagger>${products.map((p) => `
+    <a class="prod-card" href="${p.url}" target="_blank" rel="noopener">
+      <div class="prod-card__media">${illo(p.scene, { responsive: true })}</div>
+      <div class="prod-card__body"><span class="prod-card__kind">${esc(p.kind)}</span><h3 class="h5">${esc(p.name)}</h3><p>${esc(p.desc)}</p><span class="prod-card__link">${roll(`Visit ${p.site}`)}${icon.arrowUpRight}</span></div>
+    </a>`).join('')}
+  </div>`;
 
 /* ---------- About ---------- */
 export function aboutPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title: about.h1, lead: about.lead, wide: true,
-  actions: `${btn({ label: 'Explore Our Solutions', href: '/our-services/' })}${quoteBtn('Get a Free Consultation', 'light')}` })}
-<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ laptop: 'staffintra.com', phone: 'staffintra.com', label: 'Staffintra, a Blueinc Technologies product, on laptop and phone' })}</div>
+  actions: `${btn({ label: 'Explore Our Products', href: '/products/' })}${btn({ label: 'Build With Us', href: '/our-services/', variant: 'light' })}` })}
+${stageCard({ laptop: 'staffintra', phone: 'travelnursehouses' }, 'Staffintra and Travel Nurse Houses, Blueinc Technologies products, on laptop and phone')}
 
 <section class="section container" aria-label="What we do">
   ${eyebrow('What we do')}
   <p class="statement" style="margin-top:1.5rem" data-reveal="words">${esc(about.body)}</p>
+</section>
+
+<section class="section container" aria-labelledby="family-title" style="padding-top:0">
+  <div class="section-head section-head--left">
+    <h2 class="h2" id="family-title" data-reveal="lines">Our products</h2>
+  </div>
+  ${productGrid()}
 </section>
 
 <section class="section container" aria-labelledby="values-title" style="padding-top:0">
@@ -65,12 +81,12 @@ ${aboutSplit()}
 <section class="section container" aria-labelledby="serve-title">
   <div class="split">
     <div class="split__sticky">
-      ${eyebrow('Digital solutions provider')}
+      ${eyebrow('Who we serve')}
       <h2 class="h2" id="serve-title" style="margin-top:1.25rem" data-reveal="lines">${esc(about.serve.title)}</h2>
     </div>
     <div>
       <p class="body-l" data-reveal="fade">${esc(about.serve.body)}</p>
-      <div style="margin-top:2rem" data-reveal="fade">${quoteBtn('Get a Free Consultation')}</div>
+      <div style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Explore Our Products', href: '/products/' })}</div>
       <ul class="check-list" style="margin-top:3.5rem" data-stagger>${home.history.points.map((p) => `<li>${icon.check}<span>${esc(p)}</span></li>`).join('')}</ul>
     </div>
   </div>
@@ -93,7 +109,7 @@ ${aboutSplit()}
       <p class="body-l" style="margin-top:1.5rem" data-reveal="fade">${esc(about.team.body)}</p>
       <div class="btn-row" style="margin-top:2rem" data-reveal="fade">${btn({ label: 'Work With Us', href: '/contact/' })}</div>
     </div>
-    <div class="media-card media-card--stage media-card--stage-fit" style="margin:0;aspect-ratio:4/3" data-reveal-media>${devices({ laptop: 'teststreams.com', phone: 'myjobtests.com', label: 'Teststreams and MyJobTests, Blueinc Technologies products, on laptop and phone' })}</div>
+    <div class="media-card media-card--stage media-card--stage-fit" style="margin:0;aspect-ratio:4/3" data-reveal-media>${devices({ laptop: 'teststreams', phone: 'myjobtests', label: 'Teststreams and MyJobTests, Blueinc Technologies products, on laptop and phone' })}</div>
   </div>
 </section>
 `;
@@ -108,7 +124,7 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Free Audit' }], tit
     <div><h3>What you’ll get</h3>
       <ul class="check-list" data-stagger>${audit.points.map((p) => `<li>${icon.check}<span style="font-size:1.0625rem;letter-spacing:0">${esc(p)}</span></li>`).join('')}</ul>
     </div>
-    <div><h3>Talk to a Digital Partner</h3><ul>${site.phones.map((p) => `<li><a href="${p.href}">${p.display}</a></li>`).join('')}<li><a href="mailto:${site.email}">${site.email}</a></li></ul></div>
+    <div><h3>Talk to our team</h3><ul>${site.phones.map((p) => `<li><a href="${p.href}">${p.display}</a></li>`).join('')}<li><a href="mailto:${site.email}">${site.email}</a></li></ul></div>
   </div>
   <div class="form-card">
     <h2 class="h4" style="margin-bottom:2rem">Request your free consultation</h2>
@@ -122,8 +138,8 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Free Audit' }], tit
 export function servicesIndexPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services' }], title: servicesPage.h1, lead: servicesPage.lead, wide: true,
-  actions: `${btn({ label: 'Start a Project', href: '/pricing-plans/' })}${quoteBtn('Get a Free Quote', 'light')}` })}
-<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ laptop: 'myjobtests.com', phone: 'travelnursehouses.ca', label: 'MyJobTests and Travel Nurse Houses, Blueinc Technologies products, on laptop and phone' })}</div>
+  actions: `${quoteBtn('Start a Project')}${btn({ label: 'See partner work', href: '/portfolio/', variant: 'light' })}` })}
+${stageCard({ laptop: 'myjobtests', phone: 'travelnursehouses' }, 'MyJobTests and Travel Nurse Houses, Blueinc Technologies products, on laptop and phone')}
 <section class="section container" aria-labelledby="belief-title">
   <div class="split">
     <div>${eyebrow('Our Solutions')}</div>
@@ -149,13 +165,10 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services' }], t
 /* ---------- Service detail ---------- */
 export function serviceDetailPage(s) {
   const others = services.filter((o) => o.slug !== s.slug);
-  const heroImg = s.image.startsWith('clients/') && hasShot(s.image.slice(8, -4)) ? `/assets/img/${s.image}` : null;
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Services', href: '/our-services/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Build With Us', href: '/our-services/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
   actions: `${quoteBtn('Start a Project', '', '', '')}${btn({ label: 'View pricing', href: '/pricing-plans/', variant: 'light' })}` })}
-${s.mockup ? `<div class="media-card media-card--wide media-card--stage" data-reveal-media>${devices({ ...s.mockup, label: `${s.name} work by Blueinc Technologies shown on laptop and phone` })}</div>`
-    : heroImg ? mediaCard(heroImg, `${s.name} project by Blueinc Technologies`, '', 1440, 900)
-    : mediaCard('/assets/img/clients/staffintra.com.jpg', 'Staffintra, a Blueinc Technologies product', '', 1440, 900)}
+${stageCard(s.mockup, `${s.name} work by Blueinc Technologies shown on laptop and phone`)}
 
 <section class="section container" aria-labelledby="intro-title">
   <div class="split">
@@ -212,27 +225,17 @@ ${s.quote ? `
 // work" section), modelled on cosmos.studio/projects: a "Name | See work" pill on each card and
 // small labels at the left and right edges.
 function projectStack(items) {
-  return `<div class="works__list">${items.map((it, i) => {
-    const img = it.site && hasShot(it.site) ? shot(it.site) : null;
-    const href = it.href || (it.site && isLive(it.site) ? `https://${it.site}/` : null);
-    const tag = href ? 'a' : 'div';
-    const attrs = href ? ` href="${href}" target="_blank" rel="noopener" aria-label="${esc(it.name)}: visit site"` : '';
-    return `
-    <div class="work" style="z-index:${i + 1}" data-work>
-      <div class="work__side"><small>${esc(it.leftLabel)}</small><span>${esc(it.name)}</span></div>
-      <${tag} class="work__card${img ? '' : ' work__card--text'}"${attrs}>
-        ${img ? `<img src="${img}" alt="${esc(it.name)} by Blueinc Technologies" loading="lazy" width="1440" height="900">` : `<span class="work__title" aria-hidden="true">${esc(it.name)}</span>`}
-        <span class="work__shade"></span>
-        <span class="work__pill">${img ? `<img src="${img}" alt="" width="36" height="36">` : ''}<b class="work__pill-name">${esc(it.name)}</b>${href ? '<i></i><em>Visit site</em>' : ''}</span>
-      </${tag}>
-      <div class="work__side work__side--r"><small>${esc(it.rightLabel)}</small><span>${esc(it.kind)}</span></div>
-    </div>`;
-  }).join('')}</div>`;
+  return `<div class="works__list">${items.map((it, i) => workCard({
+    ...it,
+    scene: it.site && SCENE_FOR[it.site],
+    href: it.href || (it.site && isLive(it.site) ? `https://${it.site}/` : null),
+    pill: 'Visit site',
+  }, i)).join('')}</div>`;
 }
 
 export function portfolioPage() {
   const panels = [
-    projectStack(portfolio.websites.map((d) => ({ site: d, name: d, leftLabel: 'Client', rightLabel: 'Type', kind: 'Website' }))),
+    projectStack(portfolio.websites.map((w) => ({ site: w.site, name: w.name, leftLabel: 'Partner', rightLabel: w.site, kind: w.kind }))),
     projectStack(portfolio.webApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Web application' }))),
     projectStack(portfolio.mobileApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Mobile application' }))),
   ];
@@ -240,7 +243,7 @@ export function portfolioPage() {
   return `
 <script>if (location.hash === '#products') location.replace('/products/');</script>
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Work' }], title: portfolio.h1, lead: portfolio.body,
-  actions: `${quoteBtn('Start a Project')}${btn({ label: 'Read reviews', href: '/success-stories/', variant: 'light' })}` })}
+  actions: `${quoteBtn('Start a Project')}${btn({ label: 'Our products', href: '/products/', variant: 'light' })}` })}
 <section class="section--sm container" aria-label="Projects" style="padding-top:1rem">
   <div class="tabs" role="tablist" aria-label="Project categories" data-tabs>
     ${portfolio.categories.map((c, i) => `<button class="tabs__btn" role="tab" id="pt-${i}" aria-controls="pp-${i}" aria-selected="${i === 0}"${i ? ' tabindex="-1"' : ''}>${esc(c)} <sup>(${counts[i]})</sup></button>`).join('')}
@@ -382,7 +385,7 @@ function blogCard(p, readMin, { headingLevel = 2 } = {}) {
     <article class="bcard" data-date="${p.date}">
       <a class="bcard__link" href="/blog/${p.slug}/" aria-label="${esc(p.title)}">
         <div class="bcard__media">
-          <img src="${p.image}" alt="" loading="lazy" width="1440" height="900">
+          ${illo(p.scene, { label: false })}
           <span class="bcard__tag">${esc(p.category)}</span>
         </div>
         <div class="bcard__body">
@@ -446,7 +449,7 @@ export function blogPostPage(post, posts, readMinutes) {
     </div>
   </header>
   <div class="bpost__cover container" data-reveal-media>
-    <img src="${post.image}" alt="${esc(post.imageAlt)}" width="1440" height="900" data-media-img>
+    <div class="bpost__illo">${illo(post.scene)}</div>
   </div>
   <div class="bpost__layout container">
     <aside class="bpost__toc" aria-label="Contents">
@@ -460,8 +463,8 @@ export function blogPostPage(post, posts, readMinutes) {
         <img src="/assets/img/mark.png" alt="" width="56" height="56">
         <div>
           <b>Written by Blueinc Technologies</b>
-          <p>We build software for businesses and develop and operate digital products of our own.</p>
-          <div class="btn-row">${quoteBtn('Discuss Your Project', '', 'sm')}${btn({ label: 'More articles', href: '/blog/', variant: 'light', size: 'sm' })}</div>
+          <p>We build and run Staffintra, Travel Nurse Houses, MyJobTests and Teststreams, and build custom software for select partners.</p>
+          <div class="btn-row">${btn({ label: 'Our products', href: '/products/', size: 'sm' })}${btn({ label: 'More articles', href: '/blog/', variant: 'light', size: 'sm' })}</div>
         </div>
       </div>
       ${share('share--inline')}
@@ -477,15 +480,29 @@ export function blogPostPage(post, posts, readMinutes) {
 
 
 /* ---------- Products (Blueinc-owned digital products) ---------- */
-// Same layout as the portfolio: page hero + stacked, pinned project cards.
+// One section per product: animated illustration beside what it does, who it is for and its key
+// features. Sections alternate sides on wide screens.
 export function productsPage(page) {
+  const sections = products.map((p, i) => `
+<section class="product container${i % 2 ? ' product--flip' : ''}" id="${p.scene}" aria-labelledby="p-${p.scene}">
+  <div class="product__media" data-reveal="up">
+    <a class="product__frame" href="${p.url}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${illo(p.scene, { label: false, responsive: true })}</a>
+  </div>
+  <div class="product__copy">
+    <div class="product__brand" data-reveal="fade"><img src="${p.logo}" alt="" width="44" height="44"><span>${esc(p.kind)}</span></div>
+    <h2 class="h2" id="p-${p.scene}" data-reveal="lines">${esc(p.name)}</h2>
+    <p class="body-l" data-reveal="fade">${esc(p.desc)}</p>
+    <p class="product__audience" data-reveal="fade">${esc(p.audience)}</p>
+    <ul class="check-list" data-stagger>${p.features.map((f) => `<li>${icon.check}<span>${esc(f)}</span></li>`).join('')}</ul>
+    <div class="btn-row" data-reveal="fade">${btn({ label: `Visit ${p.name}`, href: p.url })}</div>
+  </div>
+</section>`).join('');
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Products' }], title: page.h1, lead: page.lead,
-  actions: `${quoteBtn('Discuss Your Project')}${btn({ label: 'Explore Our Work', href: '/portfolio/', variant: 'light' })}` })}
-<section class="section--sm container" aria-label="Products" style="padding-top:1rem">
-  ${projectStack(products.map((p) => ({ site: p.site, href: p.url, name: p.name, leftLabel: 'Our product', rightLabel: p.site, kind: p.kind })))}
-</section>
+  actions: products.map((p) => `<a class="chip-link" href="#${p.scene}">${esc(p.name)}</a>`).join('') })}
+${sections}
 <section class="section container" aria-label="About our products">
   <p class="statement" data-reveal="words">${esc(page.statement)}</p>
+  <div class="btn-row" style="margin-top:2.5rem" data-reveal="fade">${quoteBtn('Build With Blueinc')}${btn({ label: 'See partner work', href: '/portfolio/', variant: 'light' })}</div>
 </section>`;
 }

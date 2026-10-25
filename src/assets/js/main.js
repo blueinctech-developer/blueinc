@@ -283,28 +283,9 @@
     } else if (!e.isIntersecting) v.pause();
   }), { rootMargin: '150px 0px' });
   // Videos start loading only after the page has finished loading, so they never compete with
-  // fonts, CSS or the showreel poster (the LCP image).
-  const startVideos = () => $$('[data-autovideo], [data-reel-video]').forEach((v) => videoIO.observe(v));
+  // fonts or CSS.
+  const startVideos = () => $$('[data-autovideo]').forEach((v) => videoIO.observe(v));
   if (document.readyState === 'complete') startVideos(); else window.addEventListener('load', startVideos, { once: true });
-
-  // Showreel play/pause control (WCAG 2.2.2: moving content must be pausable)
-  const reelVideo = $('[data-reel-video]');
-  const reelToggle = $('[data-reel-toggle]');
-  if (reelVideo && reelToggle) {
-    if (reduced) reelVideo.dataset.userPaused = '1';
-    const sync = () => {
-      const paused = reelVideo.paused;
-      reelToggle.classList.toggle('is-paused', paused);
-      reelToggle.setAttribute('aria-label', paused ? 'Play showreel' : 'Pause showreel');
-    };
-    reelToggle.addEventListener('click', () => {
-      if (reelVideo.paused) { delete reelVideo.dataset.userPaused; reelVideo.play().catch(() => {}); }
-      else { reelVideo.dataset.userPaused = '1'; reelVideo.pause(); }
-    });
-    reelVideo.addEventListener('play', sync);
-    reelVideo.addEventListener('pause', sync);
-    sync();
-  }
 
   // ---- Starfields (canvas) ---------------------------------------------------------------------------
   function starfield(canvas) {
@@ -398,6 +379,88 @@
     setTimeout(() => b.classList.remove('is-copied'), 1600);
   }));
 
+  // ---- Illustrations: run only while on screen, pointer depth, hero product switcher ------------
+  // A scene is "live" when it is on screen and not held (an inactive hero slide is held).
+  // Its GSAP timeline (built in the motion section) plays only while live.
+  const illos = $$('[data-illo]');
+  let buildIllo = null;
+  const syncIllo = (el) => {
+    const live = !!el.__vis && !el.__held;
+    if (live && !el.__tl && buildIllo) buildIllo(el);
+    el.classList.toggle('is-live', live);
+    if (el.__tl) live ? el.__tl.play() : el.__tl.pause();
+  };
+  const illoIO = new IntersectionObserver((entries) => entries.forEach((e) => { e.target.__vis = e.isIntersecting; syncIllo(e.target); }), { rootMargin: '100px 0px' });
+  illos.forEach((el) => illoIO.observe(el));
+  if (finePointer && !reduced) {
+    illos.forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--px', (0.5 - (e.clientX - r.left) / r.width).toFixed(3));
+        el.style.setProperty('--py', (0.5 - (e.clientY - r.top) / r.height).toFixed(3));
+      });
+      el.addEventListener('pointerleave', () => { el.style.setProperty('--px', 0); el.style.setProperty('--py', 0); });
+    });
+  }
+
+  // Home hero: one product scene at a time; tabs switch, auto-advance, play/pause (WCAG 2.2.2).
+  const heroReel = $('[data-hero-reel]');
+  if (heroReel) {
+    const tabs = $$('[data-hero-tab]');
+    const slides = $$('[data-hero-slide]', heroReel);
+    const toggle = $('[data-reel-toggle]', heroReel);
+    const DWELL = 9000;
+    let current = 0;
+    let timer = null;
+    let paused = reduced;
+    let onScreen = true;
+    const select = (i, { restart = true } = {}) => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, j) => {
+        const on = j === current;
+        s.classList.toggle('is-active', on);
+        s.setAttribute('aria-hidden', String(!on));
+        s.inert = !on;
+        const sc = $('[data-illo]', s);
+        if (sc) {
+          sc.__held = !on || paused;
+          if (on && restart && sc.__tl) sc.__tl.restart();
+          syncIllo(sc);
+        }
+      });
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === current)); t.tabIndex = j === current ? 0 : -1; });
+      schedule();
+    };
+    const schedule = () => {
+      clearTimeout(timer);
+      heroReel.style.setProperty('--dwell', `${DWELL}ms`);
+      tabs.forEach((t) => { t.classList.remove('is-timing'); void t.offsetWidth; });
+      if (paused || !onScreen) return;
+      tabs[current].classList.add('is-timing');
+      timer = setTimeout(() => select(current + 1), DWELL);
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (!d) return;
+        e.preventDefault();
+        select(current + d);
+        tabs[current].focus();
+      });
+    });
+    const syncToggle = () => {
+      heroReel.classList.toggle('is-paused', paused);
+      if (!toggle) return;
+      toggle.classList.toggle('is-paused', paused);
+      toggle.setAttribute('aria-label', paused ? 'Play product showcase' : 'Pause product showcase');
+    };
+    if (toggle) toggle.addEventListener('click', () => { paused = !paused; syncToggle(); select(current, { restart: false }); });
+    new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; schedule(); }).observe(heroReel);
+    syncToggle();
+    select(0, { restart: false });
+  }
+
   // ---- Odometer markup (static fallback keeps the plain number) -------------------------------
   function buildOdometer(el) {
     const value = String(el.dataset.odometer);
@@ -422,8 +485,91 @@
     reveals();
     homeScenes();
     sharedScenes();
+    illoScenes();
     ScrollTrigger.refresh();
   });
+
+  // ---- Illustration timelines ------------------------------------------------------------------
+  // Steps ([data-s]) build up in order, hold, fade out together and rebuild, looping while on
+  // screen. Each timeline starts at its "full" label so a visible scene never flashes empty.
+  function illoScenes() {
+    const pxPerEm = (root) => parseFloat(getComputedStyle($('.il__stage', root)).fontSize) || 12;
+    const fmt = (el, v) => {
+      if (el.dataset.fmt === 'time') { const s = Math.round(v); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+      return v.toFixed(+el.dataset.dec || 0);
+    };
+    // Each effect adds its tween(s) at time `at` and returns how long it runs.
+    const FX = {
+      pop(tl, el, at, em) {
+        const svg = el instanceof SVGElement;
+        tl.from(el, { autoAlpha: 0, y: svg ? 14 : em * 0.8, scale: svg ? 0.6 : 0.96, transformOrigin: svg ? '50% 100%' : '50% 50%', duration: 0.8 }, at);
+        return 0.8;
+      },
+      slide(tl, el, at, em) { tl.from(el, { autoAlpha: 0, x: -em * 1.2, duration: 0.8 }, at); return 0.8; },
+      fill(tl, el, at) {
+        const vertical = !!el.closest('.il-bars');
+        tl.from(el, vertical ? { scaleY: 0, duration: 1 } : { scaleX: 0, duration: 1.1 }, at);
+        return 1;
+      },
+      ring(tl, el, at) { tl.from(el, { strokeDasharray: '0 100', duration: 1.4, ease: 'power3.out' }, at); return 1.4; },
+      draw(tl, el, at) { tl.from(el, { strokeDashoffset: 1, duration: 1.2, ease: 'power2.inOut' }, at); return 1.2; },
+      count(tl, el, at) {
+        const o = { v: 0 };
+        const from = parseFloat(el.dataset.from || 0);
+        tl.fromTo(o, { v: from }, { v: parseFloat(el.dataset.to), duration: 1.4, ease: 'power2.out', onUpdate: () => { el.textContent = fmt(el, o.v); } }, at);
+        return 1.4;
+      },
+      type(tl, el, at) {
+        const full = el.textContent;
+        const o = { n: 0 };
+        const d = Math.min(1.6, full.length * 0.045);
+        tl.fromTo(o, { n: 0 }, { n: full.length, duration: d, ease: 'none', onUpdate: () => { el.textContent = full.slice(0, Math.round(o.n)); } }, at);
+        return d;
+      },
+      cursor(tl, el, at) {
+        const [dx, dy] = el.dataset.path.split(',').map(Number);
+        const w = parseFloat(el.style.width) || 1.6;
+        tl.fromTo(el, { autoAlpha: 0, xPercent: (dx / w) * 100, yPercent: (dy / w) * 100 }, { autoAlpha: 1, duration: 0.3 }, at)
+          .to(el, { xPercent: 0, yPercent: 0, duration: 0.9, ease: 'power3.inOut' }, at + 0.15)
+          .to(el, { scale: 0.8, duration: 0.12, yoyo: true, repeat: 1, ease: 'power1.inOut' }, at + 1.05);
+        return 1.3;
+      },
+      on(tl, el, at) { tl.call(() => el.classList.add('is-on'), null, at + 0.15); return 0.5; },
+    };
+
+    buildIllo = (root) => {
+      if (root.__tl) return;
+      const em = pxPerEm(root);
+      const steps = new Map();
+      $$('[data-s]', root).forEach((el) => {
+        const k = +el.dataset.s;
+        if (!steps.has(k)) steps.set(k, []);
+        steps.get(k).push(el);
+      });
+      const ons = $$('[data-fx="on"]', root);
+      const faders = [];
+      const tl = gsap.timeline({ repeat: -1, paused: true, defaults: { ease: EASE } });
+      tl.call(() => ons.forEach((o) => o.classList.remove('is-on')), null, 0.01);
+      let t = 0.5;
+      [...steps.keys()].sort((a, b) => a - b).forEach((k) => {
+        let span = 0;
+        steps.get(k).forEach((el, i) => {
+          const fx = FX[el.dataset.fx] || FX.pop;
+          const at = t + i * 0.1;
+          span = Math.max(span, at - t + fx(tl, el, at, em));
+          // State toggles reset by class; counters restart from zero (fading them would leave their units behind).
+          if (el.dataset.fx !== 'on' && el.dataset.fx !== 'count') faders.push(el);
+        });
+        t += Math.max(0.55, span * 0.65);
+      });
+      tl.addLabel('full', t + 0.3);
+      tl.to(faders, { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, t + 3.6);
+      tl.to({}, { duration: 0.7 });
+      root.__tl = tl;
+      tl.seek('full', false);
+    };
+    illos.forEach(syncIllo);
+  }
 
   // ---- Page-load choreography ------------------------------------------------------------------
   function intro() {
@@ -564,29 +710,56 @@
 
   // ---- Home-specific scenes -------------------------------------------------------------------------
   function homeScenes() {
-    // Reel parallax after intro
-    const reelImg = $('[data-reel-img]');
-    if (reelImg) {
-      gsap.to(reelImg, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '[data-reel]', start: 'top top', end: 'bottom top', scrub: true } });
-    }
 
-    // Client logo marquee (seamless loop; slows on hover)
+    // Logo marquee: infinite, seamless loop at any screen width; slows on hover.
+    // The track holds the original set plus as many copies as it takes to cover the viewport, and
+    // moves left by exactly one set's width (measured, gap included), so the wrap is invisible.
     const mq = $('[data-marquee]');
     if (mq) {
       const track = $('.marquee__track', mq);
-      // The seamless loop needs a second copy of the logos. Build it off-DOM in one fragment and
-      // append once, when the browser is idle (was 22 separate appends during start-up).
+      const originals = Array.from(track.children);
+      const SPEED = 45; // px per second
+      let loop = null;
+      let inView = false;
+      const build = () => {
+        if (loop) loop.kill();
+        $$('[data-mq-clone]', track).forEach((c) => c.remove());
+        gsap.set(track, { x: 0 });
+        const first = originals[0];
+        const last = originals[originals.length - 1];
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const setW = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
+        if (!setW) return;
+        const copies = Math.ceil(mq.offsetWidth / setW) + 1;
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < copies; i++) {
+          originals.forEach((c) => {
+            const k = c.cloneNode(true);
+            k.setAttribute('data-mq-clone', '');
+            k.setAttribute('aria-hidden', 'true');
+            k.querySelectorAll('img').forEach((img) => { img.alt = ''; });
+            frag.appendChild(k);
+          });
+        }
+        track.appendChild(frag);
+        loop = gsap.to(track, { x: -setW, ease: 'none', duration: setW / SPEED, repeat: -1 });
+        if (!inView) loop.pause();
+      };
+      // Copies are added when the browser is idle so they never compete with start-up work.
       const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
       idle(() => {
-        const frag = document.createDocumentFragment();
-        Array.from(track.children).forEach((c) => frag.appendChild(c.cloneNode(true)));
-        frag.querySelectorAll('.logo-card').forEach((k) => k.setAttribute('aria-hidden', 'true'));
-        frag.querySelectorAll('img').forEach((i) => { i.alt = ''; });
-        track.appendChild(frag);
-        const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 60, repeat: -1 });
-        mq.addEventListener('mouseenter', () => gsap.to(loop, { timeScale: 0.15, duration: 0.8 }));
-        mq.addEventListener('mouseleave', () => gsap.to(loop, { timeScale: 1, duration: 0.8 }));
-        ScrollTrigger.create({ trigger: mq, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? loop.play() : loop.pause()) });
+        build();
+        mq.addEventListener('mouseenter', () => loop && gsap.to(loop, { timeScale: 0.15, duration: 0.8 }));
+        mq.addEventListener('mouseleave', () => loop && gsap.to(loop, { timeScale: 1, duration: 0.8 }));
+        ScrollTrigger.create({ trigger: mq, start: 'top bottom', end: 'bottom top', onToggle: (s) => { inView = s.isActive; if (loop) inView ? loop.play() : loop.pause(); } });
+        let rt;
+        let lastW = window.innerWidth;
+        window.addEventListener('resize', () => {
+          if (window.innerWidth === lastW) return; // ignore mobile toolbar height changes
+          lastW = window.innerWidth;
+          clearTimeout(rt);
+          rt = setTimeout(build, 200);
+        });
       }, { timeout: 1500 });
       gsap.from($$('.logo-card', track).slice(0, 8), { y: 40, autoAlpha: 0, duration: 1.2, stagger: 0.06, ease: EASE, scrollTrigger: { trigger: mq, start: 'top 90%', once: true } });
     }
@@ -702,11 +875,12 @@
       if (vid) gsap.fromTo(vid, { scale: 1.18, yPercent: 10 }, { scale: 1, yPercent: 0, ease: 'none', scrollTrigger: { trigger: cta, start: 'top bottom', end: 'bottom bottom', scrub: true } });
     }
 
-    // Footer wordmark rises letter by letter
-    const fw = $$('[data-footer-wordmark] .wm-letter');
+    // Footer wordmark rises letter by letter, each inside its own clipping box (translate only,
+    // composited, so the scrub stays smooth).
+    const fw = $$('[data-footer-wordmark] .wm-letter > svg');
     if (fw.length) {
       show(fw);
-      gsap.from(fw, { y: 320, ease: 'none', stagger: { each: 0.06, from: 'center' }, scrollTrigger: { trigger: '[data-footer-wordmark]', start: 'top bottom', end: 'bottom bottom', scrub: 1 } });
+      gsap.from(fw, { yPercent: 105, force3D: true, ease: 'none', stagger: { each: 0.04, from: 'center' }, scrollTrigger: { trigger: '[data-footer-wordmark]', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } });
     }
     gsap.from($$('.clock'), { y: 40, autoAlpha: 0, duration: 1.1, stagger: 0.1, ease: EASE, scrollTrigger: { trigger: '.clocks', start: 'top 92%', once: true } });
   }

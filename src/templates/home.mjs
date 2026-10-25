@@ -1,6 +1,6 @@
-import { site, home, services, industries, featuredWork, testimonials, clientLogos, values } from '../data/site.mjs';
-import { esc, pad, icon, btn, quoteBtn, wordmark, roll, eyebrow, shot, devices, loopVideo } from './components.mjs';
-import { hasShot } from './util.mjs';
+import { site, home, services, industries, featuredWork, testimonials, values, products } from '../data/site.mjs';
+import { esc, icon, btn, quoteBtn, wordmark, roll, eyebrow, devices, loopVideo, platformCards } from './components.mjs';
+import { illo, SCENES } from './illos.mjs';
 
 const plusRow = () => `<div class="svc__crosses" aria-hidden="true">${icon.plus.repeat(4)}</div>`;
 
@@ -13,7 +13,7 @@ export function servicesPanel({ id = 'home', compact = false } = {}) {
           ${btn({ label: 'Show more', href: `/our-services/${s.slug}/`, variant: 'ghost', size: 'sm' })}
         </div>
         <div>
-          <a class="svc-row__thumb" href="/our-services/${s.slug}/" tabindex="-1" aria-hidden="true"><img src="${thumbFor(s)}" alt="" loading="lazy" width="474" height="267"></a>
+          <a class="svc-row__thumb" href="/our-services/${s.slug}/" tabindex="-1" aria-hidden="true">${illo(s.illo, { label: false })}</a>
           <p class="svc-row__desc">${esc(s.summary)}</p>
         </div>
       </article>`).join('');
@@ -26,7 +26,7 @@ export function servicesPanel({ id = 'home', compact = false } = {}) {
 <section class="panel panel--dark svc on-dark" aria-labelledby="svc-title-${id}" data-svc>
   ${plusRow()}
   <div class="svc__inner">
-    <h2 class="sr-only" id="svc-title-${id}">Our services and the industries we serve</h2>
+    <h2 class="sr-only" id="svc-title-${id}">What we build for partners, and the industries we serve</h2>
     <div class="svc__tabs-wrap"><div class="svc__tabs" role="tablist" aria-label="Services or industries">
       <button class="svc__tab" role="tab" id="tab-s-${id}" aria-selected="true" aria-controls="pan-s-${id}">Services <sup>(${services.length})</sup></button>
       <button class="svc__tab" role="tab" id="tab-i-${id}" aria-selected="false" aria-controls="pan-i-${id}" tabindex="-1">Industries <sup>(${industries.list.length})</sup></button>
@@ -35,14 +35,6 @@ export function servicesPanel({ id = 'home', compact = false } = {}) {
     <div class="svc__panel" role="tabpanel" id="pan-i-${id}" aria-labelledby="tab-i-${id}" hidden>${indRows}</div>
   </div>
 </section>`;
-}
-
-function thumbFor(s) {
-  if (s.image.startsWith('clients/')) {
-    const siteName = s.image.slice(8, -4);
-    return hasShot(siteName) ? `/assets/img/${s.image}` : '/assets/img/clients/staffintra.com.jpg';
-  }
-  return `/assets/img/${s.image}`;
 }
 
 export function quotesGrid(list) {
@@ -74,15 +66,15 @@ export function counters() {
 
 export function aboutSplit() {
   const avatars = [
-    { bg: '/assets/img/partner.jpg', pos: '50% 20%', size: 'cover' },
-    { bg: '/assets/img/products/staffintra.svg', pos: '50% 50%', size: '62%', logo: true },
-    { bg: '/assets/img/products/travelnursehouses.png', pos: '50% 50%', size: '86%', logo: true },
-    { bg: '/assets/img/mark.png', pos: '50% 50%', size: '62%', logo: true },
-    { bg: '/assets/img/products/myjobtests.png', pos: '50% 50%', size: '86%', logo: true },
-    { bg: '/assets/img/products/teststreams.png', pos: '50% 50%', size: '70%', logo: true },
+    { bg: '/assets/img/mark.png', size: '62%' },
+    { bg: '/assets/img/products/staffintra.svg', size: '62%' },
+    { bg: '/assets/img/products/travelnursehouses.png', size: '86%' },
+    { bg: '/assets/img/mark.png', size: '62%' },
+    { bg: '/assets/img/products/myjobtests.png', size: '86%' },
+    { bg: '/assets/img/products/teststreams.png', size: '70%' },
   ];
   const outer = values.map((v, i) => `<div class="orbit__item" style="--a:${i * 90 + 20}deg;--r:calc(min(30rem, 86vw) / 2 - .5rem)"><span class="orbit__chip">${esc(v.title)}</span></div>`).join('');
-  const inner = avatars.map((a, i) => `<div class="orbit__item" style="--a:${i * 60}deg;--r:calc(min(30rem, 86vw) * .3)"><span class="orbit__avatar${a.logo ? ' orbit__avatar--logo' : ''}" style="background-image:url(${a.bg});background-position:${a.pos};background-size:${a.size}"></span></div>`).join('');
+  const inner = avatars.map((a, i) => `<div class="orbit__item" style="--a:${i * 60}deg;--r:calc(min(30rem, 86vw) * .3)"><span class="orbit__avatar orbit__avatar--logo" style="background-image:url(${a.bg});background-position:50% 50%;background-size:${a.size}"></span></div>`).join('');
   return `
 <section class="about-split" aria-labelledby="who-title">
   <div class="about-split__copy">
@@ -90,7 +82,7 @@ export function aboutSplit() {
       ${eyebrow(home.whoWeAre.eyebrow)}
       <h2 class="h3" id="who-title" data-reveal="lines">${esc(home.whoWeAre.title)}</h2>
       <p class="lead" data-reveal="fade">${esc(home.whoWeAre.body)}</p>
-      <div style="margin-top:2rem" data-reveal="fade"><a class="arrow-link" href="/our-services/">${roll('View all solutions')}${icon.arrow}</a></div>
+      <div style="margin-top:2rem" data-reveal="fade"><a class="arrow-link" href="/about-us/">${roll('About Blueinc')}${icon.arrow}</a></div>
     </div>
     <div class="feature-pair" data-stagger>
       <div class="feature">${icon.globe}<b>Dover, Delaware</b><span>Headquartered in the United States</span></div>
@@ -104,7 +96,7 @@ export function aboutSplit() {
       <div class="orbit__ring orbit__ring--2">${inner}</div>
     </div>
     <div class="orbit__center" style="position:absolute">
-      <p class="h5">Your technology partner</p>
+      <p class="h5">Four products, one team</p>
       <small>Team Work · Integrity · Simplicity · Excellence</small>
     </div>
   </div>
@@ -112,7 +104,7 @@ export function aboutSplit() {
 }
 
 function why() {
-  const [tailored, intuitive, tracking, social] = home.why.items;
+  const [problems, everyday, measured, grown] = home.why.items;
   const steps = services[0].steps;
   // Gantt placement across a 12-column grid (illustrative sequencing, no durations implied)
   const spans = [[1, 4], [3, 7], [5, 8], [7, 10], [8, 12], [10, 13]];
@@ -121,50 +113,50 @@ function why() {
   <div class="why__head">
     ${eyebrow(home.why.eyebrow)}
     <h2 class="h2" id="why-title" data-reveal="lines">${esc(home.why.title)}</h2>
-    <p class="lead" data-reveal="fade">We build and run digital products of our own, so we bring an owner’s perspective to every client project: what to build, how to launch it, and how to keep it growing.</p>
-    <div data-reveal="fade">${btn({ label: 'Discuss Your Project', href: site.calendly, size: 'lg' })}</div>
+    <p class="lead" data-reveal="fade">${esc(home.why.lead)}</p>
+    <div data-reveal="fade">${btn({ label: 'Explore Our Products', href: '/products/', size: 'lg' })}</div>
   </div>
   <div class="bento">
     <article class="bento__card bento__card--photo" data-bento>
-      <img src="/assets/img/clients/travelnursehouses.ca.jpg" alt="Travel Nurse Houses, a digital product built and run by Blueinc Technologies" loading="lazy" width="1440" height="900" data-parallax="-8">
+      <div class="bento__illo">${illo('travelnursehouses')}</div>
       <div class="glass history-panel">
-        <div class="history-panel__head"><span>Our history</span><span>${icon.arrowUpRight.replace('<svg', '<svg style="width:1rem"')}</span></div>
-        <ul data-stagger>${home.history.points.map((p, i) => `<li><span>${esc(p)}</span></li>`).join('')}</ul>
+        <div class="history-panel__head"><span>${esc(home.history.title)}</span><span>${icon.arrowUpRight.replace('<svg', '<svg style="width:1rem"')}</span></div>
+        <ul data-stagger>${home.history.points.map((p) => `<li><span>${esc(p)}</span></li>`).join('')}</ul>
       </div>
-      <h3 class="h5" style="margin-top:2rem">${esc(tailored.title)}</h3>
-      <p>${esc(tailored.body)}</p>
+      <h3 class="h5" style="margin-top:2rem">${esc(problems.title)}</h3>
+      <p>${esc(problems.body)}</p>
     </article>
     <article class="bento__card bento__card--devices" data-bento>
-      ${devices({ laptop: 'staffintra.com', phone: 'myjobtests.com', cls: 'devices--bento' })}
-      <h3 class="h5">${esc(intuitive.title)}</h3>
-      <p>${esc(intuitive.body)}</p>
+      ${devices({ laptop: 'staffintra', phone: 'myjobtests', cls: 'devices--bento' })}
+      <h3 class="h5">${esc(everyday.title)}</h3>
+      <p>${esc(everyday.body)}</p>
     </article>
     <article class="bento__card bento__card--video" data-bento>
       ${loopVideo('ribbon', 'bento__video')}
-      <p class="bento__stat"><b>${home.stats[0].value}${esc(home.stats[0].suffix)}</b>${esc(home.stats[0].label)}</p>
+      <p class="bento__stat"><b>${products.length}</b>Products we own and operate</p>
     </article>
     <article class="bento__card" data-bento>
       <div class="dash" aria-hidden="true" data-dash>
-        <div class="dash__top"><span class="dash__title"><i></i>Analytics overview</span><span class="dash__tabs"><i>7D</i><i class="on">30D</i><i>90D</i></span></div>
-        <div class="dash__kpis">${['Sessions', 'Leads', 'Conversions'].map((k, i) => `<div><small>${k}</small><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="${['M0 26 L14 22 L28 24 L42 16 L56 18 L70 10 L84 12 L100 4', 'M0 28 L14 24 L28 20 L42 22 L56 14 L70 15 L84 8 L100 6', 'M0 27 L14 26 L28 21 L42 19 L56 20 L70 13 L84 9 L100 5'][i]}"/></svg></div>`).join('')}</div>
+        <div class="dash__top"><span class="dash__title"><i></i>Product analytics</span><span class="dash__tabs"><i>7D</i><i class="on">30D</i><i>90D</i></span></div>
+        <div class="dash__kpis">${['Active users', 'Sessions', 'Retention'].map((k, i) => `<div><small>${k}</small><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="${['M0 26 L14 22 L28 24 L42 16 L56 18 L70 10 L84 12 L100 4', 'M0 28 L14 24 L28 20 L42 22 L56 14 L70 15 L84 8 L100 6', 'M0 27 L14 26 L28 21 L42 19 L56 20 L70 13 L84 9 L100 5'][i]}"/></svg></div>`).join('')}</div>
         <div class="chart" data-chart>${[28, 40, 34, 52, 46, 63, 58, 72, 66, 84, 78, 95].map((h) => `<i style="--h:${h}%"></i>`).join('')}</div>
       </div>
-      <h3 class="h5">${esc(tracking.title)}</h3>
-      <p>${esc(tracking.body)}</p>
+      <h3 class="h5">${esc(measured.title)}</h3>
+      <p>${esc(measured.body)}</p>
     </article>
     <article class="bento__card bento__card--social" data-bento>
-      ${devices({ phone: 'teststreams.com', cls: 'devices--social' })}
+      ${devices({ phone: 'teststreams', cls: 'devices--social' })}
       <div class="posts" aria-hidden="true" data-posts>
         <div class="post"><span class="post__ico">${icon.chat}</span><span><b>Product launch</b>Release plans · onboarding</span></div>
         <div class="post"><span class="post__ico">${icon.heart}</span><span><b>Search & social</b>SEO · content · campaigns</span></div>
         <div class="post"><span class="post__ico">${icon.mail}</span><span><b>Iteration</b>Feedback · analytics · updates</span></div>
       </div>
-      <h3 class="h5">${esc(social.title)}</h3>
-      <p>${esc(social.body)}</p>
+      <h3 class="h5">${esc(grown.title)}</h3>
+      <p>${esc(grown.body)}</p>
     </article>
     <article class="bento__card timeline" data-timeline>
       <div class="timeline__head">
-        <h3 class="h6">Timeline &amp; Process</h3>
+        <h3 class="h6">From idea to launch</h3>
         <span class="timeline__chip">${icon.calendar}Our six-step approach</span>
       </div>
       <div class="timeline__grid">
@@ -175,46 +167,56 @@ function why() {
 </section>`;
 }
 
-export function homePage() {
-  const works = featuredWork.map((w, i) => {
-    const img = hasShot(w.site) ? shot(w.site) : null;
-    return `
+// Stacked, pinned product/project cards (shared with the portfolio page).
+export function workCard({ scene, logo, name, href, leftLabel, rightLabel, kind, pill }, i = 0) {
+  const tag = href ? 'a' : 'div';
+  const ext = href && /^https?:/.test(href);
+  const attrs = href ? ` href="${href}"${ext ? ' target="_blank" rel="noopener"' : ''} aria-label="${esc(name)}: ${esc(pill)}"` : '';
+  const mark = logo
+    ? `<img src="${logo}" alt="" width="36" height="36">`
+    : `<i class="work__mark" style="${SCENES[scene] ? SCENES[scene].vars.split(';--bg')[0] : ''}"></i>`;
+  return `
     <div class="work" style="z-index:${i + 1}" data-work>
-      <div class="work__side"><small>${w.own ? 'Our product' : 'Client'}</small><span>${esc(w.client)}</span></div>
-      <a class="work__card" href="${w.href || '/portfolio/'}"${w.href ? ' target="_blank" rel="noopener"' : ''} aria-label="${esc(w.client)}: ${w.own ? 'visit product' : 'see our work'}">
-        ${img ? `<img src="${img}" alt="${esc(w.client)}, ${w.own ? 'a digital product built and operated by Blueinc Technologies' : 'designed and built by Blueinc Technologies'}" loading="lazy" width="1440" height="900">` : ''}
+      <div class="work__side"><small>${esc(leftLabel)}</small><span>${esc(name)}</span></div>
+      <${tag} class="work__card${scene ? '' : ' work__card--text'}"${attrs}>
+        ${scene ? illo(scene, { responsive: true }) : `<span class="work__title" aria-hidden="true">${esc(name)}</span>`}
         <span class="work__shade"></span>
-        <span class="work__pill">${img ? `<img src="${img}" alt="" width="36" height="36">` : ''}${esc(w.client)}<i></i><em>${w.own ? 'Visit product' : 'See work'}</em></span>
-      </a>
-      <div class="work__side work__side--r"><small>${esc(w.kind || 'Website')}</small><span>${esc(w.site)}</span></div>
+        <span class="work__pill">${scene ? mark : ''}<b class="work__pill-name">${esc(name)}</b>${href ? `<i></i><em>${esc(pill)}</em>` : ''}</span>
+      </${tag}>
+      <div class="work__side work__side--r"><small>${esc(rightLabel)}</small><span>${esc(kind)}</span></div>
     </div>`;
-  }).join('');
+}
 
-  const logos = clientLogos.map((l, i) => `
-      <div class="logo-card"><div class="logo-card__box"><img src="/assets/img/logos/${l}.png" alt="${esc(l.replace(/-/g, ' '))} logo" width="200" height="70" loading="lazy"></div></div>`).join('');
+export function homePage() {
+  const works = featuredWork.map((w, i) => workCard({
+    scene: w.scene, logo: w.logo, name: w.client, href: w.href, leftLabel: 'Our product', rightLabel: w.kind, kind: w.site, pill: 'Visit product',
+  }, i)).join('');
 
   const rotWords = home.headlineWords.map((w) => `<span class="text-gradient">${esc(w)}</span>`).join('');
 
+  const slides = products.map((p, i) => `
+      <div class="reel__slide${i ? '' : ' is-active'}" id="hero-slide-${i}" role="tabpanel" aria-labelledby="hero-tab-${i}" data-hero-slide${i ? ' aria-hidden="true" inert' : ''}>
+        ${illo(p.scene, { responsive: true })}
+        <div class="reel__meta">
+          <span class="reel__meta-left"><span>${esc(p.kind)}</span><b>${esc(p.name)}</b></span>
+          <a class="reel__visit" href="${p.url}" target="_blank" rel="noopener">${roll(`Visit ${p.site}`)}${icon.arrowUpRight}</a>
+        </div>
+      </div>`).join('');
+
   return `
 <section class="hero" aria-label="Introduction">
-  <h1 class="sr-only">Blueinc Technologies: Technology Solutions and Digital Products</h1>
+  <h1 class="sr-only">Blueinc Technologies: the company behind Staffintra, Travel Nurse Houses, MyJobTests and Teststreams</h1>
   <div class="hero__wordmark" data-hero-wordmark>${wordmark()}</div>
-  <nav class="hero__tabs" aria-label="What we do">
-    ${home.heroServices.map((s) => `<a class="hero__tab" href="${s.href}" data-intro>${roll(s.label)}</a>`).join('')}
-  </nav>
-  <div class="reel" data-reel>
-    <div class="reel__media">
-      <video muted loop playsinline preload="none" poster="/assets/media/showreel-poster.jpg" data-reel-img data-reel-video aria-label="Blueinc Technologies showreel: our products, client work and our team">
-        <source src="/assets/media/showreel.mp4" type="video/mp4">
-      </video>
+  <div class="hero__tabs" role="tablist" aria-label="Our products">
+    ${products.map((p, i) => `<button class="hero__tab" type="button" role="tab" id="hero-tab-${i}" aria-controls="hero-slide-${i}" aria-selected="${!i}"${i ? ' tabindex="-1"' : ''} data-hero-tab data-intro>${roll(p.name)}</button>`).join('')}
+  </div>
+  <div class="reel reel--products" data-reel data-hero-reel>
+    <div class="reel__media">${slides}
     </div>
-    <button class="reel__toggle" type="button" aria-label="Pause showreel" data-reel-toggle>
+    <button class="reel__toggle" type="button" aria-label="Pause product showcase" data-reel-toggle>
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="3" height="10" rx="1"/><rect x="9" y="3" width="3" height="10" rx="1"/></svg>
       <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l8-4.5z"/></svg>
     </button>
-    <div class="reel__meta">
-      <span class="reel__meta-left"><span>since</span><b>${site.founded}</b></span>
-    </div>
   </div>
 </section>
 
@@ -225,52 +227,64 @@ export function homePage() {
       <h2 class="h1 weare__title" id="weare-title"><span class="lead-line" data-reveal="lines">${esc(home.headlineLead)}</span> <span class="rotator" data-rotator aria-label="${esc(home.headlineWords.join(', '))}">${rotWords}</span></h2>
       <p class="lead weare__lead" data-reveal="fade">${esc(home.intro)}</p>
       <div class="btn-row" style="margin-top:2rem" data-reveal="fade">
-        ${btn({ label: 'Book a Free Consultation', href: '/free-detailed-audit/' })}
-        ${btn({ label: 'Build With Blueinc', href: site.calendly, variant: 'light' })}
+        ${btn({ label: 'Explore Our Products', href: '/products/' })}
+        ${btn({ label: 'Build With Blueinc', href: '/our-services/', variant: 'light' })}
       </div>
     </div>
-    <aside class="weare__aside" data-reveal="up">
+    <aside class="weare__aside" data-reveal="up" aria-label="Our products">
       <div class="review-card">
-        <div class="review-card__head"><img src="/assets/img/mark.png" alt="" width="32" height="32"><span>Blueinc Reviews</span></div>
-        <div class="review-card__score"><b>${home.reviewsCount}</b><span class="stars-row" aria-hidden="true">${icon.star.repeat(5)}</span><small>Client reviews</small></div>
-        <div class="review-card__body">“${esc(testimonials[6].text)}”<div class="review-card__who">${esc(testimonials[6].name)}<span>${esc(testimonials[6].org)}</span></div></div>
-        <a class="review-card__foot" href="/success-stories/">${roll('View all reviews')}${icon.arrow.replace('<svg', '<svg style="width:1rem"')}</a>
+        <div class="review-card__head"><img src="/assets/img/mark.png" alt="" width="32" height="32"><span>Our products</span></div>
+        <ul class="prod-list">${products.map((p) => `
+          <li><a href="${p.url}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" width="36" height="36"><span><b>${esc(p.name)}</b><small>${esc(p.kind)}</small></span>${icon.arrowUpRight}</a></li>`).join('')}
+        </ul>
+        <a class="review-card__foot" href="/products/">${roll('See all products')}${icon.arrow.replace('<svg', '<svg style="width:1rem"')}</a>
       </div>
     </aside>
   </div>
 </section>
 
-<section aria-labelledby="clients-title">
-  <h2 class="sr-only" id="clients-title">Our Clientele</h2>
-  <div class="marquee" data-marquee><div class="marquee__track">${logos}</div></div>
-  <div class="container marquee__foot">
-    <a class="arrow-link" href="/portfolio/">${roll('View more clients')}${icon.arrow}</a>
-  </div>
-</section>
-
 <section class="works" aria-labelledby="works-title">
   <div class="section-head" style="margin-bottom:5.5rem">
-    ${eyebrow('Works')}
-    <h2 class="h2" id="works-title" data-reveal="lines">Our products &amp; selected work</h2>
+    ${eyebrow('Products')}
+    <h2 class="h2" id="works-title" data-reveal="lines">Our products</h2>
   </div>
   <div class="works__list">${works}</div>
-  <div class="works__more">${btn({ label: 'Explore Our Work', href: '/portfolio/', variant: 'plain', size: 'lg' })}</div>
+  <div class="works__more">${btn({ label: 'Explore Our Products', href: '/products/', variant: 'plain', size: 'lg' })}</div>
+</section>
+
+<section aria-labelledby="platforms-title" class="platforms">
+  <div class="container"><h2 class="platforms__title" id="platforms-title">Built on and integrated with the platforms teams already use</h2></div>
+  <div class="marquee" data-marquee><div class="marquee__track">${platformCards()}</div></div>
 </section>
 
 <div class="section">
-${servicesPanel()}
+${aboutSplit()}
 </div>
 
-${aboutSplit()}
-
-<div class="section">
+<div class="section" style="padding-top:0">
 ${why()}
 </div>
 
-<section class="section" aria-labelledby="reviews-title" style="padding-top:2rem">
+<section class="section partners" aria-labelledby="partners-title" style="padding-top:2rem">
+  <div class="container">
+    <div class="section-head section-head--left partners__head">
+      <h2 class="h2" id="partners-title" data-reveal="lines">${esc(home.partners.title)}</h2>
+      <div>
+        <p class="body-l" data-reveal="fade">${esc(home.partners.body)}</p>
+        <div class="btn-row" style="margin-top:1.75rem" data-reveal="fade">
+          ${quoteBtn('Start a Project')}
+          ${btn({ label: 'See partner work', href: '/portfolio/', variant: 'light' })}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+${servicesPanel({ compact: false })}
+
+<section class="section" aria-labelledby="reviews-title">
   <div class="container">
     <div class="section-head">
-      <h2 class="h2" id="reviews-title" data-reveal="lines" style="max-width:14ch">What our happy clients are saying</h2>
+      <h2 class="h2" id="reviews-title" data-reveal="lines" style="max-width:14ch">What our partners say</h2>
     </div>
     <div class="reviews__widget">
       <div class="reviews__top"><b>Blueinc Technologies Reviews</b><a class="arrow-link" href="/success-stories/">${roll('View all reviews')}${icon.arrow}</a></div>

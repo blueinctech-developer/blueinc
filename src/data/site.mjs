@@ -7,9 +7,9 @@ export const site = {
   legalName: 'Blueinc Technologies, Inc.',
   founded: 2016,
   url: 'https://blueinctech.com',
-  tagline: 'Technology solutions and digital products',
+  tagline: 'The company behind Staffintra, Travel Nurse Houses, MyJobTests and Teststreams',
   description:
-    'Blueinc Technologies is a technology solutions and digital product company. We build software for businesses and develop and operate digital products of our own.',
+    'Blueinc Technologies builds and runs digital products, including Staffintra, Travel Nurse Houses, MyJobTests and Teststreams. The same team also builds custom software for select partners.',
   email: 'contact@blueinctech.com',
   calendly: 'https://calendly.com/projects-blueinctech/consult',
   clientPortal: 'https://nexus.blueinctech.com/',
@@ -40,35 +40,36 @@ export const site = {
     { label: 'Facebook', href: 'https://facebook.com/blueinctech' },
   ],
   // Rotating words used by the navbar logo label (kept short to fit the 13rem label).
-  navTaglines: ['Custom Software', 'Digital Products', 'Mobile Apps', 'Product Design'],
+  navTaglines: ['Staffintra', 'Travel Nurse Houses', 'MyJobTests', 'Teststreams'],
 };
 
-// Industries, Our Work, Reviews and Pricing live in the footer (Connect column), not the navbar.
+// Products lead; client services sit under "Build With Us". Our Work, Reviews, Industries and
+// Pricing live in the footer, not the navbar.
 export const nav = [
-  { label: 'About', href: '/about-us/' },
   { label: 'Products', href: '/products/', children: 'products' },
-  { label: 'Services', href: '/our-services/', children: 'services' },
+  { label: 'About', href: '/about-us/' },
+  { label: 'Build With Us', href: '/our-services/', children: 'services' },
   { label: 'Contact', href: '/contact/' },
 ];
 
 export const footerCols = [
   {
-    title: 'Services',
+    title: 'Products',
+    links: [
+      { label: 'Staffintra', href: 'https://staffintra.com/' },
+      { label: 'Travel Nurse Houses', href: 'https://travelnursehouses.ca/' },
+      { label: 'MyJobTests', href: 'https://myjobtests.com/' },
+      { label: 'Teststreams', href: 'https://teststreams.com/' },
+      { label: 'All products', href: '/products/' },
+    ],
+  },
+  {
+    title: 'Build With Us',
     links: [
       { label: 'Software Development', href: '/our-services/web-development-services/' },
       { label: 'Mobile Apps', href: '/our-services/app-development-services/' },
       { label: 'Enterprise Systems', href: '/our-services/product-management-services/' },
-      { label: 'Product Design', href: '/our-services/graphics-interface-design-services/' },
-      { label: 'View all Services', href: '/our-services/' },
-    ],
-  },
-  {
-    title: 'Connect',
-    links: [
-      { label: 'Our Work', href: '/portfolio/' },
-      { label: 'Our Products', href: '/products/' },
-      { label: 'Reviews', href: '/success-stories/' },
-      { label: 'Industries Served', href: '/industries-served/' },
+      { label: 'Partner Work', href: '/portfolio/' },
       { label: 'Pricing', href: '/pricing-plans/' },
     ],
   },
@@ -78,6 +79,8 @@ export const footerCols = [
       { label: 'About Blueinc', href: '/about-us/' },
       { label: 'Contact Us', href: '/contact/' },
       { label: 'Our Blog', href: '/blog/' },
+      { label: 'Reviews', href: '/success-stories/' },
+      { label: 'Industries', href: '/industries-served/' },
       // Press & Media and Company CSR are hidden until those pages exist on this site.
     ],
   },
@@ -92,63 +95,65 @@ export const footerCols = [
 ];
 
 export const home = {
-  title: 'Blueinc Technologies | Technology Solutions & Digital Products',
-  heroServices: [
-    { label: 'Custom Software', href: '/our-services/web-development-services/' },
-    { label: 'Mobile Apps', href: '/our-services/app-development-services/' },
-    { label: 'Digital Products', href: '/products/' },
-    { label: 'Enterprise Systems', href: '/our-services/product-management-services/' },
-  ],
-  headlineLead: 'Technology Solutions. Digital Products. Real-World',
-  headlineWords: ['Impact', 'Results', 'Value'],
+  title: 'Blueinc Technologies | We Build and Run Digital Products',
+  headlineLead: 'We build and run digital products for',
+  headlineWords: ['Workforces', 'Healthcare', 'Job Seekers', 'Learners'],
   intro:
-    'We design, build and scale software for businesses, and we develop and operate our own digital products that solve real problems across industries.',
-  trustedBy: 'Trusted by businesses across Canada, UK, US and Nigeria',
+    'Blueinc Technologies is the parent company of Staffintra, Travel Nurse Houses, MyJobTests and Teststreams. We design, build and operate every product in-house, and we put the same engineering to work for a select group of partners.',
+  trustedBy: 'Products and partners across Canada, the UK, the US and Nigeria',
   stats: [
-    { value: 100, suffix: '+', label: 'Software & Apps Built' },
-    { value: 6, suffix: '+', label: 'Years Experience' },
+    { value: 4, suffix: '', label: 'Products We Own & Operate' },
     { value: 5, suffix: '+', label: 'Countries Served' },
-    { value: 4, suffix: '+', label: 'Digital Products We Own & Operate' },
+    { value: 2016, suffix: '', label: 'Building Since' },
+    { value: 100, suffix: '+', label: 'Partner Projects Delivered' },
   ],
   whoWeAre: {
     eyebrow: 'Who we are',
-    title: 'One Team for Client Solutions and Our Own Products',
+    title: 'A Parent Company for Products That Solve Real Problems',
     body:
-      'We build custom software, web and mobile applications and business systems for our clients, and we run digital products of our own. Building for both keeps our engineering practical and our product thinking sharp.',
+      'Each Blueinc product starts with one real problem: running a frontline workforce, housing healthcare professionals on assignment, preparing for a job test, passing an exam. We own them, build them and run them, with one shared team for engineering, design and growth.',
   },
   history: {
     eyebrow: 'Our history',
-    title: 'Digital solutions for startups and SMEs globally',
+    title: 'Building since 2016',
     body:
-      'For years, Blueinc has been building technology for a diverse range of clients, from multinational companies and government agencies to MSMEs. We specialize in custom software, web and mobile applications, system integration, digital marketing and technology consulting, and we develop and operate digital products of our own. Our talented team of designers, developers, and project managers has completed hundreds of projects over the past 8 years, and helped hundreds more businesses grow and gain visibility online.',
+      'Blueinc started in 2016 building software for businesses. Along the way we began building products of our own, and today we run four of them, while still partnering with a select group of companies on custom software.',
     points: [
-      'We’re an award-winning team of engineers, designers, and marketers',
-      'We’ve worked with brands from over 9 countries',
-      'In over 11 years, we’ve never lost a client. Clients keep coming',
-      'Our clients have raised over $100m in Funding',
+      'Four products of our own, built and run in-house',
+      'Serving users across Canada, the US, the UK and Nigeria',
+      'Partners and clients from over 9 countries',
+      'Our partners have raised over $100m in funding',
     ],
   },
   why: {
-    eyebrow: 'Why Blueinc?',
-    title: 'Engineering Expertise With a Product Mindset.',
+    eyebrow: 'How we build',
+    title: 'Every Product Starts With a Real Problem.',
+    lead: 'We pick problems we understand, build the smallest thing that solves them, and keep improving every week after launch. That is how we run our own products, and how we build for partners.',
     items: [
       {
-        title: 'Tailored Solutions',
-        body: 'We build software around how your business actually works, from internal systems to customer-facing platforms, with room to scale.',
+        title: 'Built Around Real Problems',
+        body: 'Every product begins with people we can talk to: shift workers, travel nurses, job seekers and students. We build for the job they need done.',
       },
       {
-        title: 'Intuitive Designs',
-        body: 'We design products people find easy to use, the same standard we hold our own platforms to every day.',
+        title: 'Designed for Everyday Use',
+        body: 'Clocking in, finding a home near a hospital, practising for a test: our products are used daily, so they have to be simple.',
       },
       {
-        title: 'Performance Tracking',
-        body: 'We provide detailed analytics and reports, helping you understand user behavior, track key performance indicators, and make informed decisions.',
+        title: 'Measured and Improved',
+        body: 'Each product ships with analytics from day one, so we can see what people use, fix what slows them down and decide what to build next.',
       },
       {
-        title: 'Launch and Growth',
-        body: 'Launching is only the start. We help you reach users through content, search and social, then keep improving what you’ve built.',
+        title: 'Launched and Grown',
+        body: 'Launching is only the start. We grow our products through search, content and partnerships, and keep shipping improvements.',
       },
     ],
+  },
+  // "Build with us" band on the home page: client services, positioned as secondary.
+  partners: {
+    eyebrow: 'Build with us',
+    title: 'The team behind our products also builds for partners',
+    body:
+      'The engineering, design and product experience behind Staffintra, Travel Nurse Houses, MyJobTests and Teststreams is available to a select group of businesses: custom software, mobile apps, enterprise systems and product design.',
   },
   reviewsCount: '120+',
 };
@@ -173,27 +178,27 @@ export const values = [
 ];
 
 export const about = {
-  title: 'About Blueinc Technologies | Technology Solutions & Digital Products',
+  title: 'About Blueinc Technologies | The Company Behind Our Products',
   description:
-    'Blueinc is a technology solutions and digital product company. We build software for businesses and develop, own and operate digital products of our own.',
-  h1: 'Software for Businesses. Products of Our Own.',
-  lead: 'A technology company that builds for clients and for itself, and gets better at both.',
+    'Blueinc Technologies is a product company. We own and operate Staffintra, Travel Nurse Houses, MyJobTests and Teststreams, and build custom software for select partners.',
+  h1: 'We Build Products People Rely On.',
+  lead: 'Blueinc Technologies is the parent company of four digital products, built and run by one team.',
   body:
-    'Blueinc Technologies designs, builds and supports software for startups, businesses and organizations, and develops and operates its own digital products, including Staffintra, Travel Nurse Houses, MyJobTests and Teststreams.',
+    'Blueinc Technologies owns and operates Staffintra, Travel Nurse Houses, MyJobTests and Teststreams. We design, engineer and grow every product in-house, and we partner with a select group of businesses to build their software with the same team.',
   serve: {
-    title: 'Who We Serve?',
-    body: 'We work with startups, growing businesses, organizations and entrepreneurs that need dependable technology: from a first product to the systems a business runs on every day.',
+    title: 'Who Our Products Serve',
+    body: 'Frontline teams and the people who manage them. Nurses and healthcare professionals on assignment. Job seekers preparing for employer tests. Students and teachers preparing for exams. And the partners who ask us to build their software.',
   },
   believe: {
     eyebrow: 'What We Believe In',
     title: 'We believe technology should solve real problems.',
     body:
-      'That belief shapes the software we build for clients and the products we choose to own. We start from the problem, build what is practical and reliable, and keep improving it after launch, with the same honesty and integrity whether the product is ours or yours.',
+      'That belief decides which products we build and own. We start from the problem, build what is practical and reliable, and keep improving it long after launch, with the same honesty and integrity whether the product is ours or a partner’s.',
     principles: ['Transparency', 'Accountability', 'Lifelong Learning', 'Ambition'],
   },
   team: {
     title: 'Meet the Blueinc Team',
-    body: 'Engineers, designers and product people who build for our clients and run our own products, and who take ownership of the results.',
+    body: 'Engineers, designers and product people who build and run our products every day, and who take ownership of the results.',
   },
 };
 
@@ -209,13 +214,13 @@ export const audit = {
 };
 
 export const servicesPage = {
-  title: 'Our Services | Blueinc Technologies',
-  h1: 'Technology Solutions Built for Your Business',
-  lead: 'From custom software and mobile apps to business systems and automation, we turn complex challenges into practical, scalable technology.',
-  beliefTitle: 'We build technology the way we build our own products',
+  title: 'Build With Blueinc | Custom Software by the Team Behind Our Products',
+  h1: 'Build With the Team Behind Our Products',
+  lead: 'The people who build and run Staffintra, Travel Nurse Houses, MyJobTests and Teststreams also build custom software, mobile apps and business systems for a select group of partners.',
+  beliefTitle: 'We build your product the way we build our own',
   beliefBody:
     'Because we develop and operate digital products of our own, we know what it takes to ship software that people rely on. We start by understanding your business and its challenges, recommend the right technology, then design, build, launch and support it, from first release to long-term growth.',
-  listTitle: 'What we build for our clients',
+  listTitle: 'What we build for partners',
   closing:
     'We apply the same engineering to client work that we apply to the products we own and operate. We don’t just deliver projects; we build technology partnerships that last.',
 };
@@ -228,8 +233,8 @@ export const services = [
     summary:
       'Custom software, web applications, SaaS platforms and high-performance websites, engineered around how your business works. We build secure, scalable systems, integrate them with the tools you use, and keep them running well.',
     tags: ['Custom Software', 'Web Applications', 'SaaS', 'APIs & Integrations', 'Websites'],
-    image: 'clients/fillinstaffing.com.jpg',
-    mockup: { laptop: 'scrubharvard.com', phone: 'lexpraxisng.com' },
+    illo: 'lexpraxisng',
+    mockup: { laptop: 'lexpraxisng', phone: 'scrubharvard' },
     h1: 'Custom software, web applications and websites that run your business.',
     lead: 'Practical, reliable software engineered to scale with you.',
     introTitle: 'We engineer software around your business, not the other way round',
@@ -244,7 +249,7 @@ export const services = [
       ['Test & Launch', 'We test thoroughly for quality, security and performance, review everything with you, and launch with confidence.'],
       ['Support & Optimize', 'After launch we maintain, monitor and improve your software so it stays secure, up to date and ready for the next stage of growth.'],
     ],
-    showcase: ['scrubharvard.com', 'fillinstaffing.com', 'gebbrapharma.com'],
+    showcase: ['scrubharvard.com', 'goodwillstaffing.ca', 'gebbrapharma.com'],
     quote: {
       text: 'The entire team at Blueinc Tech are extremely talented. They brought fresh innovative ideas to the table and gave us a fantastic website. I’m really impressed by their ability to understand ideas and turn them into reality.',
       name: 'Femi Ladejo',
@@ -259,8 +264,8 @@ export const services = [
     summary:
       'Great products still need to be found. We help businesses and digital products reach, convert and retain users with data-driven SEO, paid campaigns, content, social media and email marketing, measured against real results.',
     tags: ['SEO', 'PPC', 'Content Marketing', 'Social Media', 'Email Marketing', 'Analytics'],
-    image: 'clients/scrubharvard.com.jpg',
-    mockup: { laptop: 'spotlightnigeria-france.com', phone: 'scrubharvard.com' },
+    illo: 'scrubharvard',
+    mockup: { laptop: 'spotlight', phone: 'scrubharvard' },
     h1: 'Data-driven digital marketing strategies that get results.',
     lead: 'Growth strategies for businesses and digital products, informed by what we learn growing our own.',
     introTitle: 'We Drive Growth for Businesses and Digital Products',
@@ -290,8 +295,8 @@ export const services = [
     summary:
       'Native and cross-platform apps for iOS, Android and the web, from MVP to scale. We design, build and launch applications that users rely on, backed by the APIs and infrastructure to support them.',
     tags: ['Android', 'iOS', 'Web Apps', 'SaaS', 'API Integration', 'Custom Software'],
-    image: 'clients/travelnursehouses.ca.jpg',
-    mockup: { laptop: 'travelnursehouses.ca', phone: 'travelnursehouses.ca' },
+    illo: 'travelnursehouses',
+    mockup: { laptop: 'travelnursehouses', phone: 'travelnursehouses' },
     h1: 'Mobile and web applications built for real users and real scale.',
     lead: 'From MVP to app-store launch and beyond, built by a team that runs its own products.',
     introTitle: 'We strategically design your app, equipping your business for success',
@@ -321,8 +326,8 @@ export const services = [
     summary:
       'Research-led UI/UX and digital product design for software, apps and platforms. We map user journeys, prototype and test, and design interfaces and brand systems that are clear, usable and ready to build.',
     tags: ['UI/UX', 'Prototyping', 'Wireframing', 'Branding', 'Usability Testing', 'Animation'],
-    image: 'clients/gebbrapharma.com.jpg',
-    mockup: { laptop: 'gebbrapharma.com', phone: 'gebbrapharma.com' },
+    illo: 'gebbrapharma',
+    mockup: { laptop: 'gebbrapharma', phone: 'myjobtests' },
     h1: 'Digital product design that is both beautiful and intuitive.',
     lead: 'UI/UX, product and brand design shaped by research and tested with real users.',
     introTitle: 'Design That Makes Software Easy to Use',
@@ -351,8 +356,8 @@ export const services = [
     summary:
       'Keep your software and your customers well looked after. We maintain and optimize applications after launch, and set up knowledge bases, support teams and systems that resolve customer issues quickly across multiple channels.',
     tags: ['Knowledge Base', 'Agent Training', 'Multi-Channel', 'Live Chat', 'Email', 'Phone'],
-    image: 'partner.jpg',
-    mockup: { laptop: 'myjobtests.com', phone: 'teststreams.com' },
+    illo: 'teststreams',
+    mockup: { laptop: 'myjobtests', phone: 'teststreams' },
     h1: 'Ongoing support that keeps your software and customers in good hands.',
     lead: 'Maintenance, optimization and customer support, so your product keeps performing long after launch.',
     introTitle: 'Elevating Your Customer Experience',
@@ -382,8 +387,8 @@ export const services = [
     summary:
       'ERP, business management systems and process automation that connect your operations. We assess your workflows, select or build the right system, migrate your data, integrate your tools and train your team, so work runs on one reliable foundation.',
     tags: ['ERP', 'Business Systems', 'Process Automation', 'Data Migration', 'Integrations'],
-    image: 'clients/staffintra.com.jpg',
-    mockup: { laptop: 'staffintra.com', phone: 'staffintra.com' },
+    illo: 'staffintra',
+    mockup: { laptop: 'staffintra', phone: 'staffintra' },
     h1: 'Unify your operations with enterprise systems and automation.',
     lead: 'Replace data silos and manual work with connected systems that support smarter decisions and growth.',
     introTitle: 'We Help You Run Operations on One Reliable System',
@@ -422,18 +427,21 @@ export const industries = {
 };
 
 export const portfolio = {
-  title: 'Our Work | Blueinc Technologies',
-  h1: 'Our Work',
+  title: 'Partner Work | Blueinc Technologies',
+  h1: 'Partner Work',
   body:
-    'Software, applications and websites we’ve built for clients across Nigeria, the USA, Canada, the UK, France and beyond.',
+    'Alongside our own products, we build software, applications and websites for partners across Nigeria, the USA, Canada, the UK, France and beyond. Here is a selection that is live today.',
   categories: ['Websites', 'Web Applications', 'Mobile Applications'],
+  // Live sites only (checked 2026-10-25). Each is shown as an illustration of what the site does,
+  // not a screenshot. Kind = what the business is, used as the card's right-hand label.
   websites: [
-    'scrubharvard.com', 'fillinstaffing.com', 'gebbrapharma.com', '365dayshampers.com',
-    'rccgfranceprovince.org', 'goodwillstaffing.us', 'stephensbooks.net', 'constructioncrewpro.ca',
-    'everlivelyhhc.ca', 'bridgeandvalue.com', 'goodwillstaffing.ca',
-    'tvinstallpro.ca', 'testpremier.com', 'lexpraxisng.com', 'abiodunodunuga.com',
-    'equestglobal.com', 'kochezmedical.com', 'rhagfnig.org.ng', 'riteshoe.com',
-    'spotlightnigeria-france.com',
+    { site: 'scrubharvard.com', name: 'Scrub Harvard', kind: 'Medical apparel store' },
+    { site: 'goodwillstaffing.ca', name: 'Goodwill Staffing', kind: 'Healthcare staffing' },
+    { site: 'gebbrapharma.com', name: 'Gebbra Pharmaceuticals', kind: 'Pharmaceutical supply' },
+    { site: 'lexpraxisng.com', name: 'Lex-Praxis Solicitors', kind: 'Law firm' },
+    { site: 'bridgeandvalue.com', name: 'Bridge and Value', kind: 'Business development' },
+    { site: 'spotlightnigeria-france.com', name: 'Spotlight Nigeria', kind: 'Business forum' },
+    { site: 'abiodunodunuga.com', name: 'Abiodun Odunuga', kind: 'Consultant website' },
   ],
   // The former "Enterprise Softwares" items sit with web applications. Blueinc's own products have their own page (/products/).
   webApps: ['Truck Service Web App', 'Taxi Booking Web App', 'Event Management Web App', 'e-Commerce Store', 'Ai Bot for Business', 'Ai', 'IT Services'],
@@ -443,21 +451,26 @@ export const portfolio = {
 // Digital products Blueinc develops, owns and operates. Descriptions are taken from each product's own
 // live site (checked 2026-10-21); no user numbers or ratings are claimed here.
 export const products = [
-  { site: 'staffintra.com', url: 'https://staffintra.com/', name: 'Staffintra', kind: 'Workforce platform',
-    desc: 'People, attendance, approvals, payroll-ready timesheets and everyday work in one workspace.' },
-  { site: 'travelnursehouses.ca', url: 'https://travelnursehouses.ca/', name: 'Travel Nurse Houses', kind: 'Housing marketplace',
-    desc: 'Furnished, move-in ready homes near Canadian hospitals for travel nurses and healthcare professionals.' },
-  { site: 'myjobtests.com', url: 'https://myjobtests.com/', name: 'MyJobTests', kind: 'Career test prep',
-    desc: 'Aptitude test practice, interview preparation and resume review for job seekers.' },
-  { site: 'teststreams.com', url: 'https://teststreams.com/', name: 'Teststreams', kind: 'Exam prep platform',
-    desc: 'Verified past questions and study packs for job aptitude tests, school exams and scholarships.' },
+  { site: 'staffintra.com', url: 'https://staffintra.com/', name: 'Staffintra', kind: 'Workforce platform', scene: 'staffintra', logo: '/assets/img/products/staffintra.svg',
+    desc: 'People, attendance, approvals, payroll-ready timesheets and everyday work in one workspace.',
+    audience: 'For shift-based and frontline teams, multi-site companies and people-ops teams.',
+    features: ['Clock in by phone, tablet or biometric terminal, with a geofence for each site', 'Schedules and timesheets that export payroll-ready hours', 'Requests and approvals that escalate when they stall', 'Tasks, projects, announcements and team chat', 'Performance reviews confirmed by managers'] },
+  { site: 'travelnursehouses.ca', url: 'https://travelnursehouses.ca/', name: 'Travel Nurse Houses', kind: 'Housing marketplace', scene: 'travelnursehouses', logo: '/assets/img/products/travelnursehouses.png',
+    desc: 'Furnished, move-in ready homes near Canadian hospitals for travel nurses and healthcare professionals.',
+    audience: 'For travel nurses and healthcare professionals, the hosts who house them and staffing agencies.',
+    features: ['Search furnished homes by hospital, city and assignment dates', 'Compare homes by commute and monthly price', 'Message hosts about your assignment', 'Verified Pro Hosts and contract protection', 'Calendar sync for hosts with Airbnb, Vrbo and Booking.com'] },
+  { site: 'myjobtests.com', url: 'https://myjobtests.com/', name: 'MyJobTests', kind: 'Career test prep', scene: 'myjobtests', logo: '/assets/img/products/myjobtests.png',
+    desc: 'Aptitude test practice, interview preparation and resume review for job seekers.',
+    audience: 'For job seekers preparing for employer aptitude tests and recruitment exams.',
+    features: ['Timed aptitude tests in the style of real employer assessments', 'Instant scoring with worked solutions', 'AI tutor feedback and a personal study plan', 'Resume review with an ATS compatibility check', 'Practice packs organised by employer and test type'] },
+  { site: 'teststreams.com', url: 'https://teststreams.com/', name: 'Teststreams', kind: 'Exam prep platform', scene: 'teststreams', logo: '/assets/img/products/teststreams.png',
+    desc: 'Verified past questions and study packs for job aptitude tests, school exams and scholarships.',
+    audience: 'For job seekers, students, scholarship applicants and teachers.',
+    features: ['Verified past questions and study packs', 'Free timed practice tests in the browser', 'Term-by-term video lessons', 'A personal library that works offline', 'Packs for jobs, schools, scholarships and study abroad'] },
 ];
 
-// Home page stacked cards: our own products first, then client work.
-export const featuredWork = [
-  ...products.map((p) => ({ site: p.site, client: p.name, kind: p.kind, href: p.url, own: true })),
-  { site: 'scrubharvard.com', client: 'Scrub Harvard', kind: 'Client website' },
-];
+// Home page stacked cards: our own products only (partner work has its own page).
+export const featuredWork = products.map((p) => ({ site: p.site, scene: p.scene, logo: p.logo, client: p.name, kind: p.kind, href: p.url, own: true }));
 
 export const testimonials = [
   {
@@ -526,22 +539,31 @@ export const contactPage = {
 export const cta = {
   eyebrow: 'Have an idea?',
   title: 'Let’s build what’s next, together.',
-  sub: 'Tell us about your project or idea.',
+  sub: 'Explore the products we run, or tell us about the one you want to build.',
 };
 
 export const projectTypes = ['Custom Software / Web App', 'Mobile App', 'Enterprise Systems & Automation', 'Website', 'UI/UX & Product Design', 'Digital Marketing', 'Technology Consulting'];
 
-export const clientLogos = [
-  'L13', 'L7', 'L11', 'FILLIN-STAFF', 'FON', 'IMO', 'KEBBI', 'KOCHEZ', 'LEXAP', 'STEPHEN', 'Testp',
-  'TV-INSTALL', 'ncs', 'riteshoe', 'equest', 'ccp', 'bridge-and-value', 'SHEAPSMART', 'GE', 'SPOT',
-  'RCCG', 'EVERLIVELY',
+// Platforms our products and partner builds run on or integrate with. Shown as "Built on and
+// integrated with", never as clients. Icons: Simple Icons (CC0); Microsoft is drawn inline.
+export const platforms = [
+  { name: 'Google', icon: 'google' },
+  { name: 'Microsoft', icon: null },
+  { name: 'Stripe', icon: 'stripe' },
+  { name: 'Notion', icon: 'notion' },
+  { name: 'Trello', icon: 'trello' },
+  { name: 'Slack', icon: 'slack' },
+  { name: 'Figma', icon: 'figma' },
+  { name: 'GitHub', icon: 'github' },
+  { name: 'Shopify', icon: 'shopify' },
+  { name: 'PayPal', icon: 'paypal' },
 ];
 
-// /products/ page (Blueinc-owned products; the cards come from `products` above).
+// /products/ page (Blueinc-owned products; the sections come from `products` above).
 export const productsPageData = {
   title: 'Our Products | Blueinc Technologies',
   description: 'Digital products developed, owned and operated by Blueinc Technologies: Staffintra, Travel Nurse Houses, MyJobTests and Teststreams.',
   h1: 'Our Products',
-  lead: 'Digital products we develop, own and operate, built on the same engineering we bring to every client project.',
-  statement: 'Beyond client projects, we build and operate our own digital products, applying our technology expertise to solve real problems and create lasting value.',
+  lead: 'Four products, one team. We design, build and run each of them in-house.',
+  statement: 'Every Blueinc product starts with a real problem and a group of people we can learn from. We build the smallest thing that solves it, then keep improving it every week.',
 };

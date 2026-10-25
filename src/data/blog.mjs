@@ -17,8 +17,7 @@ export const posts = [
     excerpt: 'Off-the-shelf tools are fast to adopt, but they can also hold you back. Here’s a practical way to decide when custom software is worth it.',
     category: 'Custom Software',
     date: '2026-02-17',
-    image: '/assets/img/clients/travelnursehouses.ca.jpg',
-    imageAlt: 'Travel Nurse Houses, a custom platform built and run by Blueinc Technologies',
+    scene: 'travelnursehouses',
     body: [
       { p: 'Almost every growing business reaches the same crossroads. The spreadsheets and off-the-shelf tools that got you started begin to strain: data lives in too many places, teams invent workarounds, and simple questions take hours to answer. The obvious next step is better software. The harder question is whether to buy it or build it.' },
       { p: 'There is no universal answer, but there is a reliable way to think it through.' },
@@ -62,8 +61,7 @@ export const posts = [
     excerpt: 'Running digital products of our own changes how we approach every client project. Here’s what an owner’s perspective adds to software development.',
     category: 'Digital Products',
     date: '2026-09-22',
-    image: '/assets/img/clients/staffintra.com.jpg',
-    imageAlt: 'Staffintra, a workplace operations platform built and operated by Blueinc Technologies',
+    scene: 'staffintra',
     body: [
       { p: 'Blueinc builds software for clients, and we also develop and operate digital products of our own, including Staffintra, Travel Nurse Houses, MyJobTests and Teststreams. People sometimes ask why a services company would take on the work of running its own products. The short answer: it makes us better at both.' },
       { h: 'Shipping is the beginning, not the end' },
@@ -90,8 +88,7 @@ export const posts = [
     excerpt: 'Automation can free your team from repetitive work, but automating the wrong process just makes mistakes faster. A practical starting guide.',
     category: 'Automation',
     date: '2026-05-12',
-    image: '/assets/img/clients/teststreams.com.jpg',
-    imageAlt: 'Teststreams, a digital product by Blueinc Technologies',
+    scene: 'teststreams',
     body: [
       { p: 'Most organizations have work that repeats every day: copying data between systems, chasing approvals, compiling the same report every week, sending the same reminders. Automation promises to take that work off people’s plates. Done well, it does. Done hastily, it hard-codes a broken process and makes it harder to change.' },
       { h: 'Map the process before you automate it' },
@@ -121,8 +118,7 @@ export const posts = [
     excerpt: 'A minimum viable product should test your most important assumption, not every idea you have. Here’s how to scope a first release with confidence.',
     category: 'Product Development',
     date: '2026-07-28',
-    image: '/assets/img/clients/myjobtests.com.jpg',
-    imageAlt: 'MyJobTests, a career assessment preparation platform built and operated by Blueinc Technologies',
+    scene: 'myjobtests',
     body: [
       { p: 'Whether you’re a startup with a new idea or an established business launching a digital product, the first release is where plans meet reality. A minimum viable product (MVP) is the smallest version of your product that can deliver real value to real users and teach you what to build next. The challenge is deciding what “minimum” means.' },
       { h: 'Start with the riskiest assumption' },

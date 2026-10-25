@@ -43,7 +43,6 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="apple-touch-icon" href="/assets/img/favicon-192.png">
 <link rel="preload" href="/assets/fonts/switzer-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-${route === '/' ? '<link rel="preload" href="/assets/media/showreel-poster.webp" as="image" type="image/webp" fetchpriority="high">' : ''}
 <!--INLINE_CSS-->
 <script>
   (function (d) {

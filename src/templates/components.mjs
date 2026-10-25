@@ -1,4 +1,5 @@
-import { site, nav, footerCols, services, industries, products, projectTypes, cta } from '../data/site.mjs';
+import { site, nav, footerCols, services, industries, products, projectTypes, cta, platforms } from '../data/site.mjs';
+import { illo } from './illos.mjs';
 
 export const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -45,34 +46,52 @@ export function btn({ label, href, variant = '', size = '', attrs = '', icon: ic
 export const quoteBtn = (label = 'Get a Free Quote', variant = '', size = '', type = '') =>
   btn({ label, variant, size, attrs: `data-open-quote${type ? ` data-project="${esc(type)}"` : ''}` });
 
-/* ---------- Geometric wordmark (BLUEINC TECH) ----------
-   Letters are built from rectangles on a 96×288 cell with a 32px stroke,
-   echoing the blocky custom wordmark of the reference. Each letter is its
-   own <g> so it can be animated independently. */
-const S = 32, W = 96, H = 288, GAP = 24, SPACE = 72;
-const LETTERS = {
-  B: { w: W, r: [[0, 0, S, H], [0, 0, 88, S], [56, 0, S, 160], [0, 128, W, S], [64, 128, S, H - 128], [0, H - S, W, S]] },
-  L: { w: W, r: [[0, 0, S, H], [0, H - S, W, S]] },
-  U: { w: W, r: [[0, 0, S, H], [W - S, 0, S, H], [0, H - S, W, S]] },
-  E: { w: W, r: [[0, 0, S, H], [0, 0, W, S], [0, 128, 80, S], [0, H - S, W, S]] },
-  I: { w: S, r: [[0, 0, S, H]] },
-  N: { w: W, r: [[0, 0, S, H], [W - S, 0, S, H], [0, 0, W, S]] },
-  C: { w: W, r: [[0, 0, S, H], [0, 0, W, S], [0, H - S, W, S], [W - S, 0, S, 88], [W - S, H - 88, S, 88]] },
-  T: { w: W, r: [[0, 0, W, S], [S, 0, S, H]] },
-  H: { w: W, r: [[0, 0, S, H], [W - S, 0, S, H], [0, 128, W, S]] },
+/* ---------- Wordmark (matches the Blueinc Technologies logo) ----------
+   Two lines, justified to the same width, as in blueinc-logo.png:
+     BLUEINC        geometric caps, 190 tall, 33 stroke; BLUE in brand cyan, INC in brand pink
+     TECHNOLOGIES   thin grey caps, 60 tall, 10 stroke, widely tracked across the full width
+   Letters are stroked centre-lines (positions measured from the logo), and each is its own <g>
+   so the hero and footer can animate them independently. */
+const WM_W = 1405;
+const BIG = { h: 190, s: 33, color: ['blue', 'blue', 'blue', 'blue', 'inc', 'inc', 'inc'] };
+// [x offset, width, path] per letter of BLUEINC
+const BIG_GLYPHS = [
+  [0, 212, 'M16.5 0V190M0 16.5H128A35.5 39.875 0 0 1 128 96.25H53M53 96.25H155.5A40 38.625 0 0 1 155.5 173.5H0'], // B
+  [243, 164, 'M16.5 0V173.5H164'], // L
+  [436, 210, 'M16.5 0V110C16.5 160 40 173.5 105 173.5S193.5 160 193.5 110V0'], // U
+  [686, 165, 'M0 16.5H165M0 96.25H165M0 173.5H165'], // E: three bars, no stem
+  [893, 33, 'M16.5 0V190'], // I
+  [973, 189, 'M16.5 190V16.5L172.5 173.5V0'], // N
+  [1202, 203, 'M203 16.5H95A78.5 78.5 0 0 0 95 173.5H203'], // C
+];
+const SMALL = { h: 60, s: 10, top: 238 };
+const small = {
+  T: (w) => `M0 5H${w}M${w / 2} 5V60`,
+  E: (w) => `M${w} 5H5V55H${w}M5 30H${w - 8}`,
+  C: (w) => `M${w} 5H25A20 25 0 0 0 25 55H${w}`,
+  H: (w) => `M5 0V60M${w - 5} 0V60M5 30H${w - 5}`,
+  N: (w) => `M5 60V5L${w - 5} 55V0`,
+  O: (w) => `M23 5H${w - 23}A18 25 0 0 1 ${w - 23} 55H23A18 25 0 0 1 23 5`,
+  L: (w) => `M5 0V55H${w}`,
+  G: (w) => `M${w} 5H25A20 25 0 0 0 25 55H${w - 5}V32H${Math.round(w * 0.45)}`,
+  I: () => 'M5 0V60',
+  S: (w) => `M${w} 5H13A12.5 12.5 0 0 0 13 30H${w - 13}A12.5 12.5 0 0 1 ${w - 13} 55H0`,
 };
-export function wordmark(text = 'BLUEINC TECH', { label = 'Blueinc Technologies', cls = '' } = {}) {
-  let x = 0;
-  const groups = [];
-  for (const ch of text) {
-    if (ch === ' ') { x += SPACE - GAP; continue; }
-    const L = LETTERS[ch];
-    const rects = L.r.map(([rx, ry, rw, rh]) => `<rect x="${x + rx}" y="${ry}" width="${rw}" height="${rh}"/>`).join('');
-    groups.push(`<g class="wm-letter">${rects}</g>`);
-    x += L.w + GAP;
-  }
-  const width = x - GAP;
-  return `<svg class="wordmark ${cls}" viewBox="0 0 ${width} ${H}" role="img" aria-label="${esc(label)}" preserveAspectRatio="xMidYMid meet">${groups.join('')}</svg>`;
+// [letter, x offset, width] for TECHNOLOGIES
+const SMALL_GLYPHS = [['T', 0, 58], ['E', 120, 52], ['C', 237, 62], ['H', 368, 60], ['N', 495, 58], ['O', 623, 76], ['L', 760, 52], ['O', 867, 76], ['G', 1005, 70], ['I', 1140, 10], ['E', 1218, 52], ['S', 1335, 70]];
+
+// Each letter is its own small SVG inside a clipping box, positioned in % of the wordmark. Animating
+// the HTML box (translate only) runs on the compositor, so the intro stays smooth even while the
+// page is still busy loading; transforms inside one big SVG repaint the whole SVG on every frame.
+const WM_H = SMALL.top + SMALL.h;
+const pct = (v, of) => `${+(v / of * 100).toFixed(4)}%`;
+const letter = (cls, x, y, w, h, stroke, d, style = '') =>
+  `<span class="wm-letter ${cls}" style="left:${pct(x, WM_W)};top:${pct(y, WM_H)};width:${pct(w, WM_W)};height:${pct(h, WM_H)};${style}"><svg viewBox="0 0 ${w} ${h}" stroke-width="${stroke}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}"/></svg></span>`;
+
+export function wordmark({ label = 'Blueinc Technologies', cls = '' } = {}) {
+  const big = BIG_GLYPHS.map(([x, w, d], i) => letter(`wm-${BIG.color[i]}`, x, 0, w, BIG.h, BIG.s, d, `--n:${i}`)).join('');
+  const sm = SMALL_GLYPHS.map(([ch, x, w], i) => letter('wm-tech', x, SMALL.top, w, SMALL.h, SMALL.s, small[ch](w), `--i:${i}`)).join('');
+  return `<div class="wordmark ${cls}" role="img" aria-label="${esc(label)}">${big}${sm}</div>`;
 }
 
 /* ---------- Navbar ---------- */
@@ -112,11 +131,11 @@ export function navbar(current) {
       <a class="navbar__person" href="${site.calendly}" target="_blank" rel="noopener">
         <img src="/assets/img/partner.jpg" alt="" width="44" height="44">
         <span>
-          <span class="navbar__person-name">Talk to a Digital Partner <i class="online-dot"></i></span>
+          <span class="navbar__person-name">Talk to our team <i class="online-dot"></i></span>
           <span class="navbar__person-role">Schedule a call</span>
         </span>
       </a>
-      ${btn({ label: 'Get Started', href: site.calendly, size: 'sm' })}
+      ${btn({ label: 'Our Products', href: '/products/', size: 'sm' })}
       <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-menu-open>
         <span class="menu-btn__lines"><span></span><span></span></span>
       </button>
@@ -143,9 +162,9 @@ export function mobileMenu() {
     <div class="menu__card" data-menu-item>
       <a class="navbar__person" href="${site.calendly}" target="_blank" rel="noopener">
         <img src="/assets/img/partner.jpg" alt="" width="44" height="44">
-        <span><span class="navbar__person-name">Talk to a Digital Partner <i class="online-dot"></i></span><span class="navbar__person-role">Schedule a call</span></span>
+        <span><span class="navbar__person-name">Talk to our team <i class="online-dot"></i></span><span class="navbar__person-role">Schedule a call</span></span>
       </a>
-      ${btn({ label: 'Get Started', href: site.calendly, size: 'lg' })}
+      ${btn({ label: 'Our Products', href: '/products/', size: 'lg' })}
       ${quoteBtn('Get a Free Quote', 'light', 'lg')}
     </div>
     <div class="menu__social" data-menu-item>${site.social.map((s) => `<a href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`).join('')}</div>
@@ -162,8 +181,8 @@ export function ctaPanel() {
     <h2 class="h1 cta__title" id="cta-title" data-reveal="lines">${esc(cta.title)}</h2>
     <p class="lead" style="color:var(--grey-200)" data-reveal="fade">${esc(cta.sub)}</p>
     <div class="btn-row btn-row--center" data-reveal="fade">
-      ${btn({ label: 'Discuss Your Project', href: site.calendly, size: 'lg' })}
-      ${quoteBtn('Get a Free Quote', 'light', 'lg')}
+      ${btn({ label: 'Explore Our Products', href: '/products/', size: 'lg' })}
+      ${quoteBtn('Build With Blueinc', 'light', 'lg')}
     </div>
   </div>
 </section>`;
@@ -188,7 +207,7 @@ ${withCta ? ctaPanel() : ''}
 <footer class="footer${withCta ? '' : ' footer--solo'}" data-footer>
   <div class="footer__top">
     <div class="footer__lead">
-      <span class="footer__label">Talk to a Digital Partner:</span>
+      <span class="footer__label">Talk to us:</span>
       <div class="footer__email">
         <a href="mailto:${site.email}" class="u-link">${site.email}</a>
         <button class="copy-btn" type="button" data-copy="${site.email}" aria-label="Copy email address">${icon.copy}<span class="copy-btn__tip" role="status">Copied</span></button>
@@ -199,7 +218,7 @@ ${withCta ? ctaPanel() : ''}
     ${cols}
   </div>
   <div class="clocks" style="--n:${site.offices.length}">${clocks}</div>
-  <div class="footer__wordmark" data-footer-wordmark>${wordmark('BLUEINC TECH', { label: 'Blueinc Tech' })}</div>
+  <div class="footer__wordmark" data-footer-wordmark>${wordmark()}</div>
   <div class="footer__bottom">
     <span>© ${site.founded}–<span data-year>${new Date().getFullYear()}</span> ${esc(site.legalName)}</span>
     <nav aria-label="Legal">
@@ -249,19 +268,20 @@ export const crumbs = () => ''; // breadcrumb eyebrow removed
 export const crumbsUnused = (items) =>
   `<nav class="crumbs" aria-label="Breadcrumb" data-intro>${items.map((c, i) => (c.href ? `<a href="${c.href}">${esc(c.label)}</a>` : `<span aria-current="page">${esc(c.label)}</span>`) + (i < items.length - 1 ? '<span aria-hidden="true">/</span>' : '')).join('')}</nav>`;
 
-export const shot = (site) => `/assets/img/clients/${site}.jpg`;
-
-/* ---------- Product mockups: laptop + phone showing real client sites, auto-scrolling ---------- */
+/* ---------- Device mockups: laptop + phone showing animated illustrations (never screenshots) ---------- */
 export function devices({ laptop, phone, label = '', cls = '' }) {
-  const L = laptop && laptop.split('.')[0];
-  const P = phone && phone.split('.')[0];
   const aria = label ? `role="img" aria-label="${esc(label)}"` : 'aria-hidden="true"';
   return `
 <div class="devices ${cls}" ${aria}>
-  ${L ? `<div class="device-laptop"><div class="device-laptop__screen"><img class="scrollshot scrollshot--d" src="/assets/media/sites/${L}-d.jpg" alt="" loading="lazy" width="1100" height="2200"></div><div class="device-laptop__base"></div></div>` : ''}
-  ${P ? `<div class="device-phone"><div class="device-phone__screen"><img class="scrollshot scrollshot--m" src="/assets/media/sites/${P}-m.jpg" alt="" loading="lazy" width="520" height="4534"></div></div>` : ''}
+  ${laptop ? `<div class="device-laptop"><div class="device-laptop__screen">${illo(laptop, { label: false })}</div><div class="device-laptop__base"></div></div>` : ''}
+  ${phone ? `<div class="device-phone"><div class="device-phone__screen">${illo(phone, { phone: true, label: false })}</div></div>` : ''}
 </div>`;
 }
+
+/* ---------- Platforms strip: tools our products and partner builds run on (not clients) ---------- */
+const MS_LOGO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2h9.5v9.5H2z" fill="#F25022"/><path d="M12.5 2H22v9.5h-9.5z" fill="#7FBA00"/><path d="M2 12.5h9.5V22H2z" fill="#00A4EF"/><path d="M12.5 12.5H22V22h-9.5z" fill="#FFB900"/></svg>';
+export const platformCards = () => platforms.map((p) => `
+      <div class="logo-card"><div class="logo-card__box platform">${p.icon ? `<img src="/assets/img/platforms/${p.icon}.svg" alt="" width="40" height="40" loading="lazy">` : MS_LOGO}<span>${esc(p.name)}</span></div></div>`).join('');
 
 /* ---------- Looping ambient video (muted, plays only while visible, respects reduced motion) ---------- */
 export const loopVideo = (name, cls = '', attrs = '') =>

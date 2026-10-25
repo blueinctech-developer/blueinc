@@ -29,7 +29,7 @@ const pages = [
     description: s.summary.length > 160 ? `${s.summary.slice(0, 157).replace(/\s+\S*$/, '')}…` : s.summary,
     body: serviceDetailPage(s),
   })),
-  { route: '/products/', title: productsPageData.title, description: productsPageData.description, body: productsPage(productsPageData), ogImage: '/assets/img/clients/staffintra.com.jpg', priority: '0.9' },
+  { route: '/products/', title: productsPageData.title, description: productsPageData.description, body: productsPage(productsPageData), priority: '0.9' },
   { route: '/portfolio/', title: portfolio.title, description: portfolio.body, body: portfolioPage() },
   { route: '/industries-served/', title: industries.title, description: industries.body.slice(0, 155) + '…', body: industriesPage() },
   { route: '/success-stories/', title: reviewsPage.title, description: reviewsPage.body, body: reviewsPageTpl() },
@@ -37,9 +37,9 @@ const pages = [
   { route: '/contact/', title: contactPage.title, description: contactPage.lead, body: contactPageTpl() },
   { route: '/blog/', title: blog.title, description: blog.description, body: blogIndexPage(blog, posts, readMinutes), priority: '0.7' },
   ...posts.map((p) => ({
-    route: `/blog/${p.slug}/`, title: `${p.title} | Blueinc Technologies`, description: p.excerpt, ogImage: p.image, ogType: 'article', priority: '0.6',
+    route: `/blog/${p.slug}/`, title: `${p.title} | Blueinc Technologies`, description: p.excerpt, ogType: 'article', priority: '0.6',
     body: blogPostPage(p, posts, readMinutes),
-    schema: { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, datePublished: p.date, image: site.url + p.image, mainEntityOfPage: `${site.url}/blog/${p.slug}/`, author: { '@type': 'Organization', name: site.name, url: site.url }, publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: site.url + '/assets/img/logo.png' } } },
+    schema: { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: p.title, description: p.excerpt, datePublished: p.date, image: `${site.url}/assets/img/og.jpg`, mainEntityOfPage: `${site.url}/blog/${p.slug}/`, author: { '@type': 'Organization', name: site.name, url: site.url }, publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: site.url + '/assets/img/logo.png' } } },
   })),
   ...[terms, privacy].map((d) => ({ route: d.route, title: d.title, description: d.description, body: legalPage(d, { email: legalEmail }), priority: '0.3' })),
   { route: '/free-detailed-audit/', title: 'Free Technology Consultation | Blueinc Technologies', description: audit.lead, body: auditPage() },
@@ -66,7 +66,6 @@ const redirects = {
 // 1) Inline the stylesheet (minified) so it isn't a render-blocking request.
 // 2) Serve WebP wherever a .webp sits next to a .jpg/.png (skips <meta>/<link>, so social
 //    previews and favicons keep their universally supported formats).
-// 3) Card pills show 36px thumbnails, not full 1440px screenshots.
 const minifyCss = (css) => css
   .replace(/\/\*[\s\S]*?\*\//g, '')
   .replace(/\s+/g, ' ')
@@ -98,8 +97,6 @@ const withVersion = (url) => {
 };
 const optimize = (html) => html
   .replace('<!--INLINE_CSS-->', inlineCss)
-  .replace(/(class="work__pill"><img src=")\/assets\/img\/clients\/([^"]+)\.(?:jpg|webp)"/g, (m, pre, name) =>
-    existsSync(path.join(root, 'src/assets/img/clients/thumbs', `${name}.webp`)) ? `${pre}/assets/img/clients/thumbs/${name}.webp"` : m)
   .replace(/<(?!meta\b|link\b)[a-z][^>]*>/gi, (tag) =>
     tag.replace(/(\/assets\/[^"')\s]+?\.(?:jpe?g|png))(?=["')\s])/gi, (u) => toWebp(u)))
   // relative /assets/ URLs only (absolute og:image/JSON-LD URLs are left untouched)
