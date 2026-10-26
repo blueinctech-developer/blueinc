@@ -1,4 +1,4 @@
-import { site, home, services, industries, featuredWork, testimonials, values, products } from '../data/site.mjs';
+import { site, home, services, industries, testimonials, values, products, solutions } from '../data/site.mjs';
 import { esc, icon, btn, quoteBtn, wordmark, roll, eyebrow, devices, loopVideo, platformCards } from './components.mjs';
 import { illo, SCENES } from './illos.mjs';
 
@@ -96,7 +96,7 @@ export function aboutSplit() {
       <div class="orbit__ring orbit__ring--2">${inner}</div>
     </div>
     <div class="orbit__center" style="position:absolute">
-      <p class="h5">Four products, one team</p>
+      <p class="h5">Your technology partner</p>
       <small>Team Work · Integrity · Simplicity · Excellence</small>
     </div>
   </div>
@@ -114,7 +114,7 @@ function why() {
     ${eyebrow(home.why.eyebrow)}
     <h2 class="h2" id="why-title" data-reveal="lines">${esc(home.why.title)}</h2>
     <p class="lead" data-reveal="fade">${esc(home.why.lead)}</p>
-    <div data-reveal="fade">${btn({ label: 'Explore Our Products', href: '/products/', size: 'lg' })}</div>
+    <div data-reveal="fade">${quoteBtn('Discuss a Challenge', '', 'lg')}</div>
   </div>
   <div class="bento">
     <article class="bento__card bento__card--photo" data-bento>
@@ -133,12 +133,12 @@ function why() {
     </article>
     <article class="bento__card bento__card--video" data-bento>
       ${loopVideo('ribbon', 'bento__video')}
-      <p class="bento__stat"><b>${products.length}</b>Products we own and operate</p>
+      <p class="bento__stat"><b>${site.founded}</b>Solving problems with technology since</p>
     </article>
     <article class="bento__card" data-bento>
       <div class="dash" aria-hidden="true" data-dash>
-        <div class="dash__top"><span class="dash__title"><i></i>Product analytics</span><span class="dash__tabs"><i>7D</i><i class="on">30D</i><i>90D</i></span></div>
-        <div class="dash__kpis">${['Active users', 'Sessions', 'Retention'].map((k, i) => `<div><small>${k}</small><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="${['M0 26 L14 22 L28 24 L42 16 L56 18 L70 10 L84 12 L100 4', 'M0 28 L14 24 L28 20 L42 22 L56 14 L70 15 L84 8 L100 6', 'M0 27 L14 26 L28 21 L42 19 L56 20 L70 13 L84 9 L100 5'][i]}"/></svg></div>`).join('')}</div>
+        <div class="dash__top"><span class="dash__title"><i></i>Operations dashboard</span><span class="dash__tabs"><i>7D</i><i class="on">30D</i><i>90D</i></span></div>
+        <div class="dash__kpis">${['Throughput', 'Adoption', 'Satisfaction'].map((k, i) => `<div><small>${k}</small><svg viewBox="0 0 100 32" preserveAspectRatio="none"><path d="${['M0 26 L14 22 L28 24 L42 16 L56 18 L70 10 L84 12 L100 4', 'M0 28 L14 24 L28 20 L42 22 L56 14 L70 15 L84 8 L100 6', 'M0 27 L14 26 L28 21 L42 19 L56 20 L70 13 L84 9 L100 5'][i]}"/></svg></div>`).join('')}</div>
         <div class="chart" data-chart>${[28, 40, 34, 52, 46, 63, 58, 72, 66, 84, 78, 95].map((h) => `<i style="--h:${h}%"></i>`).join('')}</div>
       </div>
       <h3 class="h5">${esc(measured.title)}</h3>
@@ -147,16 +147,16 @@ function why() {
     <article class="bento__card bento__card--social" data-bento>
       ${devices({ phone: 'teststreams', cls: 'devices--social' })}
       <div class="posts" aria-hidden="true" data-posts>
-        <div class="post"><span class="post__ico">${icon.chat}</span><span><b>Product launch</b>Release plans · onboarding</span></div>
-        <div class="post"><span class="post__ico">${icon.heart}</span><span><b>Search & social</b>SEO · content · campaigns</span></div>
-        <div class="post"><span class="post__ico">${icon.mail}</span><span><b>Iteration</b>Feedback · analytics · updates</span></div>
+        <div class="post"><span class="post__ico">${icon.chat}</span><span><b>Go-live</b>Rollout · training · handover</span></div>
+        <div class="post"><span class="post__ico">${icon.heart}</span><span><b>Support</b>Monitoring · updates · helpdesk</span></div>
+        <div class="post"><span class="post__ico">${icon.mail}</span><span><b>Improvement</b>Feedback · analytics · releases</span></div>
       </div>
       <h3 class="h5">${esc(grown.title)}</h3>
       <p>${esc(grown.body)}</p>
     </article>
     <article class="bento__card timeline" data-timeline>
       <div class="timeline__head">
-        <h3 class="h6">From idea to launch</h3>
+        <h3 class="h6">From diagnosis to operation</h3>
         <span class="timeline__chip">${icon.calendar}Our six-step approach</span>
       </div>
       <div class="timeline__grid">
@@ -187,13 +187,37 @@ export function workCard({ scene, logo, name, href, leftLabel, rightLabel, kind,
     </div>`;
 }
 
-export function homePage() {
-  const works = featuredWork.map((w, i) => workCard({
-    scene: w.scene, logo: w.logo, name: w.client, href: w.href, leftLabel: 'Our product', rightLabel: w.kind, kind: w.site, pill: 'Visit product',
-  }, i)).join('');
+// ---- Solutions (primary positioning): business challenge → solution → outcome ----------------------
+export function solutionsGrid({ limit } = {}) {
+  const list = limit ? solutions.slice(0, limit) : solutions;
+  return `<div class="sol-grid" data-stagger>${list.map((s) => `
+    <a class="sol-card" href="/solutions/${s.slug}/">
+      <span class="sol-card__icon">${icon[s.icon]}</span>
+      <span class="sol-card__label">The challenge</span>
+      <p class="sol-card__challenge">${esc(s.challenge)}</p>
+      <h3 class="h5 sol-card__title">${esc(s.name)}</h3>
+      <p class="sol-card__summary">${esc(s.summary)}</p>
+      <span class="sol-card__more">${roll('Explore solution')}${icon.arrow}</span>
+    </a>`).join('')}
+  </div>`;
+}
 
-  const rotWords = home.headlineWords.map((w) => `<span class="text-gradient">${esc(w)}</span>`).join('');
+// ---- Industries as use cases, each with its evidence -----------------------------------------------
+export function industryGrid({ dark = true } = {}) {
+  const sol = (slug) => solutions.find((s) => s.slug === slug);
+  return `<div class="ind-grid${dark ? ' ind-grid--dark' : ''}" data-stagger>${industries.list.map((d) => `
+    <article class="ind-card" id="${d.slug}">
+      <h3 class="h5">${esc(d.name)}</h3>
+      <p class="ind-card__challenge">${esc(d.challenge)}</p>
+      <p class="ind-card__help">${esc(d.help)}</p>
+      ${d.proof.length ? `<ul class="ind-card__proof" aria-label="Evidence">${d.proof.map((p) => `<li><a href="${p.href}" target="_blank" rel="noopener"><b>${esc(p.name)}</b><small>${esc(p.note)}</small></a></li>`).join('')}</ul>` : ''}
+      <div class="ind-card__links">${d.solutions.map((slug) => `<a href="/solutions/${slug}/">${esc(sol(slug).short || sol(slug).name)}</a>`).join('')}</div>
+    </article>`).join('')}
+  </div>`;
+}
 
+// ---- Product showcase: one product scene at a time, with tabs ---------------------------------------
+export function productShowcase() {
   const slides = products.map((p, i) => `
       <div class="reel__slide${i ? '' : ' is-active'}" id="hero-slide-${i}" role="tabpanel" aria-labelledby="hero-tab-${i}" data-hero-slide${i ? ' aria-hidden="true" inert' : ''}>
         ${illo(p.scene, { responsive: true })}
@@ -202,13 +226,9 @@ export function homePage() {
           <a class="reel__visit" href="${p.url}" target="_blank" rel="noopener">${roll(`Visit ${p.site}`)}${icon.arrowUpRight}</a>
         </div>
       </div>`).join('');
-
   return `
-<section class="hero" aria-label="Introduction">
-  <h1 class="sr-only">Blueinc Technologies: the company behind Staffintra, Travel Nurse Houses, MyJobTests and Teststreams</h1>
-  <div class="hero__wordmark" data-hero-wordmark>${wordmark()}</div>
   <div class="hero__tabs" role="tablist" aria-label="Our products">
-    ${products.map((p, i) => `<button class="hero__tab" type="button" role="tab" id="hero-tab-${i}" aria-controls="hero-slide-${i}" aria-selected="${!i}"${i ? ' tabindex="-1"' : ''} data-hero-tab data-intro>${roll(p.name)}</button>`).join('')}
+    ${products.map((p, i) => `<button class="hero__tab" type="button" role="tab" id="hero-tab-${i}" aria-controls="hero-slide-${i}" aria-selected="${!i}"${i ? ' tabindex="-1"' : ''} data-hero-tab>${roll(p.name)}</button>`).join('')}
   </div>
   <div class="reel reel--products" data-reel data-hero-reel>
     <div class="reel__media">${slides}
@@ -217,74 +237,121 @@ export function homePage() {
       <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="3" width="3" height="10" rx="1"/><rect x="9" y="3" width="3" height="10" rx="1"/></svg>
       <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l8-4.5z"/></svg>
     </button>
+  </div>`;
+}
+
+// ---- Development services: a compact, secondary band ------------------------------------------------
+export function devBand() {
+  const dev = ['web-development-services', 'app-development-services', 'graphics-interface-design-services', 'customer-support-services']
+    .map((slug) => services.find((s) => s.slug === slug));
+  return `
+<section class="section dev-band container" aria-labelledby="dev-title">
+  <div class="dev-band__grid">
+    <div>
+      <h2 class="h3" id="dev-title" data-reveal="lines">${esc(home.development.title)}</h2>
+      <p class="body-l" data-reveal="fade">${esc(home.development.body)}</p>
+      <div class="btn-row" data-reveal="fade">${btn({ label: 'All services', href: '/our-services/', variant: 'light' })}<a class="arrow-link" href="/portfolio/">${roll('See our work')}${icon.arrow}</a></div>
+    </div>
+    <ul class="dev-band__list" data-stagger>${dev.map((s) => `
+      <li><a href="/our-services/${s.slug}/"><span><b>${esc(s.name)}</b><small>${esc(s.tags.slice(0, 3).join(' · '))}</small></span>${icon.arrow}</a></li>`).join('')}
+    </ul>
   </div>
+</section>`;
+}
+
+export function homePage() {
+  const rotWords = home.headlineWords.map((w) => `<span class="text-gradient">${esc(w)}</span>`).join('');
+  const chip = (c) => (c.href
+    ? `<a class="ask__chip ask__chip--link" href="${c.href}">${esc(c.label)}${icon.arrow}</a>`
+    : `<button type="button" class="ask__chip" data-ask-chip="${esc(c.prompt)}">${esc(c.label)}</button>`);
+
+  return `
+<section class="hero" aria-label="Introduction">
+  <div class="hero__head">
+    <h1 class="hero__wordmark" data-hero-wordmark>${wordmark()}<span class="sr-only">: technology solutions, IT services and digital products</span></h1>
+    <p class="hero__sub" data-intro>${esc(home.heroSub)}</p>
+    <form class="ask" action="/contact/" method="get" data-ask data-intro>
+      <label class="sr-only" for="ask-input">${esc(home.ask.label)}</label>
+      <textarea class="ask__input" id="ask-input" name="ask" rows="1" placeholder="${esc(home.ask.placeholder)}" data-ask-input></textarea>
+      <div class="ask__bar">
+        <span class="ask__hint">${icon.spark}${esc(home.ask.hint)}</span>
+        <button class="ask__send" type="submit" aria-label="Send">${icon.arrowUp}</button>
+      </div>
+    </form>
+    <div class="ask__chips" data-intro>${home.ask.chips.map(chip).join('')}</div>
+  </div>
+</section>
+
+<section aria-labelledby="platforms-title" class="platforms">
+  <div class="container"><h2 class="platforms__title" id="platforms-title">${esc(home.integrations)}</h2></div>
+  <div class="marquee" data-marquee><div class="marquee__track">${platformCards()}${platformCards(true)}${platformCards(true)}</div></div>
 </section>
 
 <section class="weare container" aria-labelledby="weare-title">
   <div class="weare__grid">
     <div>
-      ${eyebrow('We are Blueinc Technologies')}
       <h2 class="h1 weare__title" id="weare-title"><span class="lead-line" data-reveal="lines">${esc(home.headlineLead)}</span> <span class="rotator" data-rotator aria-label="${esc(home.headlineWords.join(', '))}">${rotWords}</span></h2>
       <p class="lead weare__lead" data-reveal="fade">${esc(home.intro)}</p>
       <div class="btn-row" style="margin-top:2rem" data-reveal="fade">
-        ${btn({ label: 'Explore Our Products', href: '/products/' })}
-        ${btn({ label: 'Build With Blueinc', href: '/our-services/', variant: 'light' })}
+        ${quoteBtn('Discuss a Challenge')}
+        ${btn({ label: 'Explore Our Products', href: '/products/', variant: 'light' })}
       </div>
     </div>
-    <aside class="weare__aside" data-reveal="up" aria-label="Our products">
+    <aside class="weare__aside" data-reveal="up" aria-label="Where we help">
       <div class="review-card">
-        <div class="review-card__head"><img src="/assets/img/mark.png" alt="" width="32" height="32"><span>Our products</span></div>
-        <ul class="prod-list">${products.map((p) => `
-          <li><a href="${p.url}" target="_blank" rel="noopener"><img src="${p.logo}" alt="" width="36" height="36"><span><b>${esc(p.name)}</b><small>${esc(p.kind)}</small></span>${icon.arrowUpRight}</a></li>`).join('')}
+        <div class="review-card__head"><img src="/assets/img/mark.png" alt="" width="32" height="32"><span>Where we help</span></div>
+        <ul class="prod-list sol-list">${solutions.map((s) => `
+          <li><a href="/solutions/${s.slug}/"><span class="sol-list__icon">${icon[s.icon]}</span><span><b>${esc(s.short || s.name)}</b></span>${icon.arrow}</a></li>`).join('')}
         </ul>
-        <a class="review-card__foot" href="/products/">${roll('See all products')}${icon.arrow.replace('<svg', '<svg style="width:1rem"')}</a>
+        <a class="review-card__foot" href="/solutions/">${roll('All solutions')}${icon.arrow.replace('<svg', '<svg style="width:1rem"')}</a>
       </div>
     </aside>
   </div>
 </section>
 
-<section class="works" aria-labelledby="works-title">
-  <div class="section-head" style="margin-bottom:5.5rem">
-    ${eyebrow('Products')}
-    <h2 class="h2" id="works-title" data-reveal="lines">Our products</h2>
+<section class="section solutions container" aria-labelledby="solutions-title">
+  <div class="section-head section-head--split">
+    <h2 class="h2" id="solutions-title" data-reveal="lines">${esc(home.solutions.title)}</h2>
+    <div>
+      <p class="body-l" data-reveal="fade">${esc(home.solutions.lead)}</p>
+      <div class="btn-row" data-reveal="fade">${btn({ label: 'All solutions', href: '/solutions/' })}</div>
+    </div>
   </div>
-  <div class="works__list">${works}</div>
+  ${solutionsGrid()}
+</section>
+
+<div class="section" style="padding-top:0">
+<section class="panel panel--dark on-dark industries-panel" aria-labelledby="industries-title">
+  <div class="section-head section-head--split">
+    <h2 class="h2" id="industries-title" data-reveal="lines">${esc(home.industries.title)}</h2>
+    <div>
+      <p class="body-l" data-reveal="fade">${esc(home.industries.lead)}</p>
+      <div class="btn-row" data-reveal="fade">${btn({ label: 'Industry expertise', href: '/industries-served/' })}</div>
+    </div>
+  </div>
+  ${industryGrid()}
+</section>
+</div>
+
+<section class="showcase" aria-labelledby="showcase-title">
+  <div class="section-head">
+    <h2 class="h2" id="showcase-title" data-reveal="lines">${esc(home.productsShowcase.title)}</h2>
+    <p class="lead" data-reveal="fade">${esc(home.productsShowcase.lead)}</p>
+  </div>
+  ${productShowcase()}
   <div class="works__more">${btn({ label: 'Explore Our Products', href: '/products/', variant: 'plain', size: 'lg' })}</div>
 </section>
 
-<section aria-labelledby="platforms-title" class="platforms">
-  <div class="container"><h2 class="platforms__title" id="platforms-title">Built on and integrated with the platforms teams already use</h2></div>
-  <div class="marquee" data-marquee><div class="marquee__track">${platformCards()}</div></div>
-</section>
-
 <div class="section">
-${aboutSplit()}
-</div>
-
-<div class="section" style="padding-top:0">
 ${why()}
 </div>
 
-<section class="section partners" aria-labelledby="partners-title" style="padding-top:2rem">
-  <div class="container">
-    <div class="section-head section-head--left partners__head">
-      <h2 class="h2" id="partners-title" data-reveal="lines">${esc(home.partners.title)}</h2>
-      <div>
-        <p class="body-l" data-reveal="fade">${esc(home.partners.body)}</p>
-        <div class="btn-row" style="margin-top:1.75rem" data-reveal="fade">
-          ${quoteBtn('Start a Project')}
-          ${btn({ label: 'See partner work', href: '/portfolio/', variant: 'light' })}
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-${servicesPanel({ compact: false })}
+${devBand()}
 
-<section class="section" aria-labelledby="reviews-title">
+<section class="section" aria-labelledby="reviews-title" style="padding-top:2rem">
   <div class="container">
     <div class="section-head">
-      <h2 class="h2" id="reviews-title" data-reveal="lines" style="max-width:14ch">What our partners say</h2>
+      <h2 class="h2" id="reviews-title" data-reveal="lines">What our clients say</h2>
     </div>
     <div class="reviews__widget">
       <div class="reviews__top"><b>Blueinc Technologies Reviews</b><a class="arrow-link" href="/success-stories/">${roll('View all reviews')}${icon.arrow}</a></div>

@@ -1,4 +1,4 @@
-import { site, nav, footerCols, services, industries, products, projectTypes, cta, platforms } from '../data/site.mjs';
+import { site, nav, footerCols, services, industries, products, projectTypes, cta, platforms, solutions } from '../data/site.mjs';
 import { illo } from './illos.mjs';
 
 export const esc = (s = '') =>
@@ -30,6 +30,13 @@ export const icon = {
   chat: svg('<path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>'),
   mail: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/>'),
   heart: svg('<path d="M12 20s-7.5-4.5-7.5-10A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3c0 5.5-7.5 10-7.5 10z"/>'),
+  // Solution icons
+  transform: svg('<path d="M4 7h11l-3-3M20 17H9l3 3"/><rect x="3" y="10" width="7" height="4" rx="1"/><rect x="14" y="10" width="7" height="4" rx="1"/>'),
+  integrate: svg('<circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7.4 11l9.2-4.8M7.4 13l9.2 4.8"/>'),
+  automate: svg('<path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/>'),
+  team: svg('<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.6 3.2-5.4 6-5.4s5.2 1.8 6 5.4"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2c2.3.2 4 1.7 4.5 4.8"/>'),
+  customer: svg('<path d="M21 12a8 8 0 0 1-11.7 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12.5c1 1.4 2.2 2 3.5 2s2.5-.6 3.5-2"/>'),
+  consult: svg('<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'),
 };
 
 /* ---------- Text roll ---------- */
@@ -96,6 +103,9 @@ export function wordmark({ label = 'Blueinc Technologies', cls = '' } = {}) {
 
 /* ---------- Navbar ---------- */
 const dropItems = (key) => {
+  if (key === 'solutions')
+    return solutions.map((s, i) => ({ label: s.short || s.name, href: `/solutions/${s.slug}/`, i }))
+      .concat([{ label: 'View all solutions', href: '/solutions/', foot: true }]);
   if (key === 'products')
     return products.map((p, i) => ({ label: p.name, href: p.url, i }))
       .concat([{ label: 'View all products', href: '/products/', foot: true }]);
@@ -118,13 +128,11 @@ export function navbar(current) {
       .join('');
     return `<li class="has-drop"><a class="navbar__link" href="${n.href}"${aria} aria-haspopup="true">${roll(n.label)}${icon.chevron}</a><ul class="drop">${items}</ul></li>`;
   }).join('');
-  const taglines = site.navTaglines.map((t) => `<span>${esc(t)}</span>`).join('');
   return `
 <header class="navbar" data-navbar>
   <nav class="navbar__bar" aria-label="Primary">
     <a class="navbar__logo" href="/" aria-label="Blueinc Technologies — home">
-      <img class="navbar__mark" src="/assets/img/mark.png" alt="" width="32" height="32">
-      <span class="navbar__tagline" data-taglines aria-hidden="true">${taglines}</span>
+      <img class="navbar__brand" src="/assets/img/logo.png" alt="" width="450" height="126">
     </a>
     <ul class="navbar__links">${links}</ul>
     <div class="navbar__contact">
@@ -135,7 +143,7 @@ export function navbar(current) {
           <span class="navbar__person-role">Schedule a call</span>
         </span>
       </a>
-      ${btn({ label: 'Our Products', href: '/products/', size: 'sm' })}
+      ${btn({ label: 'Let’s Talk', href: '/contact/', size: 'sm' })}
       <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu" data-menu-open>
         <span class="menu-btn__lines"><span></span><span></span></span>
       </button>
@@ -164,8 +172,8 @@ export function mobileMenu() {
         <img src="/assets/img/partner.jpg" alt="" width="44" height="44">
         <span><span class="navbar__person-name">Talk to our team <i class="online-dot"></i></span><span class="navbar__person-role">Schedule a call</span></span>
       </a>
-      ${btn({ label: 'Our Products', href: '/products/', size: 'lg' })}
-      ${quoteBtn('Get a Free Quote', 'light', 'lg')}
+      ${btn({ label: 'Let’s Talk', href: '/contact/', size: 'lg' })}
+      ${btn({ label: 'Explore Our Products', href: '/products/', variant: 'light', size: 'lg' })}
     </div>
     <div class="menu__social" data-menu-item>${site.social.map((s) => `<a href="${s.href}" target="_blank" rel="noopener">${s.label}</a>`).join('')}</div>
   </div>
@@ -181,8 +189,8 @@ export function ctaPanel() {
     <h2 class="h1 cta__title" id="cta-title" data-reveal="lines">${esc(cta.title)}</h2>
     <p class="lead" style="color:var(--grey-200)" data-reveal="fade">${esc(cta.sub)}</p>
     <div class="btn-row btn-row--center" data-reveal="fade">
-      ${btn({ label: 'Explore Our Products', href: '/products/', size: 'lg' })}
-      ${quoteBtn('Build With Blueinc', 'light', 'lg')}
+      ${quoteBtn('Discuss a Challenge', '', 'lg')}
+      ${btn({ label: 'Explore Our Products', href: '/products/', variant: 'light', size: 'lg' })}
     </div>
   </div>
 </section>`;
@@ -232,7 +240,7 @@ ${withCta ? ctaPanel() : ''}
 }
 
 /* ---------- Forms ---------- */
-export function projectForm({ id = 'quote', submit = 'Get Quote', variant = 'quote' } = {}) {
+export function projectForm({ id = 'quote', submit = 'Send Enquiry', variant = 'quote' } = {}) {
   const options = projectTypes.map((t) => `<option>${esc(t)}</option>`).join('');
   const isContact = variant === 'contact';
   return `
@@ -241,8 +249,8 @@ export function projectForm({ id = 'quote', submit = 'Get Quote', variant = 'quo
   <div class="field"><label for="${id}-company">Company Name *</label><input id="${id}-company" name="company" autocomplete="organization" required></div>
   <div class="field"><label for="${id}-email">Email Address *</label><input id="${id}-email" name="email" type="email" autocomplete="email" required></div>
   <div class="field"><label for="${id}-phone">Phone Number${isContact ? ' *' : ''}</label><input id="${id}-phone" name="phone" type="tel" autocomplete="tel"${isContact ? ' required' : ''}></div>
-  ${isContact ? '' : `<div class="field field--full"><label for="${id}-type">Project Type *</label><select id="${id}-type" name="project" required><option value="">Please select a project</option>${options}</select></div>`}
-  <div class="field field--full"><label for="${id}-msg">${isContact ? 'What can we help you with? *' : 'Project Details / Description *'}</label><textarea id="${id}-msg" name="message" required></textarea></div>
+  ${isContact ? '' : `<div class="field field--full"><label for="${id}-type">What do you need help with? *</label><select id="${id}-type" name="project" required><option value="">Please select</option>${options}</select></div>`}
+  <div class="field field--full"><label for="${id}-msg">${isContact ? 'What can we help you with? *' : 'Describe your challenge or project *'}</label><textarea id="${id}-msg" name="message" required></textarea></div>
   ${isContact ? `<label class="check"><input type="checkbox" name="terms" required> <span>By submitting this form you agree to the terms of the <a href="/privacy-policy/">Privacy Policy</a>.</span></label>` : ''}
   <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="form__foot">${btn({ label: submit, attrs: 'data-submit' }).replace('type="button"', 'type="submit"')}<p class="form__status" role="status" aria-live="polite"></p></div>
@@ -254,7 +262,7 @@ export function quoteDialog() {
 <dialog class="dialog" id="quote-dialog" data-lenis-prevent aria-labelledby="quote-title">
   <div class="dialog__inner">
     <div class="dialog__head">
-      <div><h2 class="h4" id="quote-title">Get a FREE Quote</h2><p>Have a project in mind? Please fill the form and submit now.</p></div>
+      <div><h2 class="h4" id="quote-title">Tell us about your challenge</h2><p>Share what you need to solve or build, and our team will get back to you.</p></div>
       <button class="dialog__close" type="button" aria-label="Close" data-close-dialog>${icon.close}</button>
     </div>
     ${projectForm({ id: 'dq' })}
@@ -280,8 +288,8 @@ export function devices({ laptop, phone, label = '', cls = '' }) {
 
 /* ---------- Platforms strip: tools our products and partner builds run on (not clients) ---------- */
 const MS_LOGO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 2h9.5v9.5H2z" fill="#F25022"/><path d="M12.5 2H22v9.5h-9.5z" fill="#7FBA00"/><path d="M2 12.5h9.5V22H2z" fill="#00A4EF"/><path d="M12.5 12.5H22V22h-9.5z" fill="#FFB900"/></svg>';
-export const platformCards = () => platforms.map((p) => `
-      <div class="logo-card"><div class="logo-card__box platform">${p.icon ? `<img src="/assets/img/platforms/${p.icon}.svg" alt="" width="40" height="40" loading="lazy">` : MS_LOGO}<span>${esc(p.name)}</span></div></div>`).join('');
+export const platformCards = (copy = false) => platforms.map((p) => `
+      <div class="logo-card"${copy ? ' aria-hidden="true"' : ''}><div class="logo-card__box platform">${p.icon ? `<img src="/assets/img/platforms/${p.icon}.svg" alt="" width="40" height="40" loading="lazy">` : MS_LOGO}<span>${esc(p.name)}</span></div></div>`).join('');
 
 /* ---------- Looping ambient video (muted, plays only while visible, respects reduced motion) ---------- */
 export const loopVideo = (name, cls = '', attrs = '') =>

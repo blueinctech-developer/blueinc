@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage, productsPageData } from '../src/data/site.mjs';
+import { site, home, about, audit, servicesPage, services, portfolio, industries, reviewsPage, pricing, contactPage, productsPageData, solutions, solutionsPageData } from '../src/data/site.mjs';
 import { terms, privacy, legalEmail } from '../src/data/legal.mjs';
 import { blog, posts as rawPosts, readMinutes, byDate } from '../src/data/blog.mjs';
 const posts = byDate(rawPosts);
@@ -14,6 +14,7 @@ import { homePage } from '../src/templates/home.mjs';
 import {
   aboutPage, auditPage, servicesIndexPage, serviceDetailPage, portfolioPage, industriesPage,
   reviewsPageTpl, pricingPage, contactPageTpl, notFoundPage, legalPage, blogIndexPage, blogPostPage, productsPage,
+  solutionsIndexPage, solutionPage,
 } from '../src/templates/pages.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -21,8 +22,16 @@ const dist = path.join(root, 'dist');
 
 const pages = [
   { route: '/', title: home.title, description: site.description, body: homePage(), jsonLd: true, priority: '1.0' },
+  { route: '/solutions/', title: solutionsPageData.title, description: solutionsPageData.description, body: solutionsIndexPage(solutionsPageData), priority: '0.9' },
+  ...solutions.map((s) => ({
+    route: `/solutions/${s.slug}/`,
+    title: `${s.name} | Blueinc Technologies`,
+    description: s.summary,
+    body: solutionPage(s),
+    priority: '0.9',
+  })),
   { route: '/about-us/', title: about.title, description: about.description, body: aboutPage() },
-  { route: '/our-services/', title: servicesPage.title, description: servicesPage.lead, body: servicesIndexPage() },
+  { route: '/our-services/', title: servicesPage.title, description: servicesPage.description, body: servicesIndexPage() },
   ...services.map((s) => ({
     route: `/our-services/${s.slug}/`,
     title: `${s.name} | Blueinc Technologies`,
@@ -31,7 +40,7 @@ const pages = [
   })),
   { route: '/products/', title: productsPageData.title, description: productsPageData.description, body: productsPage(productsPageData), priority: '0.9' },
   { route: '/portfolio/', title: portfolio.title, description: portfolio.body, body: portfolioPage() },
-  { route: '/industries-served/', title: industries.title, description: industries.body.slice(0, 155) + '…', body: industriesPage() },
+  { route: '/industries-served/', title: industries.title, description: industries.description, body: industriesPage() },
   { route: '/success-stories/', title: reviewsPage.title, description: reviewsPage.body, body: reviewsPageTpl() },
   { route: '/pricing-plans/', title: pricing.title, description: pricing.lead, body: pricingPage() },
   { route: '/contact/', title: contactPage.title, description: contactPage.lead, body: contactPageTpl() },

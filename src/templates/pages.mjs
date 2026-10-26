@@ -1,9 +1,9 @@
 import {
   site, home, about, audit, values, servicesPage, services, industries, portfolio,
-  testimonials, reviewsPage, pricing, contactPage,
+  testimonials, reviewsPage, pricing, contactPage, solutions, delivery,
 } from '../data/site.mjs';
 import { esc, pad, icon, btn, quoteBtn, roll, eyebrow, crumbs, projectForm, devices } from './components.mjs';
-import { servicesPanel, quotesGrid, counters, aboutSplit, workCard } from './home.mjs';
+import { servicesPanel, quotesGrid, counters, aboutSplit, workCard, solutionsGrid, industryGrid } from './home.mjs';
 import { isLive } from './util.mjs';
 import { illo, SCENE_FOR } from './illos.mjs';
 import { products } from '../data/site.mjs';
@@ -52,17 +52,26 @@ const productGrid = () => `
 export function aboutPage() {
   return `
 ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'About Us' }], title: about.h1, lead: about.lead, wide: true,
-  actions: `${btn({ label: 'Explore Our Products', href: '/products/' })}${btn({ label: 'Build With Us', href: '/our-services/', variant: 'light' })}` })}
-${stageCard({ laptop: 'staffintra', phone: 'travelnursehouses' }, 'Staffintra and Travel Nurse Houses, Blueinc Technologies products, on laptop and phone')}
+  actions: `${quoteBtn('Discuss a Challenge')}${btn({ label: 'Explore Our Products', href: '/products/', variant: 'light' })}` })}
+${stageCard({ laptop: 'staffintra', phone: 'travelnursehouses' }, 'Blueinc Technologies solutions and products on laptop and phone')}
 
 <section class="section container" aria-label="What we do">
   ${eyebrow('What we do')}
   <p class="statement" style="margin-top:1.5rem" data-reveal="words">${esc(about.body)}</p>
 </section>
 
+<section class="section container" aria-labelledby="pillars-title" style="padding-top:0">
+  <h2 class="sr-only" id="pillars-title">What we do</h2>
+  <div class="pillars" data-stagger>
+    <a class="pillar pillar--lead" href="/solutions/"><span class="pillar__kicker">Solutions</span><h3 class="h4">We solve business problems with technology</h3><p>Digital transformation, systems integration, AI and automation, workforce operations, customer experience, consulting and managed support.</p><span class="pillar__more">${roll('Explore solutions')}${icon.arrow}</span></a>
+    <a class="pillar" href="/products/"><span class="pillar__kicker">Products</span><h3 class="h5">We build, own and operate our own platforms</h3><p>Staffintra, Travel Nurse Houses, MyJobTests and Teststreams.</p><span class="pillar__more">${roll('Our products')}${icon.arrow}</span></a>
+    <a class="pillar" href="/our-services/"><span class="pillar__kicker">Engineering</span><h3 class="h5">We build software when a solution needs it</h3><p>Websites, web and mobile applications, custom software and product design.</p><span class="pillar__more">${roll('Our services')}${icon.arrow}</span></a>
+  </div>
+</section>
+
 <section class="section container" aria-labelledby="family-title" style="padding-top:0">
   <div class="section-head section-head--left">
-    <h2 class="h2" id="family-title" data-reveal="lines">Our products</h2>
+    <h2 class="h2" id="family-title" data-reveal="lines">Products we build and operate</h2>
   </div>
   ${productGrid()}
 </section>
@@ -166,7 +175,7 @@ ${stageCard({ laptop: 'myjobtests', phone: 'travelnursehouses' }, 'MyJobTests an
 export function serviceDetailPage(s) {
   const others = services.filter((o) => o.slug !== s.slug);
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Build With Us', href: '/our-services/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Services', href: '/our-services/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
   actions: `${quoteBtn('Start a Project', '', '', '')}${btn({ label: 'View pricing', href: '/pricing-plans/', variant: 'light' })}` })}
 ${stageCard(s.mockup, `${s.name} work by Blueinc Technologies shown on laptop and phone`)}
 
@@ -235,7 +244,7 @@ function projectStack(items) {
 
 export function portfolioPage() {
   const panels = [
-    projectStack(portfolio.websites.map((w) => ({ site: w.site, name: w.name, leftLabel: 'Partner', rightLabel: w.site, kind: w.kind }))),
+    projectStack(portfolio.websites.map((w) => ({ site: w.site, name: w.name, leftLabel: 'Client', rightLabel: w.site, kind: w.kind }))),
     projectStack(portfolio.webApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Web application' }))),
     projectStack(portfolio.mobileApps.map((t) => ({ name: t, leftLabel: 'Project', rightLabel: 'Type', kind: 'Mobile application' }))),
   ];
@@ -256,21 +265,131 @@ ${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Our Work' }], title
 </section>`;
 }
 
-/* ---------- Industries ---------- */
+/* ---------- Industries: use cases with evidence ---------- */
 export function industriesPage() {
   return `
-${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Industries Served' }], title: industries.h1,
-  actions: `${btn({ label: 'Start a project', href: '/pricing-plans/' })}` })}
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Industries' }], title: industries.h1, lead: industries.lead,
+  actions: `${quoteBtn('Discuss a Challenge')}${btn({ label: 'All solutions', href: '/solutions/', variant: 'light' })}` })}
 <section class="section--sm container" aria-label="Global presence" style="padding-top:0">
   <p class="statement" data-reveal="words">${esc(industries.body)}</p>
 </section>
-<section class="section container" aria-labelledby="ind-list">
-  <h2 class="sr-only" id="ind-list">Industries</h2>
-  <div class="rows">${industries.list.map((d, i) => `
-    <a class="row-link" id="${d.slug}" href="/contact/"><span class="h3">${esc(d.name)}</span>${icon.arrow}</a>`).join('')}
-  </div>
+<section class="section container" aria-labelledby="ind-list" style="padding-top:2rem">
+  <h2 class="sr-only" id="ind-list">Industries and use cases</h2>
+  ${industryGrid({ dark: false })}
 </section>
 ${counters()}`;
+}
+
+/* ---------- Solutions ---------- */
+const deliverySteps = () => `
+    <ol class="steps" data-steps>${delivery.map(([t, d]) => `
+      <li class="step"><div><h3 class="h5">${esc(t)}</h3><p>${esc(d)}</p></div></li>`).join('')}
+    </ol>`;
+
+export function solutionsIndexPage(page) {
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Solutions' }], title: page.h1, lead: page.lead, wide: true,
+  actions: `${quoteBtn('Discuss a Challenge')}${btn({ label: 'Explore Our Products', href: '/products/', variant: 'light' })}` })}
+<section class="section--sm container" aria-label="Solutions" style="padding-top:1rem">
+  ${solutionsGrid()}
+</section>
+<section class="section container" aria-labelledby="deliver-title">
+  <div class="split">
+    <div class="split__sticky">
+      <h2 class="h2" id="deliver-title" data-reveal="lines">How we deliver solutions</h2>
+      <p class="body-l" style="margin-top:1.5rem" data-reveal="fade">${esc(page.deliveryLead)}</p>
+      <div style="margin-top:2rem" data-reveal="fade">${quoteBtn('Discuss a Challenge')}</div>
+    </div>
+    ${deliverySteps()}
+  </div>
+</section>
+<div class="section" style="padding-top:0">
+<section class="panel panel--dark on-dark industries-panel" aria-labelledby="sol-ind-title">
+  <div class="section-head section-head--split">
+    <h2 class="h2" id="sol-ind-title" data-reveal="lines">Solutions shaped by industry</h2>
+    <div><p class="body-l" data-reveal="fade">${esc(industries.lead)}</p></div>
+  </div>
+  ${industryGrid()}
+</section>
+</div>`;
+}
+
+export function solutionPage(s) {
+  const proofCards = s.proof.map((p) => `
+    <article class="proof-card">
+      <div class="proof-card__media">${illo(p.scene, { label: false })}</div>
+      <div class="proof-card__body"><h3 class="h5">${esc(p.name)}</h3><p>${esc(p.text)}</p></div>
+    </article>`).join('');
+  const related = s.related.map((slug) => services.find((x) => x.slug === slug)).filter(Boolean);
+  const others = solutions.filter((o) => o.slug !== s.slug);
+  const quote = s.quote != null ? testimonials[s.quote] : null;
+  return `
+${pageHero({ trail: [{ label: 'Home', href: '/' }, { label: 'Solutions', href: '/solutions/' }, { label: s.short || s.name }], title: s.h1, lead: s.lead, wide: true,
+  actions: `${quoteBtn('Discuss This Challenge', '', '', s.projectType)}${btn({ label: 'All solutions', href: '/solutions/', variant: 'light' })}` })}
+${stageCard(s.mockup, `${s.name}: illustration of the solution in use on laptop and phone`)}
+
+<section class="section container" aria-labelledby="challenge-title">
+  <div class="split">
+    <div><span class="kicker">${esc(s.name)}</span><h2 class="h3" id="challenge-title" style="margin-top:1rem" data-reveal="lines">The challenge</h2></div>
+    <p class="statement statement--sm" data-reveal="words">${esc(s.challengeLong)}</p>
+  </div>
+</section>
+
+<section class="section container" aria-labelledby="cap-title" style="padding-top:0">
+  <div class="split">
+    <div class="split__sticky">
+      <h2 class="h2" id="cap-title" data-reveal="lines">What we deliver</h2>
+      <div style="margin-top:2rem" data-reveal="fade">${quoteBtn('Discuss This Challenge', '', '', s.projectType)}</div>
+    </div>
+    <ul class="check-list" data-stagger>${s.capabilities.map((c) => `<li>${icon.check}<span>${esc(c)}</span></li>`).join('')}</ul>
+  </div>
+</section>
+
+<section class="section container" aria-labelledby="out-title" style="padding-top:0">
+  <div class="section-head section-head--left"><h2 class="h2" id="out-title" data-reveal="lines">The outcomes</h2></div>
+  <div class="cards-3" data-stagger>${s.outcomes.map(([t, d]) => `
+    <article class="card"><h3 class="h5">${esc(t)}</h3><p>${esc(d)}</p></article>`).join('')}</div>
+</section>
+
+<div class="section" style="padding-top:0">
+<section class="panel panel--dark on-dark proof-panel" aria-labelledby="proof-title">
+  <div class="section-head section-head--split">
+    <h2 class="h2" id="proof-title" data-reveal="lines">Where we have done this</h2>
+    <div><p class="body-l" data-reveal="fade">Evidence from the products we operate and the work we have delivered for clients.</p></div>
+  </div>
+  <div class="proof-grid" data-stagger>${proofCards}</div>
+</section>
+</div>
+
+<section class="section container" aria-labelledby="how-title" style="padding-top:0">
+  <div class="split">
+    <div class="split__sticky"><h2 class="h2" id="how-title" data-reveal="lines">How we deliver</h2></div>
+    ${deliverySteps()}
+  </div>
+</section>
+
+${quote ? `
+<section class="panel panel--dark on-dark section--lg" aria-label="Client testimonial">
+  <figure class="bigquote container">
+    <span style="display:inline-block;width:2.5rem;color:var(--pink);margin-bottom:2rem" data-reveal="fade">${icon.quote}</span>
+    <blockquote data-reveal="words">${esc(quote.text)}</blockquote>
+    <figcaption data-reveal="fade"><b>${esc(quote.name)}</b><span>${esc(quote.org)}</span></figcaption>
+  </figure>
+</section>` : ''}
+
+<section class="section container" aria-labelledby="rel-title">
+  <div class="section-head section-head--left"><h2 class="h4" id="rel-title">Related services</h2></div>
+  <div class="rows">${related.map((r) => `
+    <a class="row-link" href="/our-services/${r.slug}/"><span class="h3">${esc(r.name)}</span>${icon.arrow}</a>`).join('')}
+  </div>
+</section>
+
+<section class="section--sm container" aria-labelledby="more-sol-title" style="padding-top:0">
+  <div class="section-head section-head--left"><h2 class="h4" id="more-sol-title">More solutions</h2></div>
+  <div class="rows">${others.map((o) => `
+    <a class="row-link" href="/solutions/${o.slug}/"><span class="h3">${esc(o.name)}</span>${icon.arrow}</a>`).join('')}
+  </div>
+</section>`;
 }
 
 /* ---------- Reviews ---------- */

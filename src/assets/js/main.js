@@ -201,6 +201,45 @@
     lockScroll(true);
   });
 
+  // ---- Hero "ask" box (chat-style): Enter sends, Shift+Enter adds a line; sending opens the quote
+  // form with the message filled in, so it goes through the same endpoint as every other enquiry.
+  const ask = $('[data-ask]');
+  if (ask) {
+    const input = $('[data-ask-input]', ask);
+    const grow = () => {
+      input.style.height = 'auto';
+      input.style.height = `${Math.min(input.scrollHeight, 200)}px`;
+      ask.classList.toggle('is-empty', !input.value.trim());
+    };
+    input.addEventListener('input', grow);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask.requestSubmit(); }
+    });
+    ask.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) {
+        input.focus();
+        ask.classList.remove('is-nudge'); void ask.offsetWidth; ask.classList.add('is-nudge');
+        return;
+      }
+      if (!ensureDialog()) return;
+      const msg = $('textarea[name="message"]', dialog);
+      if (msg) msg.value = text;
+      if (typeof dialog.showModal === 'function') dialog.showModal(); else dialog.setAttribute('open', '');
+      lockScroll(true);
+      const next = $('input[name="name"]', dialog);
+      if (next) next.focus();
+    });
+    $$('[data-ask-chip]').forEach((chip) => chip.addEventListener('click', () => {
+      input.value = chip.dataset.askChip;
+      grow();
+      input.focus();
+      input.setSelectionRange(input.value.length, input.value.length);
+    }));
+    grow();
+  }
+
   // ---- Forms ---------------------------------------------------------------------------
   const cfg = window.BLUEINC_CONFIG || {};
   function bindForm(form) {
@@ -480,7 +519,6 @@
 
   document.fonts.ready.then(() => {
     intro();
-    taglines();
     rotator();
     reveals();
     homeScenes();
@@ -578,31 +616,6 @@
     // (see "Page-load intro in CSS"); this timeline only handles inner-page headers.
 
     // Inner-page headers ([data-intro-lines] titles, [data-intro] lead/actions) also animate in CSS.
-  }
-
-  // ---- Navbar tagline cycle (char roll, staggered) ---------------------------------------------
-  function taglines() {
-    const wrap = $('[data-taglines]');
-    if (!wrap) return;
-    const blocks = $$('span', wrap).filter((s) => s.parentElement === wrap);
-    const sets = blocks.map((el) => {
-      const chars = SplitText.create(el, { type: 'chars', charsClass: 'split-char' }).chars;
-      gsap.set(el, { opacity: 1 });
-      gsap.set(chars, { yPercent: 110, opacity: 0 });
-      return chars;
-    });
-    // First phrase rolls in once; then a seamless master loop hands each phrase to the next
-    // (out upward, next in from below). The loop starts and ends with phrase 0 at rest.
-    const HOLD = 2.4;
-    const enter = { yPercent: 0, opacity: 1, stagger: 0.018, duration: 0.55, ease: 'power3.out' };
-    gsap.to(sets[0], { ...enter, delay: 0.9 });
-    const master = gsap.timeline({ repeat: -1, delay: 0.9 + 0.55 + 0.3 });
-    sets.forEach((chars, i) => {
-      const nextChars = sets[(i + 1) % sets.length];
-      master
-        .to(chars, { yPercent: -110, opacity: 0, stagger: 0.012, duration: 0.45, ease: 'power3.in' }, `+=${HOLD}`)
-        .fromTo(nextChars, { yPercent: 110, opacity: 0 }, { ...enter, immediateRender: false }, '-=0.15');
-    });
   }
 
   // ---- Rotating headline word ----------------------------------------------------------------------
@@ -711,58 +724,7 @@
   // ---- Home-specific scenes -------------------------------------------------------------------------
   function homeScenes() {
 
-    // Logo marquee: infinite, seamless loop at any screen width; slows on hover.
-    // The track holds the original set plus as many copies as it takes to cover the viewport, and
-    // moves left by exactly one set's width (measured, gap included), so the wrap is invisible.
-    const mq = $('[data-marquee]');
-    if (mq) {
-      const track = $('.marquee__track', mq);
-      const originals = Array.from(track.children);
-      const SPEED = 45; // px per second
-      let loop = null;
-      let inView = false;
-      const build = () => {
-        if (loop) loop.kill();
-        $$('[data-mq-clone]', track).forEach((c) => c.remove());
-        gsap.set(track, { x: 0 });
-        const first = originals[0];
-        const last = originals[originals.length - 1];
-        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-        const setW = last.offsetLeft + last.offsetWidth + gap - first.offsetLeft;
-        if (!setW) return;
-        const copies = Math.ceil(mq.offsetWidth / setW) + 1;
-        const frag = document.createDocumentFragment();
-        for (let i = 0; i < copies; i++) {
-          originals.forEach((c) => {
-            const k = c.cloneNode(true);
-            k.setAttribute('data-mq-clone', '');
-            k.setAttribute('aria-hidden', 'true');
-            k.querySelectorAll('img').forEach((img) => { img.alt = ''; });
-            frag.appendChild(k);
-          });
-        }
-        track.appendChild(frag);
-        loop = gsap.to(track, { x: -setW, ease: 'none', duration: setW / SPEED, repeat: -1 });
-        if (!inView) loop.pause();
-      };
-      // Copies are added when the browser is idle so they never compete with start-up work.
-      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
-      idle(() => {
-        build();
-        mq.addEventListener('mouseenter', () => loop && gsap.to(loop, { timeScale: 0.15, duration: 0.8 }));
-        mq.addEventListener('mouseleave', () => loop && gsap.to(loop, { timeScale: 1, duration: 0.8 }));
-        ScrollTrigger.create({ trigger: mq, start: 'top bottom', end: 'bottom top', onToggle: (s) => { inView = s.isActive; if (loop) inView ? loop.play() : loop.pause(); } });
-        let rt;
-        let lastW = window.innerWidth;
-        window.addEventListener('resize', () => {
-          if (window.innerWidth === lastW) return; // ignore mobile toolbar height changes
-          lastW = window.innerWidth;
-          clearTimeout(rt);
-          rt = setTimeout(build, 200);
-        });
-      }, { timeout: 1500 });
-      gsap.from($$('.logo-card', track).slice(0, 8), { y: 40, autoAlpha: 0, duration: 1.2, stagger: 0.06, ease: EASE, scrollTrigger: { trigger: mq, start: 'top 90%', once: true } });
-    }
+    // Logo marquee: an infinite CSS loop (see "Logo marquee" in main.css), no JavaScript needed.
 
     // Stacking work cards: the card underneath recedes as the next one slides over it.
     // Each .works__list is an independent stack (home has one; the portfolio has one per tab).
