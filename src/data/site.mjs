@@ -42,11 +42,10 @@ export const site = {
 };
 
 // Positioning, by emphasis: solutions (problems we solve) first, our own products second,
-// development services third. Our Work, Reviews, Pricing and Blog live in the footer.
+// development services third. Industries, Our Work, Reviews, Pricing and Blog live in the footer.
 export const nav = [
   { label: 'Solutions', href: '/solutions/', children: 'solutions' },
   { label: 'Products', href: '/products/', children: 'products' },
-  { label: 'Industries', href: '/industries-served/' },
   { label: 'Services', href: '/our-services/', children: 'services' },
   { label: 'About', href: '/about-us/' },
 ];
