@@ -2010,8 +2010,10 @@ html.js:not(.reduced) .ask__chips[data-intro] { animation-delay: .94s; }
 html.reduced .marquee__track { animation: none; }
 @media (max-width: 767px) { .marquee__track { animation-duration: 36s; } }
 
-/* Hover backgrounds: Blueinc blue with white text and icons. */
-.btn:hover .btn__in, .btn--light:hover .btn__in, .btn--ghost:hover .btn__in { background: var(--cyan); color: var(--white); }
+/* Hover backgrounds: Blueinc blue with white text and icons on light buttons.
+   Black buttons (default, ghost, plain) stay black with white text on hover. */
+.btn--light:hover .btn__in { background: var(--cyan); color: var(--white); }
+.btn:not(.btn--light):hover .btn__in { background: var(--btn-bg); color: var(--white); }
 .ask__chip:hover, .chip-link:hover, .ind-card__links a:hover, .ind-grid--dark .ind-card__links a:hover { background: var(--cyan); color: var(--white); box-shadow: none; }
 .sol-card:hover .sol-card__icon { background: var(--cyan); color: var(--white); }
 
@@ -2019,3 +2021,41 @@ html.reduced .marquee__track { animation: none; }
 .ind-grid { grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 1200px) { .ind-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .ind-grid { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Home card stack: the hero pins in place and the "We solve complex business
+   problems for" section slides up over it like the next card in a stack.
+   --stack-top (set in main.js) lets a hero taller than the viewport scroll
+   to its bottom edge before it pins.
+   ========================================================================== */
+.stack { position: relative; background: var(--ink-900); }
+.stack__base {
+  position: sticky; top: var(--stack-top, 0px); z-index: 0;
+  padding-bottom: 7rem;
+  background: var(--paper);
+  transform-origin: 50% 0;
+}
+.stack__base::after { /* dims the hero as the card covers it (opacity driven by main.js) */
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: #000; opacity: var(--stack-dim, 0);
+  border-radius: inherit; pointer-events: none;
+}
+.stack__card {
+  position: relative; z-index: 1;
+  background: var(--paper);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  box-shadow: 0 -24px 60px -20px rgba(15, 16, 17, .22), 0 -1px 0 var(--grey-100);
+}
+.stack__card .weare { padding-top: 7rem; padding-bottom: 5rem; }
+.stack + .platforms { padding-top: 2rem; }
+/* Products showcase → "From Diagnosis to Dependable Operation.": the black why panel is a
+   full-width card (edge to edge, rounded only on top). */
+.stack--full { margin-bottom: 7.5rem; }
+.stack__card--full { background: #000; overflow: clip; }
+.stack__card--full .panel { margin-inline: 0; border-radius: 0; }
+@media (max-width: 767px) {
+  .stack--full { margin-bottom: 5rem; }
+  .stack__base { padding-bottom: 4rem; }
+  .stack__card { border-radius: var(--r-md) var(--r-md) 0 0; }
+  .stack__card .weare { padding-top: 4.5rem; padding-bottom: 3.5rem; }
+}

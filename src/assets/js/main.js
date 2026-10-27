@@ -500,6 +500,15 @@
     select(0, { restart: false });
   }
 
+  // Home card stack: pin the hero once its bottom edge reaches the bottom of the viewport, so a
+  // hero taller than the screen is fully seen before the next section slides over it.
+  $$('[data-stack-base]').forEach((stackBase) => {
+    const setTop = () => stackBase.style.setProperty('--stack-top', `${Math.min(0, window.innerHeight - stackBase.offsetHeight)}px`);
+    setTop();
+    new ResizeObserver(setTop).observe(stackBase);
+    window.addEventListener('resize', setTop);
+  });
+
   // ---- Odometer markup (static fallback keeps the plain number) -------------------------------
   function buildOdometer(el) {
     const value = String(el.dataset.odometer);
@@ -725,6 +734,16 @@
   function homeScenes() {
 
     // Logo marquee: an infinite CSS loop (see "Logo marquee" in main.css), no JavaScript needed.
+
+    // Card stacks: the pinned section recedes (scales, rounds, dims) as the next one covers it.
+    $$('[data-stack]').forEach((stack) => {
+      const base = $('[data-stack-base]', stack);
+      const card = $('.stack__card', stack);
+      gsap.fromTo(base, { scale: 1, borderRadius: 0, '--stack-dim': 0 }, {
+        scale: 0.94, borderRadius: 28, '--stack-dim': 0.45, ease: 'none',
+        scrollTrigger: { trigger: card, start: 'top bottom', end: 'top top', scrub: true },
+      });
+    });
 
     // Stacking work cards: the card underneath recedes as the next one slides over it.
     // Each .works__list is an independent stack (home has one; the portfolio has one per tab).

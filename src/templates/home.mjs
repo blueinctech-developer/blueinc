@@ -266,7 +266,8 @@ export function homePage() {
     : `<button type="button" class="ask__chip" data-ask-chip="${esc(c.prompt)}">${esc(c.label)}</button>`);
 
   return `
-<section class="hero" aria-label="Introduction">
+<div class="stack" data-stack>
+<section class="hero stack__base" aria-label="Introduction" data-stack-base>
   <div class="hero__head">
     <h1 class="hero__wordmark" data-hero-wordmark>${wordmark()}<span class="sr-only">: technology solutions, IT services and digital products</span></h1>
     <p class="hero__sub" data-intro>${esc(home.heroSub)}</p>
@@ -282,11 +283,7 @@ export function homePage() {
   </div>
 </section>
 
-<section aria-labelledby="platforms-title" class="platforms">
-  <div class="container"><h2 class="platforms__title" id="platforms-title">${esc(home.integrations)}</h2></div>
-  <div class="marquee" data-marquee><div class="marquee__track">${platformCards()}${platformCards(true)}${platformCards(true)}</div></div>
-</section>
-
+<div class="stack__card">
 <section class="weare container" aria-labelledby="weare-title">
   <div class="weare__grid">
     <div>
@@ -308,6 +305,13 @@ export function homePage() {
     </aside>
   </div>
 </section>
+</div>
+</div>
+
+<section aria-labelledby="platforms-title" class="platforms">
+  <div class="container"><h2 class="platforms__title" id="platforms-title">${esc(home.integrations)}</h2></div>
+  <div class="marquee" data-marquee><div class="marquee__track">${platformCards()}${platformCards(true)}${platformCards(true)}</div></div>
+</section>
 
 <section class="section solutions container" aria-labelledby="solutions-title">
   <div class="section-head section-head--split">
@@ -320,19 +324,8 @@ export function homePage() {
   ${solutionsGrid()}
 </section>
 
-<div class="section" style="padding-top:0">
-<section class="panel panel--dark on-dark industries-panel" aria-labelledby="industries-title">
-  <div class="section-head section-head--split">
-    <h2 class="h2" id="industries-title" data-reveal="lines">${esc(home.industries.title)}</h2>
-    <div>
-      <p class="body-l" data-reveal="fade">${esc(home.industries.lead)}</p>
-      <div class="btn-row" data-reveal="fade">${btn({ label: 'Industry expertise', href: '/industries-served/' })}</div>
-    </div>
-  </div>
-  ${industryGrid()}
-</section>
-</div>
-
+<div class="stack stack--full" data-stack>
+<div class="stack__base" data-stack-base>
 <section class="showcase" aria-labelledby="showcase-title">
   <div class="section-head">
     <h2 class="h2" id="showcase-title" data-reveal="lines">${esc(home.productsShowcase.title)}</h2>
@@ -341,9 +334,11 @@ export function homePage() {
   ${productShowcase()}
   <div class="works__more">${btn({ label: 'Explore Our Products', href: '/products/', variant: 'plain', size: 'lg' })}</div>
 </section>
+</div>
 
-<div class="section">
+<div class="stack__card stack__card--full">
 ${why()}
+</div>
 </div>
 
 ${devBand()}
